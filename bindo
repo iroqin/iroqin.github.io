@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nusantara Lingo Quest - Advanced</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #F0F9FF;
+            overflow-x: hidden;
+        }
+        h1, h2, h3, .game-font {
+            font-family: 'Fredoka', sans-serif;
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .animate-pop {
+            animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes pop {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .correct-anim {
+            animation: bounce 0.6s;
+            background-color: #86EFAC !important; /* Green-300 */
+            border-color: #22C55E !important;
+        }
+        .wrong-anim {
+            animation: shake 0.5s;
+            background-color: #FECACA !important; /* Red-200 */
+            border-color: #EF4444 !important;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        .progress-bar {
+            transition: width 0.5s ease-in-out;
+        }
+        /* Hide scrollbar for clean UI */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888; 
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-blue-50 min-h-screen flex items-center justify-center p-4">
+
+    <!-- App Container -->
+    <div class="w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden border-4 border-blue-200 relative min-h-[650px] flex flex-col">
+        
+        <!-- Header -->
+        <header class="bg-blue-600 p-4 text-white flex justify-between items-center shadow-md z-10">
+            <div class="flex items-center gap-2">
+                <i class="fas fa-compass text-2xl text-yellow-300"></i>
+                <span class="font-bold text-lg game-font">Lingo Quest PRO</span>
+            </div>
+            <div class="bg-blue-700 px-3 py-1 rounded-full text-sm font-bold flex items-center gap-2">
+                <i class="fas fa-star text-yellow-300"></i>
+                <span id="score-display">0</span> XP
+            </div>
+        </header>
+
+        <!-- CONTENT AREA -->
+        <main id="app-content" class="flex-grow p-6 relative overflow-y-auto">
+            
+            <!-- SCREEN: HOME -->
+            <div id="screen-home" class="text-center space-y-6 pt-6 animate-pop">
+                <div class="w-28 h-28 bg-yellow-100 rounded-full mx-auto flex items-center justify-center border-4 border-yellow-300 relative">
+                    <span class="text-5xl">🇮🇩</span>
+                    <div class="absolute -bottom-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">Level 4-5</div>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-800 mb-1">Misi Tingkat Lanjut</h1>
+                    <p class="text-gray-500 text-sm">Tantangan struktur & logika bahasa.</p>
+                </div>
+                
+                <div class="space-y-3">
+                    <button onclick="startGame('level1')" class="w-full bg-white border-2 border-indigo-100 p-4 rounded-2xl flex items-center gap-4 card-hover group text-left shadow-sm hover:border-indigo-400">
+                        <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center text-2xl group-hover:bg-indigo-500 group-hover:text-white transition-colors">
+                            🧠
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-700">Misi 1: Logika Frasa</h3>
+                            <p class="text-xs text-gray-400">Complex Noun Phrases & 'Yang'</p>
+                        </div>
+                    </button>
+
+                    <button onclick="startGame('level2')" class="w-full bg-white border-2 border-green-100 p-4 rounded-2xl flex items-center gap-4 card-hover group text-left shadow-sm hover:border-green-400">
+                        <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center text-2xl group-hover:bg-green-500 group-hover:text-white transition-colors">
+                            🏗️
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-700">Misi 2: Struktur Pasif/Aktif</h3>
+                            <p class="text-xs text-gray-400">Complex Sentences (K-S-P-O-K)</p>
+                        </div>
+                    </button>
+
+                    <button onclick="startGame('level3')" class="w-full bg-white border-2 border-orange-100 p-4 rounded-2xl flex items-center gap-4 card-hover group text-left shadow-sm hover:border-orange-400">
+                        <div class="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center text-2xl group-hover:bg-orange-500 group-hover:text-white transition-colors">
+                            🎓
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-700">Misi 3: Akademis Baku</h3>
+                            <p class="text-xs text-gray-400">Formal Conjunctions & Grammar</p>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- SCREEN: LEVEL 1 (PHRASE LOGIC) -->
+            <div id="screen-level1" class="hidden h-full flex flex-col">
+                <div class="mb-6">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-xs font-bold text-indigo-500 uppercase tracking-wider">Logika Frasa (Advanced)</span>
+                        <span class="text-xs font-bold text-gray-400" id="lvl1-counter">1/5</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                        <div id="lvl1-progress" class="bg-indigo-500 h-2.5 rounded-full progress-bar" style="width: 20%"></div>
+                    </div>
+                </div>
+
+                <div class="bg-indigo-50 border-2 border-indigo-200 rounded-2xl p-6 text-center mb-8 relative">
+                    <span class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-indigo-500 text-white px-3 py-1 text-xs rounded-full font-bold">Translate This</span>
+                    <h2 id="lvl1-question" class="text-2xl font-bold text-indigo-900 mt-2">Question</h2>
+                    <p class="text-indigo-400 text-xs mt-2 font-mono" id="lvl1-hint">Hint...</p>
+                </div>
+
+                <div class="flex-grow flex flex-col justify-center">
+                    <p class="text-center text-gray-400 mb-4 text-xs uppercase font-bold tracking-widest">Urutkan Kata:</p>
+                    <div id="lvl1-answer-area" class="flex flex-wrap justify-center gap-2 mb-8 min-h-[60px] content-start">
+                        <!-- Selected words go here -->
+                    </div>
+
+                    <div id="lvl1-options-area" class="grid grid-cols-2 gap-3">
+                        <!-- Options go here -->
+                    </div>
+                </div>
+                
+                <button onclick="checkLevel1()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-xl shadow-lg mt-4 transition transform active:scale-95">
+                    Cek Jawaban
+                </button>
+            </div>
+
+            <!-- SCREEN: LEVEL 2 (SPOK) -->
+            <div id="screen-level2" class="hidden h-full flex flex-col">
+                <div class="mb-6">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-xs font-bold text-green-600 uppercase tracking-wider">Struktur Kalimat (SPOK)</span>
+                        <span class="text-xs font-bold text-gray-400" id="lvl2-counter">1/5</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                        <div id="lvl2-progress" class="bg-green-500 h-2.5 rounded-full progress-bar" style="width: 20%"></div>
+                    </div>
+                </div>
+
+                <div class="text-center mb-6">
+                    <p class="text-gray-600 text-sm mb-2 font-semibold">Susun menjadi kalimat sempurna:</p>
+                    <div class="bg-white border-2 border-dashed border-gray-300 rounded-xl p-4 min-h-[100px] flex flex-wrap gap-2 items-center justify-center content-center transition-colors hover:border-green-300" id="lvl2-dropzone">
+                        <!-- Dropzone -->
+                    </div>
+                </div>
+
+                <div id="lvl2-wordbank" class="flex flex-wrap justify-center gap-2 mb-auto content-start">
+                    <!-- Word bank options -->
+                </div>
+
+                <div class="mt-4 flex gap-2">
+                    <button onclick="resetLevel2()" class="flex-1 bg-gray-100 text-gray-500 font-bold py-3 rounded-xl hover:bg-gray-200 transition">Reset</button>
+                    <button onclick="checkLevel2()" class="flex-[2] bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-xl shadow-lg transition transform active:scale-95">
+                        Susun!
+                    </button>
+                </div>
+            </div>
+
+            <!-- SCREEN: LEVEL 3 (BAKU) -->
+            <div id="screen-level3" class="hidden h-full flex flex-col">
+                <div class="mb-6">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-xs font-bold text-orange-500 uppercase tracking-wider">Detektif Akademis</span>
+                        <span class="text-xs font-bold text-gray-400" id="lvl3-counter">1/5</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                        <div id="lvl3-progress" class="bg-orange-500 h-2.5 rounded-full progress-bar" style="width: 20%"></div>
+                    </div>
+                </div>
+
+                <div class="bg-white border border-gray-200 shadow-sm rounded-2xl p-6 text-center mb-6">
+                    <div class="text-5xl mb-4">📝</div>
+                    <p class="text-gray-500 text-sm mb-2">Perbaiki kata di dalam kurung:</p>
+                    <h2 id="lvl3-context" class="text-lg font-medium text-gray-800 leading-snug">
+                        "Saya <span class="text-red-500 font-bold line-through decoration-2 decoration-red-300 mx-1" id="lvl3-slang">Gimana</span> tidak tahu jawabannya."
+                    </h2>
+                </div>
+
+                <div id="lvl3-options" class="space-y-3">
+                    <!-- Options buttons -->
+                </div>
+            </div>
+
+            <!-- MODAL: RESULT -->
+            <div id="modal-feedback" class="absolute inset-0 bg-black/60 hidden items-center justify-center z-50 backdrop-blur-sm p-6">
+                <div class="bg-white rounded-3xl p-6 text-center shadow-2xl w-full max-w-sm animate-pop">
+                    <div id="fb-icon" class="text-6xl mb-4">🎉</div>
+                    <h2 id="fb-title" class="text-2xl font-bold mb-2 text-gray-800">Hebat!</h2>
+                    <p id="fb-message" class="text-gray-600 text-sm mb-6 leading-relaxed">Kamu benar.</p>
+                    <button onclick="nextQuestion()" class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl shadow-lg hover:bg-blue-700">Lanjut</button>
+                </div>
+            </div>
+            
+            <!-- MODAL: LEVEL COMPLETE -->
+            <div id="modal-complete" class="absolute inset-0 bg-white hidden flex-col items-center justify-center z-50 p-8 text-center">
+                <div class="text-8xl mb-6">🎓</div>
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">Level Selesai!</h2>
+                <p class="text-gray-500 mb-8">Kemampuan struktur bahasamu meningkat!</p>
+                <div class="bg-yellow-50 text-yellow-600 px-6 py-3 rounded-xl font-bold text-xl mb-8 border border-yellow-200 flex items-center justify-center gap-2">
+                    <span>+200 XP</span> <i class="fas fa-bolt text-yellow-400"></i>
+                </div>
+                <button onclick="showHome()" class="w-full bg-gray-800 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-gray-900">Kembali ke Menu</button>
+            </div>
+
+        </main>
+
+        <!-- FOOTER NAV -->
+        <footer class="bg-white border-t border-gray-100 p-3 flex justify-around text-xs">
+            <button onclick="showHome()" class="flex flex-col items-center text-blue-600">
+                <i class="fas fa-home text-lg mb-1"></i>
+                <span class="font-bold">Home</span>
+            </button>
+            <button class="flex flex-col items-center text-gray-400 cursor-not-allowed">
+                <i class="fas fa-book text-lg mb-1"></i>
+                <span>Bank Soal</span>
+            </button>
+            <button class="flex flex-col items-center text-gray-400 cursor-not-allowed">
+                <i class="fas fa-trophy text-lg mb-1"></i>
+                <span>Leaderboard</span>
+            </button>
+        </footer>
+
+    </div>
+
+<script>
+    // --- ADVANCED DATA ---
+    const dataLevel1 = [
+        { 
+            eng: "My new blue bag", 
+            ans: ["Tas", "biru", "baru", "saya"], 
+            parts: ["Tas", "saya", "baru", "biru"], 
+            tip: "Possessive (Saya) ditaruh paling belakang setelah kata sifat.",
+            hint: "Logic: Bag + Blue + New + My"
+        },
+        { 
+            eng: "The very tall building", 
+            ans: ["Gedung", "yang", "sangat", "tinggi"], 
+            parts: ["sangat", "Gedung", "yang", "tinggi"], 
+            tip: "Gunakan 'Yang' untuk menghubungkan benda dengan sifat yang diperkuat (sangat).",
+            hint: "Logic: Building + which is + very + tall"
+        },
+        { 
+            eng: "Three delicious fried chickens", 
+            ans: ["Tiga", "ayam", "goreng", "lezat"], 
+            parts: ["ayam", "lezat", "Tiga", "goreng"], 
+            tip: "Jumlah (Three) di depan, tapi Sifat (Delicious) di belakang Benda.",
+            hint: "Logic: Three + Chicken + Fried + Delicious"
+        },
+        { 
+            eng: "Indonesian History Book", 
+            ans: ["Buku", "Sejarah", "Indonesia"], 
+            parts: ["Indonesia", "Buku", "Sejarah"], 
+            tip: "Urutan dibalik total: Book -> History -> Indonesia.",
+            hint: "Logic: Noun + Noun + Noun (Reverse)"
+        },
+        { 
+            eng: "Mom's spicy fried rice", 
+            ans: ["Nasi", "goreng", "pedas", "Ibu"], 
+            parts: ["pedas", "Ibu", "Nasi", "goreng"], 
+            tip: "Kepemilikan (Ibu) selalu paling terakhir.",
+            hint: "Logic: Fried Rice + Spicy + Mom"
+        }
+    ];
+
+    const dataLevel2 = [
+        { 
+            correct: ["Kemarin", "ayah", "membaca", "majalah"], 
+            parts: ["membaca", "Kemarin", "majalah", "ayah"], 
+            tip: "Keterangan Waktu (Kemarin) biasanya di awal atau akhir." 
+        },
+        { 
+            correct: ["Kue", "itu", "dimakan", "oleh", "adik"], 
+            parts: ["dimakan", "adik", "Kue", "itu", "oleh"], 
+            tip: "Kalimat Pasif: Object (Kue) di depan, gunakan 'Di-' dan 'Oleh'." 
+        },
+        { 
+            correct: ["Kami", "membersihkan", "kelas", "setiap", "pagi"], 
+            parts: ["setiap", "kelas", "Kami", "pagi", "membersihkan"], 
+            tip: "S-P-O-K: Kami (S) -> Bersih (P) -> Kelas (O) -> Waktu (K)." 
+        },
+        { 
+            correct: ["Mereka", "sedang", "bermain", "di", "lapangan"], 
+            parts: ["bermain", "lapangan", "sedang", "Mereka", "di"], 
+            tip: "Gunakan 'Sedang' untuk Present Continuous (is playing)." 
+        },
+        { 
+            correct: ["Adik", "menangis", "karena", "jatuh", "dari", "sepeda"], 
+            parts: ["karena", "sepeda", "Adik", "jatuh", "dari", "menangis"], 
+            tip: "Sebab-akibat: Gunakan 'Karena' di tengah." 
+        }
+    ];
+
+    const dataLevel3 = [
+        { 
+            context: "Aku <span class='text-red-500 line-through font-bold'>cuman</span> punya satu pensil.",
+            slang: "cuman", 
+            correct: "hanya", 
+            opts: ["hanya", "tetapi", "sedikit"], 
+            tip: "'Cuman' adalah bahasa lisan. Di sekolah gunakan 'Hanya' (Only)." 
+        },
+        { 
+            context: "Saya tidak tahu <span class='text-red-500 line-through font-bold'>gimana</span> caranya.",
+            slang: "gimana", 
+            correct: "bagaimana", 
+            opts: ["mengapa", "bagaimana", "bilamana"], 
+            tip: "'Gimana' singkatan dari 'Bagaimana' (How)." 
+        },
+        { 
+            context: "Dia tidak masuk <span class='text-red-500 line-through font-bold'>kalo</span> sakit.",
+            slang: "kalo", 
+            correct: "kalau", 
+            opts: ["karena", "kalau", "biar"], 
+            tip: "'Kalo' itu percakapan. Penulisan baku adalah 'Kalau' (If)." 
+        },
+        { 
+            context: "<span class='text-red-500 line-through font-bold'>Kenapa</span> kamu terlambat?",
+            slang: "Kenapa", 
+            correct: "Mengapa", 
+            opts: ["Mengapa", "Bagaimana", "Siapa"], 
+            tip: "Untuk alasan (Why), kata baku yang paling tepat adalah 'Mengapa'." 
+        },
+        { 
+            context: "Ayah <span class='text-red-500 line-through font-bold'>lagi</span> makan siang.",
+            slang: "lagi", 
+            correct: "sedang", 
+            opts: ["masih", "sedang", "akan"], 
+            tip: "Untuk aktivitas yang sedang terjadi, gunakan 'Sedang', bukan 'Lagi'." 
+        }
+    ];
+
+    // --- STATE ---
+    let state = {
+        score: 0,
+        currentLevel: '',
+        qIndex: 0,
+        lvl1Selection: [],
+        lvl2Selection: []
+    };
+
+    // --- NAVIGATION ---
+    function showHome() {
+        document.getElementById('screen-home').classList.remove('hidden');
+        document.getElementById('screen-level1').classList.add('hidden');
+        document.getElementById('screen-level2').classList.add('hidden');
+        document.getElementById('screen-level3').classList.add('hidden');
+        document.getElementById('modal-complete').classList.add('hidden');
+    }
+
+    function startGame(level) {
+        state.currentLevel = level;
+        state.qIndex = 0;
+        document.getElementById('screen-home').classList.add('hidden');
+        document.getElementById('screen-level1').classList.add('hidden');
+        document.getElementById('screen-level2').classList.add('hidden');
+        document.getElementById('screen-level3').classList.add('hidden');
+        
+        document.getElementById(`screen-${level}`).classList.remove('hidden');
+        
+        if(level === 'level1') loadLevel1();
+        if(level === 'level2') loadLevel2();
+        if(level === 'level3') loadLevel3();
+    }
+
+    // --- LEVEL 1 LOGIC ---
+    function loadLevel1() {
+        const q = dataLevel1[state.qIndex];
+        state.lvl1Selection = [];
+        updateProgress('lvl1', state.qIndex, dataLevel1.length);
+        
+        document.getElementById('lvl1-question').innerText = q.eng;
+        document.getElementById('lvl1-hint').innerText = q.hint || "Translate correctly";
+        
+        const answerArea = document.getElementById('lvl1-answer-area');
+        answerArea.innerHTML = '';
+        
+        const optsArea = document.getElementById('lvl1-options-area');
+        optsArea.innerHTML = '';
+        
+        // Randomize parts for display
+        let parts = [...q.parts].sort(() => Math.random() - 0.5);
+        
+        parts.forEach(word => {
+            const btn = document.createElement('button');
+            btn.className = "bg-white border-2 border-indigo-200 text-indigo-700 font-bold py-3 px-2 rounded-xl shadow-sm hover:bg-indigo-50 active:scale-95 transition text-sm";
+            btn.innerText = word;
+            btn.onclick = () => selectWordLvl1(word, btn);
+            optsArea.appendChild(btn);
+        });
+    }
+
+    function selectWordLvl1(word, btn) {
+        state.lvl1Selection.push(word);
+        btn.classList.add('opacity-40', 'cursor-not-allowed', 'scale-95');
+        btn.disabled = true;
+        
+        const area = document.getElementById('lvl1-answer-area');
+        
+        const tag = document.createElement('div');
+        tag.className = "bg-indigo-600 text-white px-3 py-2 rounded-lg font-bold animate-pop text-sm shadow-md";
+        tag.innerText = word;
+        area.appendChild(tag);
+    }
+
+    function checkLevel1() {
+        const q = dataLevel1[state.qIndex];
+        const userAns = state.lvl1Selection.join(" ");
+        const correctAns = q.ans.join(" ");
+        
+        if (userAns === correctAns) {
+            showFeedback(true, "Tepat! " + q.tip);
+        } else {
+            showFeedback(false, "Urutan masih kurang tepat. " + q.tip);
+            // Auto reset after wrong mostly for better UX
+            setTimeout(() => {
+                state.lvl1Selection = [];
+                loadLevel1();
+            }, 2000);
+        }
+    }
+
+    // --- LEVEL 2 LOGIC ---
+    function loadLevel2() {
+        const q = dataLevel2[state.qIndex];
+        state.lvl2Selection = [];
+        updateProgress('lvl2', state.qIndex, dataLevel2.length);
+        
+        const dropzone = document.getElementById('lvl2-dropzone');
+        dropzone.innerHTML = '<span class="text-gray-300 text-sm italic">Ketuk kata di bawah untuk menyusun kalimat</span>';
+        
+        const bank = document.getElementById('lvl2-wordbank');
+        bank.innerHTML = '';
+        
+        let parts = [...q.parts].sort(() => Math.random() - 0.5);
+        
+        parts.forEach(word => {
+            const btn = document.createElement('button');
+            btn.className = "bg-white border border-green-400 text-green-700 px-3 py-2 rounded-lg font-bold shadow-sm active:scale-95 text-sm hover:bg-green-50";
+            btn.innerText = word;
+            btn.onclick = () => addToSentenceLvl2(word, btn);
+            bank.appendChild(btn);
+        });
+    }
+
+    function addToSentenceLvl2(word, btn) {
+        state.lvl2Selection.push(word);
+        btn.classList.add('hidden'); // Hide from bank
+        
+        const dropzone = document.getElementById('lvl2-dropzone');
+        // Clear placeholder text if it's the first word
+        const placeholder = dropzone.querySelector('span');
+        if (placeholder) placeholder.remove();
+        
+        const chip = document.createElement('div');
+        chip.className = "bg-green-100 text-green-800 border border-green-200 px-3 py-1 rounded-md font-bold animate-pop text-sm";
+        chip.innerText = word;
+        dropzone.appendChild(chip);
+    }
+
+    function resetLevel2() {
+        loadLevel2();
+    }
+
+    function checkLevel2() {
+        const q = dataLevel2[state.qIndex];
+        const userAns = state.lvl2Selection.join(" ");
+        const correctAns = q.correct.join(" ");
+        
+        if (userAns === correctAns) {
+            showFeedback(true, "Struktur Bagus! " + q.tip);
+        } else {
+            showFeedback(false, "Hmm, belum pas. " + q.tip);
+            setTimeout(resetLevel2, 2500);
+        }
+    }
+
+    // --- LEVEL 3 LOGIC ---
+    function loadLevel3() {
+        const q = dataLevel3[state.qIndex];
+        updateProgress('lvl3', state.qIndex, dataLevel3.length);
+        
+        // Use HTML to render context with bold/red slang word
+        document.getElementById('lvl3-context').innerHTML = q.context;
+        
+        const optsDiv = document.getElementById('lvl3-options');
+        optsDiv.innerHTML = '';
+        
+        let opts = [...q.opts].sort(() => Math.random() - 0.5);
+        
+        opts.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = "w-full bg-white border border-gray-200 p-4 rounded-xl text-left font-bold text-gray-700 hover:bg-orange-50 hover:border-orange-300 transition flex justify-between items-center group shadow-sm";
+            btn.innerHTML = `<span class="capitalize">${opt}</span> <i class="fas fa-arrow-right text-orange-300 opacity-0 group-hover:opacity-100 transition"></i>`;
+            btn.onclick = () => checkLevel3(opt, q.correct, q.tip);
+            optsDiv.appendChild(btn);
+        });
+    }
+
+    function checkLevel3(selected, correct, tip) {
+        // Case insensitive check
+        if(selected.toLowerCase() === correct.toLowerCase()) {
+            showFeedback(true, "Tepat! " + tip);
+        } else {
+            showFeedback(false, "Kurang tepat. " + tip);
+        }
+    }
+
+    // --- SHARED UTILS ---
+    function updateProgress(lvlPrefix, idx, total) {
+        document.getElementById(`${lvlPrefix}-counter`).innerText = `${idx + 1}/${total}`;
+        const pct = ((idx + 1) / total) * 100;
+        document.getElementById(`${lvlPrefix}-progress`).style.width = `${pct}%`;
+    }
+
+    function showFeedback(isCorrect, msg) {
+        const modal = document.getElementById('modal-feedback');
+        const icon = document.getElementById('fb-icon');
+        const title = document.getElementById('fb-title');
+        const message = document.getElementById('fb-message');
+        
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        
+        if(isCorrect) {
+            icon.innerText = "🌟";
+            title.innerText = "Benar!";
+            title.className = "text-2xl font-bold mb-2 text-green-600";
+            // Update score
+            state.score += 20;
+            document.getElementById('score-display').innerText = state.score;
+        } else {
+            icon.innerText = "🤔";
+            title.innerText = "Coba Lagi";
+            title.className = "text-2xl font-bold mb-2 text-orange-500";
+        }
+        message.innerText = msg;
+    }
+
+    function nextQuestion() {
+        document.getElementById('modal-feedback').classList.add('hidden');
+        
+        const titleText = document.getElementById('fb-title').innerText;
+        
+        if (titleText === "Benar!") {
+             state.qIndex++;
+             
+             let max = 0;
+             if(state.currentLevel === 'level1') max = dataLevel1.length;
+             if(state.currentLevel === 'level2') max = dataLevel2.length;
+             if(state.currentLevel === 'level3') max = dataLevel3.length;
+             
+             if(state.qIndex >= max) {
+                 showComplete();
+             } else {
+                 if(state.currentLevel === 'level1') loadLevel1();
+                 if(state.currentLevel === 'level2') loadLevel2();
+                 if(state.currentLevel === 'level3') loadLevel3();
+             }
+        }
+    }
+
+    function showComplete() {
+        document.getElementById('modal-complete').classList.remove('hidden');
+        document.getElementById('modal-complete').classList.add('flex');
+    }
+
+</script>
+</body>
+</html>
