@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Me | Qori Kharismawan</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#0f172a',
+                            darker: '#020617',
+                            primary: '#3b82f6',
+                            accent: '#60a5fa',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom animations */
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+        .delay-400 { animation-delay: 0.4s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .timeline-line::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 20px;
+            width: 2px;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: 0;
+        }
+        
+        @media (min-width: 768px) {
+            .timeline-line::before {
+                left: 28px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-brand-dark text-slate-200 font-sans selection:bg-brand-primary selection:text-white">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-brand-dark/90 backdrop-blur-md border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <a href="index.html" class="flex-shrink-0 font-bold text-xl text-white tracking-wider cursor-pointer">
+                    QK<span class="text-brand-primary">.</span>
+                </a>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden lg:block">
+                    <div class="ml-10 flex items-baseline space-x-1">
+                        <a href="index.html" class="hover:text-brand-primary hover:bg-white/5 px-3 py-2 rounded-md text-sm font-medium transition-colors">Home</a>
+                        <a href="#experience" class="text-white bg-white/10 px-3 py-2 rounded-md text-sm font-medium transition-colors">Experience</a>
+                        <a href="#education" class="hover:text-brand-primary hover:bg-white/5 px-3 py-2 rounded-md text-sm font-medium transition-colors">Education</a>
+                        <a href="#skills" class="hover:text-brand-primary hover:bg-white/5 px-3 py-2 rounded-md text-sm font-medium transition-colors">Skills</a>
+                    </div>
+                </div>
+
+                <!-- Contact Button (Right Top) -->
+                <div class="hidden md:block">
+                    <a href="mailto:qori.kharismawan@kemenkeu.go.id" class="bg-brand-primary hover:bg-blue-600 text-white px-5 py-2 rounded-full text-sm font-medium transition-all shadow-lg shadow-blue-500/20">
+                        Get in Touch
+                    </a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="lg:hidden">
+                    <button class="text-gray-300 hover:text-white p-2">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header / Title -->
+    <section class="pt-32 pb-12 bg-brand-darker relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-96 h-96 bg-brand-primary/5 rounded-full blur-3xl -z-10"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="fade-in-up">
+                <span class="text-brand-primary font-semibold tracking-wider text-sm uppercase mb-2 block">Resume & Curriculum Vitae</span>
+                <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">About Me</h1>
+                <p class="text-xl text-slate-400 max-w-3xl leading-relaxed">
+                    Policy Analyst and Development Economist at the Ministry of Finance, Republic of Indonesia. I specialize in fiscal risk mitigation, state asset optimization, and sustainable finance.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Grid -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+            
+            <!-- Left Column (Experience & Education) -->
+            <div class="lg:col-span-2 space-y-16">
+                
+                <!-- Professional Experience -->
+                <section id="experience" class="fade-in-up delay-100">
+                    <div class="flex items-center gap-3 mb-8">
+                        <div class="p-2 bg-brand-primary/10 rounded-lg text-brand-primary">
+                            <i class="fas fa-briefcase text-xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-white">Professional Experience</h2>
+                    </div>
+
+                    <div class="relative timeline-line space-y-10 pl-2">
+                        
+                        <!-- Item 1 -->
+                        <div class="relative pl-12 md:pl-16">
+                            <div class="absolute left-0 top-1 w-12 h-12 md:w-14 md:h-14 bg-brand-dark border border-brand-primary/30 rounded-full flex items-center justify-center z-10">
+                                <span class="text-xs font-bold text-brand-primary">2025</span>
+                            </div>
+                            <div class="glass-card p-6 rounded-xl hover:border-brand-primary/30 transition-colors">
+                                <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-2">
+                                    <div>
+                                        <h3 class="text-lg font-bold text-white">Policy Analyst</h3>
+                                        <p class="text-brand-accent text-sm">Directorate General of State Asset Management (DJKN)</p>
+                                    </div>
+                                    <span class="text-xs text-slate-500 mt-1 md:mt-0 bg-slate-800 px-2 py-1 rounded">July 2025 – Present</span>
+                                </div>
+                                <ul class="list-disc list-outside ml-4 mt-3 space-y-2 text-slate-400 text-sm">
+                                    <li>Conduct policy studies and data-driven research to support the Advisor for State Asset Optimization.</li>
+                                    <li>Analyze regulatory frameworks to develop strategies for optimizing underutilized state assets.</li>
+                                    <li>Strategic support for "KOIN MAS DJKN," a national initiative promoting innovation in public asset management.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Item 2 -->
+                        <div class="relative pl-12 md:pl-16">
+                            <div class="absolute left-0 top-1 w-12 h-12 md:w-14 md:h-14 bg-brand-dark border border-white/10 rounded-full flex items-center justify-center z-10">
+                                <span class="text-xs font-bold text-slate-400">2024</span>
+                            </div>
+                            <div class="glass-card p-6 rounded-xl border-l-4 border-l-yellow-500/50">
+                                <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-2">
+                                    <div>
+                                        <h3 class="text-lg font-bold text-white">Service Staff / Operations</h3>
+                                        <p class="text-yellow-500/80 text-sm"><i class="fas fa-globe-americas mr-1"></i> Cornell University, Ithaca, NY, USA</p>
+                                    </div>
+                                    <span class="text-xs text-slate-500 mt-1 md:mt-0 bg-slate-800 px-2 py-1 rounded">Feb 2024 – May 2025</span>
+                                </div>
+                                <p class="text-slate-400 text-sm mt-3">
+                                    Resided in the US supporting a spouse attending Cornell. Gained direct professional exposure to the administrative operations of an Ivy League institution, ensuring compliance with NY State Health Code and HACCP standards.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Item 3 -->
+                        <div class="relative pl-12 md:pl-16">
+                            <div class="absolute left-0 top-1 w-12 h-12 md:w-14 md:h-14 bg-brand-dark border border-white/10 rounded-full flex items-center justify-center z-10">
+                                <span class="text-xs font-bold text-slate-400">2022</span>
+                            </div>
+                            <div class="glass-card p-6 rounded-xl">
+                                <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-2">
+                                    <div>
+                                        <h3 class="text-lg font-bold text-white">Technical Support Analyst</h3>
+                                        <p class="text-brand-accent text-sm">Task Force for State Claims (Satgas BLBI)</p>
+                                    </div>
+                                    <span class="text-xs text-slate-500 mt-1 md:mt-0 bg-slate-800 px-2 py-1 rounded">Aug 2022 – Aug 2023</span>
+                                </div>
+                                <ul class="list-disc list-outside ml-4 mt-3 space-y-2 text-slate-400 text-sm">
+                                    <li>Conducted investigative field research and legal assessments for the recovery of state funds (BLBI case).</li>
+                                    <li>Performed financial viability analysis and creditworthiness assessments.</li>
+                                    <li>Contributed to the successful recovery of <strong>$2 billion USD</strong> in state claims.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Item 4 -->
+                        <div class="relative pl-12 md:pl-16">
+                            <div class="absolute left-0 top-1 w-12 h-12 md:w-14 md:h-14 bg-brand-dark border border-white/10 rounded-full flex items-center justify-center z-10">
+                                <span class="text-xs font-bold text-slate-400">2009</span>
+                            </div>
+                            <div class="glass-card p-6 rounded-xl">
+                                <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-2">
+                                    <div>
+                                        <h3 class="text-lg font-bold text-white">State Asset Analyst & Data Manager</h3>
+                                        <p class="text-brand-accent text-sm">Ministry of Finance (Jakarta & Palembang)</p>
+                                    </div>
+                                    <span class="text-xs text-slate-500 mt-1 md:mt-0 bg-slate-800 px-2 py-1 rounded">Dec 2009 – Aug 2022</span>
+                                </div>
+                                <p class="text-slate-400 text-sm mt-3 mb-2">
+                                    Managed the lifecycle of state-owned property, implemented asset management plans, and delivered training workshops for regional stakeholders.
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- Education Section -->
+                <section id="education" class="fade-in-up delay-200">
+                    <div class="flex items-center gap-3 mb-8">
+                        <div class="p-2 bg-purple-500/10 rounded-lg text-purple-400">
+                            <i class="fas fa-graduation-cap text-xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-white">Education</h2>
+                    </div>
+
+                    <div class="grid gap-6">
+                        <!-- Masters -->
+                        <div class="glass-card p-6 rounded-xl border-l-4 border-l-brand-primary">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-lg font-bold text-white">Master of Economics in Development (M.Ec.Dev)</h3>
+                                <span class="text-xs bg-brand-primary/20 text-brand-primary px-2 py-1 rounded border border-brand-primary/20">GPA 3.81</span>
+                            </div>
+                            <p class="text-slate-300">Universitas Gadjah Mada, Indonesia <span class="text-slate-500 text-sm">| 2020 - 2022</span></p>
+                            <div class="mt-4 text-sm text-slate-400">
+                                <p class="mb-2"><strong class="text-white">Funding:</strong> LPDP Scholarship (Full merit-based).</p>
+                                <p><strong class="text-white">Thesis:</strong> "The influence of ESG factors on corporate performance and resilience during the COVID-19 pandemic in Indonesia."</p>
+                            </div>
+                        </div>
+
+                        <!-- Bachelor & Associate -->
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="glass-card p-6 rounded-xl">
+                                <h3 class="text-base font-bold text-white">Bachelor of Accounting</h3>
+                                <p class="text-slate-400 text-sm mt-1">Perbanas Institute</p>
+                                <p class="text-slate-500 text-xs mt-1">2012 - 2015</p>
+                            </div>
+                            <div class="glass-card p-6 rounded-xl">
+                                <h3 class="text-base font-bold text-white">Associate in Gov. Accounting</h3>
+                                <p class="text-slate-400 text-sm mt-1">State College of Accountancy (STAN)</p>
+                                <p class="text-slate-500 text-xs mt-1">2006 - 2009</p>
+                                <p class="text-xs text-brand-accent mt-2"><i class="fas fa-star mr-1"></i> Top 2.5% Acceptance Rate</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                 <!-- Teaching & Volunteering -->
+                 <section class="fade-in-up delay-300">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="p-2 bg-green-500/10 rounded-lg text-green-400">
+                            <i class="fas fa-chalkboard-teacher text-xl"></i>
+                        </div>
+                        <h2 class="text-xl font-bold text-white">Teaching & Instruction</h2>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="glass-card p-5 rounded-xl">
+                            <h4 class="font-bold text-white">Enrichment Facilitator (Volunteer)</h4>
+                            <p class="text-sm text-slate-400">Belle Sherman Elementary School | Ithaca, NY, USA (2023)</p>
+                            <p class="text-xs text-slate-500 mt-2">Developed bicycle safety curriculum and risk mitigation instruction.</p>
+                        </div>
+                        <div class="glass-card p-5 rounded-xl">
+                            <h4 class="font-bold text-white">Training Facilitator</h4>
+                            <p class="text-sm text-slate-400">Ministry of Finance | Palembang (2015-2022)</p>
+                            <p class="text-xs text-slate-500 mt-2">Delivered technical training on state asset management regulations (SIMAN) to government officials.</p>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- Right Column (Sidebar) -->
+            <div class="lg:col-span-1 space-y-8">
+                
+                <!-- Contact Card -->
+                <div class="glass-card p-6 rounded-2xl bg-gradient-to-br from-white/5 to-transparent fade-in-up delay-200">
+                    <h3 class="text-lg font-bold text-white mb-4">Contact Info</h3>
+                    <div class="space-y-4 text-sm">
+                        <div class="flex items-start">
+                            <i class="fas fa-map-marker-alt w-6 text-brand-primary mt-1"></i>
+                            <span class="text-slate-400">Ministry of Finance, Syafrudin Prawiranegara II Bldg, Jakarta</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-envelope w-6 text-brand-primary"></i>
+                            <a href="mailto:qori.kharismawan@kemenkeu.go.id" class="text-slate-400 hover:text-white transition-colors">qori.kharismawan@kemenkeu.go.id</a>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-phone w-6 text-brand-primary"></i>
+                            <span class="text-slate-400">+62 812-8062-7882</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 pt-6 border-t border-white/10 flex justify-center space-x-6">
+                         <a href="https://www.linkedin.com/in/qorikharismawan/" class="text-slate-400 hover:text-white transition-colors"><i class="fab fa-linkedin text-2xl"></i></a>
+                         <a href="https://github.com/iroqin" class="text-slate-400 hover:text-white transition-colors"><i class="fab fa-github text-2xl"></i></a>
+                    </div>
+                </div>
+
+                <!-- Skills -->
+                <div id="skills" class="fade-in-up delay-300">
+                    <h3 class="text-lg font-bold text-white mb-4 pl-2 border-l-2 border-brand-primary">Skills & Tools</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-slate-800 text-slate-300 rounded-full text-xs border border-white/5">STATA</span>
+                        <span class="px-3 py-1 bg-slate-800 text-slate-300 rounded-full text-xs border border-white/5">Financial Analysis</span>
+                        <span class="px-3 py-1 bg-slate-800 text-slate-300 rounded-full text-xs border border-white/5">Prompt Engineering</span>
+                        <span class="px-3 py-1 bg-slate-800 text-slate-300 rounded-full text-xs border border-white/5">Asset Valuation</span>
+                        <span class="px-3 py-1 bg-slate-800 text-slate-300 rounded-full text-xs border border-white/5">Public Budgeting</span>
+                        <span class="px-3 py-1 bg-slate-800 text-slate-300 rounded-full text-xs border border-white/5">HTML/JS</span>
+                        <span class="px-3 py-1 bg-slate-800 text-slate-300 rounded-full text-xs border border-white/5">Adobe Creative Suite</span>
+                    </div>
+                </div>
+
+                <!-- Certifications -->
+                <div class="fade-in-up delay-300">
+                     <h3 class="text-lg font-bold text-white mb-4 pl-2 border-l-2 border-brand-primary">Certifications</h3>
+                     <div class="glass-card p-4 rounded-xl flex items-center gap-3">
+                        <i class="fab fa-google text-2xl text-white"></i>
+                        <div>
+                            <h4 class="font-bold text-white text-sm">Gemini Certified Educator</h4>
+                            <p class="text-xs text-slate-400">Google AI Tools (2025)</p>
+                        </div>
+                     </div>
+                </div>
+
+                <!-- Research Interests -->
+                <div class="fade-in-up delay-300">
+                    <h3 class="text-lg font-bold text-white mb-4 pl-2 border-l-2 border-brand-primary">Research Interests</h3>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li class="flex items-start"><i class="fas fa-angle-right text-brand-primary mt-1 mr-2"></i> Climate-Adjusted Asset Valuation</li>
+                        <li class="flex items-start"><i class="fas fa-angle-right text-brand-primary mt-1 mr-2"></i> Public Sector Balance Sheet</li>
+                        <li class="flex items-start"><i class="fas fa-angle-right text-brand-primary mt-1 mr-2"></i> ESG Integration in State Assets</li>
+                        <li class="flex items-start"><i class="fas fa-angle-right text-brand-primary mt-1 mr-2"></i> Fiscal Risk Mitigation</li>
+                    </ul>
+                </div>
+
+                <!-- Awards -->
+                <div class="fade-in-up delay-400">
+                    <h3 class="text-lg font-bold text-white mb-4 pl-2 border-l-2 border-brand-primary">Honors & Awards</h3>
+                    <div class="space-y-4">
+                        <div class="border-b border-white/5 pb-3">
+                            <h4 class="text-white font-medium text-sm">Satyalancana Karya Satya (10 Yrs)</h4>
+                            <p class="text-xs text-slate-500 mt-1">President of the Republic of Indonesia (2020)</p>
+                        </div>
+                        <div class="border-b border-white/5 pb-3">
+                            <h4 class="text-white font-medium text-sm">LPDP Scholarship</h4>
+                            <p class="text-xs text-slate-500 mt-1">Full-ride Master's Funding (2019)</p>
+                        </div>
+                        <div class="border-b border-white/5 pb-3">
+                            <h4 class="text-white font-medium text-sm">Best Employee</h4>
+                            <p class="text-xs text-slate-500 mt-1">KPKNL Palembang (2018)</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-brand-darker py-8 border-t border-white/5 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-slate-600 text-sm">
+                &copy; 2026 Qori Kharismawan. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+</body>
+</html>
