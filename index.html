@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Qori Kharismawan | Personal Landing Page</title>
+    <title>Qori Kharismawan | Personal Portfolio</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome for Icons -->
@@ -21,6 +21,7 @@
                     colors: {
                         brand: {
                             dark: '#0f172a',
+                            darker: '#020617',
                             primary: '#3b82f6',
                             accent: '#60a5fa',
                         }
@@ -40,6 +41,7 @@
         .delay-100 { animation-delay: 0.1s; }
         .delay-200 { animation-delay: 0.2s; }
         .delay-300 { animation-delay: 0.3s; }
+        .delay-400 { animation-delay: 0.4s; }
 
         @keyframes fadeInUp {
             to {
@@ -49,9 +51,18 @@
         }
 
         .glass-card {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Hide scrollbar for gallery horizontal scroll on mobile if needed */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
     </style>
 </head>
@@ -59,21 +70,33 @@
 
     <!-- Navigation -->
     <nav class="fixed w-full z-50 bg-brand-dark/90 backdrop-blur-md border-b border-white/10">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
-                <div class="flex-shrink-0 font-bold text-xl text-white tracking-wider">
+                <!-- Logo -->
+                <div class="flex-shrink-0 font-bold text-xl text-white tracking-wider cursor-pointer" onclick="window.scrollTo(0,0)">
                     QK<span class="text-brand-primary">.</span>
                 </div>
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-4">
-                        <a href="#home" class="hover:text-brand-primary px-3 py-2 rounded-md text-sm font-medium transition-colors">Home</a>
-                        <a href="#about" class="hover:text-brand-primary px-3 py-2 rounded-md text-sm font-medium transition-colors">About</a>
-                        <a href="#ielts" class="hover:text-brand-primary px-3 py-2 rounded-md text-sm font-medium transition-colors">IELTS Journey</a>
-                        <a href="#contact" class="bg-brand-primary hover:bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-medium transition-all shadow-lg shadow-blue-500/30">Contact Me</a>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden lg:block">
+                    <div class="ml-10 flex items-baseline space-x-1">
+                        <a href="#policy" class="hover:text-brand-primary hover:bg-white/5 px-3 py-2 rounded-md text-sm font-medium transition-colors">Policy</a>
+                        <a href="#academic" class="hover:text-brand-primary hover:bg-white/5 px-3 py-2 rounded-md text-sm font-medium transition-colors">Academic</a>
+                        <a href="#ielts" class="hover:text-brand-primary hover:bg-white/5 px-3 py-2 rounded-md text-sm font-medium transition-colors">IELTS</a>
+                        <a href="#notes" class="hover:text-brand-primary hover:bg-white/5 px-3 py-2 rounded-md text-sm font-medium transition-colors">Notes</a>
+                        <a href="#gallery" class="hover:text-brand-primary hover:bg-white/5 px-3 py-2 rounded-md text-sm font-medium transition-colors">Gallery</a>
                     </div>
                 </div>
-                <!-- Mobile menu button placeholder (simple layout) -->
-                <div class="md:hidden">
+
+                <!-- Contact Button (Right Top) -->
+                <div class="hidden md:block">
+                    <a href="#footer" class="bg-brand-primary hover:bg-blue-600 text-white px-5 py-2 rounded-full text-sm font-medium transition-all shadow-lg shadow-blue-500/20">
+                        Contact Me
+                    </a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="lg:hidden">
                     <button class="text-gray-300 hover:text-white p-2">
                         <i class="fas fa-bars"></i>
                     </button>
@@ -85,15 +108,14 @@
     <!-- Hero Section -->
     <section id="home" class="min-h-screen flex items-center justify-center pt-16 relative overflow-hidden">
         <!-- Background Decor -->
-        <div class="absolute top-20 right-0 w-72 h-72 bg-brand-primary/20 rounded-full blur-3xl -z-10"></div>
+        <div class="absolute top-20 right-0 w-96 h-96 bg-brand-primary/10 rounded-full blur-3xl -z-10"></div>
         <div class="absolute bottom-20 left-0 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl -z-10"></div>
 
         <div class="max-w-4xl mx-auto px-4 text-center">
-            <!-- Profile Image Placeholder -->
+            <!-- Profile Image -->
             <div class="fade-in-up mb-8 relative inline-block">
-                <div class="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-brand-primary/50 overflow-hidden shadow-2xl mx-auto bg-slate-800 flex items-center justify-center">
-                    <!-- Placeholder image -->
-                    <img src="https://ui-avatars.com/api/?name=Qori+Kharismawan&background=0D8ABC&color=fff&size=256" alt="Qori Kharismawan" class="w-full h-full object-cover">
+                <div class="w-32 h-32 md:w-44 md:h-44 rounded-full border-4 border-brand-primary/50 overflow-hidden shadow-2xl mx-auto bg-slate-800 flex items-center justify-center group">
+                    <img src="https://ui-avatars.com/api/?name=Qori+Kharismawan&background=0D8ABC&color=fff&size=256" alt="Qori Kharismawan" class="w-full h-full object-cover transition-transform group-hover:scale-105">
                 </div>
             </div>
 
@@ -101,121 +123,276 @@
                 Hi, I'm <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-accent to-brand-primary">Qori Kharismawan</span>
             </h1>
             
-            <div id="about" class="fade-in-up delay-200 text-lg md:text-xl text-slate-400 mb-8 max-w-2xl mx-auto leading-relaxed">
+            <p class="fade-in-up delay-200 text-xl md:text-2xl text-slate-300 font-light mb-6">
+                Policy Analyst | Development Economist
+            </p>
+
+            <div class="fade-in-up delay-300 text-base md:text-lg text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed">
                 <p>
-                    A policy analyst at the Ministry of Finance of the Republic of Indonesia with a background in development economics and public asset management. I have over a decade of experience in data-driven policy analysis, state asset optimization, and fiscal risk management, with academic interests in sustainable finance, ESG, and public sector balance sheets. I am currently improving my English proficiency and preparing for the IELTS while exploring digital and AI tools for learning and public policy.
+                    Navigating the intersection of data-driven policy, public asset management, and sustainable finance at the Ministry of Finance, Republic of Indonesia.
                 </p>
             </div>
 
-            <div class="fade-in-up delay-300 flex flex-col sm:flex-row justify-center gap-4">
-                <a href="#ielts" class="px-8 py-3 rounded-lg bg-white text-brand-dark font-bold hover:bg-gray-100 transition-colors shadow-lg flex items-center justify-center gap-2">
-                    <i class="fas fa-book-open"></i> IELTS Journey
-                </a>
-                <a href="#contact" class="px-8 py-3 rounded-lg border border-white/20 hover:bg-white/10 transition-colors flex items-center justify-center gap-2">
-                    <i class="fas fa-paper-plane"></i> Contact
-                </a>
-            </div>
-        </div>
-        
-        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce text-slate-500">
-            <i class="fas fa-chevron-down"></i>
-        </div>
-    </section>
-
-    <!-- Social Links Section -->
-    <section class="py-12 bg-slate-900/50 border-y border-white/5">
-        <div class="max-w-4xl mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-                <!-- LinkedIn -->
-                <a href="https://www.linkedin.com/in/qorikharismawan/" target="_blank" class="group p-6 rounded-xl hover:bg-white/5 transition-all">
-                    <i class="fab fa-linkedin text-4xl text-blue-500 mb-3 group-hover:scale-110 transition-transform block"></i>
-                    <h3 class="text-lg font-semibold text-white">LinkedIn</h3>
-                    <p class="text-sm text-slate-400">Professional Network</p>
-                </a>
-                <!-- Instagram -->
-                <a href="https://instagram.com/iroqin" target="_blank" class="group p-6 rounded-xl hover:bg-white/5 transition-all">
-                    <i class="fab fa-instagram text-4xl text-pink-500 mb-3 group-hover:scale-110 transition-transform block"></i>
-                    <h3 class="text-lg font-semibold text-white">Instagram</h3>
-                    <p class="text-sm text-slate-400">Daily Updates</p>
-                </a>
-                <!-- Facebook -->
-                <a href="https://facebook.com/iroqin" target="_blank" class="group p-6 rounded-xl hover:bg-white/5 transition-all">
-                    <i class="fab fa-facebook text-4xl text-blue-600 mb-3 group-hover:scale-110 transition-transform block"></i>
-                    <h3 class="text-lg font-semibold text-white">Facebook</h3>
-                    <p class="text-sm text-slate-400">Social Connect</p>
+            <div class="fade-in-up delay-400 flex justify-center gap-4">
+                <a href="#policy" class="text-slate-300 hover:text-white border-b border-transparent hover:border-brand-primary transition-all pb-1">
+                    Explore My Work <i class="fas fa-arrow-down ml-2 text-xs"></i>
                 </a>
             </div>
         </div>
     </section>
 
-    <!-- IELTS Learning Section -->
-    <section id="ielts" class="py-20 px-4">
-        <div class="max-w-5xl mx-auto">
+    <!-- Policy Analyst Section -->
+    <section id="policy" class="py-24 bg-brand-darker relative">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="order-2 md:order-1">
+                    <span class="text-brand-primary font-semibold tracking-wider text-sm uppercase mb-2 block">Professional Career</span>
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">Policy Analyst & Public Sector Expert</h2>
+                    <p class="text-slate-400 mb-6 leading-relaxed">
+                        With over a decade of experience at the <strong>Ministry of Finance of the Republic of Indonesia</strong>, I specialize in formulating data-driven strategies for state asset optimization and fiscal risk management.
+                    </p>
+                    <ul class="space-y-4 text-slate-300">
+                        <li class="flex items-start">
+                            <i class="fas fa-chart-line text-brand-primary mt-1 mr-3"></i>
+                            <span><strong>Fiscal Risk Management:</strong> Analyzing potential risks to the state budget and developing mitigation strategies.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-building-columns text-brand-primary mt-1 mr-3"></i>
+                            <span><strong>State Asset Optimization:</strong> Maximizing the utility and value of public sector assets.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-database text-brand-primary mt-1 mr-3"></i>
+                            <span><strong>Data-Driven Policy:</strong> Utilizing advanced analytics to inform high-level decision making.</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="order-1 md:order-2 flex justify-center">
+                    <div class="relative w-full max-w-md aspect-square bg-gradient-to-tr from-slate-800 to-slate-700 rounded-2xl p-8 flex items-center justify-center border border-white/5 shadow-2xl">
+                        <i class="fas fa-balance-scale text-9xl text-white/5"></i>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                             <div class="text-center">
+                                <h3 class="text-5xl font-bold text-white mb-2">10+</h3>
+                                <p class="text-brand-primary uppercase tracking-widest text-sm">Years Experience</p>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Academic Journey Section -->
+    <section id="academic" class="py-24 bg-brand-dark">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6">
             <div class="text-center mb-16">
-                <span class="text-brand-accent font-semibold tracking-wider text-sm uppercase">Focus Area</span>
-                <h2 class="text-3xl md:text-4xl font-bold text-white mt-2">IELTS Learning Journey</h2>
-                <p class="text-slate-400 mt-4">Documenting progress, Writing practice, and new vocabulary. Targeting high accuracy.</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Card 1: Writing Task -->
-                <div class="glass-card p-6 rounded-2xl hover:border-brand-primary/50 transition-colors group">
-                    <div class="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center mb-4 text-blue-400 group-hover:bg-blue-500 group-hover:text-white transition-colors">
-                        <i class="fas fa-pen-nib text-xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-2">Writing Tasks</h3>
-                    <p class="text-slate-400 text-sm mb-4">Archive of Task 1 and Task 2 practice with strict evaluation.</p>
-                    <a href="#" class="text-brand-accent text-sm font-semibold hover:underline">View Archive &rarr;</a>
-                </div>
-
-                <!-- Card 2: Vocabulary -->
-                <div class="glass-card p-6 rounded-2xl hover:border-brand-primary/50 transition-colors group">
-                    <div class="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center mb-4 text-purple-400 group-hover:bg-purple-500 group-hover:text-white transition-colors">
-                        <i class="fas fa-spell-check text-xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-2">Lexical Resource</h3>
-                    <p class="text-slate-400 text-sm mb-4">Collection of academic vocabulary and essential collocations for Band 7+.</p>
-                    <a href="#" class="text-brand-accent text-sm font-semibold hover:underline">Learn Words &rarr;</a>
-                </div>
-
-                <!-- Card 3: Resources -->
-                <div class="glass-card p-6 rounded-2xl hover:border-brand-primary/50 transition-colors group">
-                    <div class="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center mb-4 text-green-400 group-hover:bg-green-500 group-hover:text-white transition-colors">
-                        <i class="fas fa-headphones text-xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-2">Listening & Reading</h3>
-                    <p class="text-slate-400 text-sm mb-4">Strategy tips and daily practice resources.</p>
-                    <a href="#" class="text-brand-accent text-sm font-semibold hover:underline">Open Resources &rarr;</a>
-                </div>
+                <span class="text-brand-accent font-semibold tracking-wider text-sm uppercase">Education & Research</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-white mt-2">Academic Journey</h2>
             </div>
             
-            <!-- Strict Grading Note (Personalized) -->
-            <div class="mt-12 p-6 bg-red-900/10 border border-red-500/20 rounded-xl flex items-start gap-4">
-                <i class="fas fa-exclamation-circle text-red-400 mt-1"></i>
-                <div>
-                    <h4 class="text-white font-semibold">Important Note</h4>
-                    <p class="text-sm text-slate-400 mt-1">
-                        In this section, I focus on strict and objective assessment. Every grammatical and coherence error is noted for maximum improvement, not just for a high score.
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="glass-card p-8 rounded-xl relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <i class="fas fa-graduation-cap text-6xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Development Economics</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Strong foundation in economic theory applied to developing nations, analyzing growth drivers and structural transformation.
+                    </p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="glass-card p-8 rounded-xl relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <i class="fas fa-leaf text-6xl text-green-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Sustainable Finance & ESG</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Researching how Environmental, Social, and Governance criteria influence public sector investment and balance sheets.
+                    </p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="glass-card p-8 rounded-xl relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <i class="fas fa-robot text-6xl text-blue-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Digital & AI Tools</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Exploring the application of Artificial Intelligence in enhancing public policy analysis and educational methodologies.
                     </p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer id="contact" class="bg-black py-12 border-t border-white/10">
+    <!-- IELTS Learning Section (Existing) -->
+    <section id="ielts" class="py-24 bg-brand-darker border-y border-white/5">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12">
+                <div>
+                    <span class="text-brand-primary font-semibold tracking-wider text-sm uppercase">Current Focus</span>
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mt-2">IELTS Journey</h2>
+                </div>
+                <div class="mt-4 md:mt-0">
+                    <span class="px-4 py-1 rounded-full bg-yellow-500/10 text-yellow-500 text-xs font-bold border border-yellow-500/20">
+                        In Progress
+                    </span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Card 1: Writing -->
+                <a href="#" class="glass-card p-6 rounded-2xl hover:bg-white/5 transition-all group block border-l-4 border-l-brand-primary">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="p-3 bg-brand-primary/10 rounded-lg text-brand-primary">
+                            <i class="fas fa-pen-nib text-xl"></i>
+                        </div>
+                        <i class="fas fa-arrow-right text-slate-600 group-hover:text-white transition-colors"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white">Writing Archive</h3>
+                    <p class="text-slate-400 text-sm mt-2">Task 1 & 2 essays with strict critique and rewrite logs.</p>
+                </a>
+
+                <!-- Card 2: Vocab -->
+                <a href="#" class="glass-card p-6 rounded-2xl hover:bg-white/5 transition-all group block border-l-4 border-l-purple-500">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="p-3 bg-purple-500/10 rounded-lg text-purple-400">
+                            <i class="fas fa-book text-xl"></i>
+                        </div>
+                        <i class="fas fa-arrow-right text-slate-600 group-hover:text-white transition-colors"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white">Lexicon Bank</h3>
+                    <p class="text-slate-400 text-sm mt-2">Advanced collocations and academic vocabulary database.</p>
+                </a>
+
+                <!-- Card 3: Notes -->
+                <a href="#" class="glass-card p-6 rounded-2xl hover:bg-white/5 transition-all group block border-l-4 border-l-green-500">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="p-3 bg-green-500/10 rounded-lg text-green-400">
+                            <i class="fas fa-chart-bar text-xl"></i>
+                        </div>
+                        <i class="fas fa-arrow-right text-slate-600 group-hover:text-white transition-colors"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white">Performance Tracker</h3>
+                    <p class="text-slate-400 text-sm mt-2">Band score simulation and error frequency analysis.</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Personal Notes Section -->
+    <section id="notes" class="py-24 bg-brand-dark">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6">
+            <div class="text-center mb-12">
+                <span class="text-brand-accent font-semibold tracking-wider text-sm uppercase">Thoughts & Blog</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-white mt-2">Personal Notes</h2>
+            </div>
+
+            <div class="space-y-6">
+                <!-- Note Item 1 -->
+                <article class="flex flex-col md:flex-row gap-6 p-6 rounded-2xl hover:bg-white/5 transition-colors border border-transparent hover:border-white/5 cursor-pointer">
+                    <div class="md:w-1/4">
+                        <span class="text-sm text-slate-500">Oct 24, 2024</span>
+                        <div class="mt-2 inline-block px-2 py-1 bg-slate-800 rounded text-xs text-slate-300">Public Policy</div>
+                    </div>
+                    <div class="md:w-3/4">
+                        <h3 class="text-xl font-bold text-white hover:text-brand-primary transition-colors">The Future of Public Asset Management</h3>
+                        <p class="text-slate-400 mt-2 line-clamp-2">
+                            Exploring how digital transformation is reshaping the way governments value and utilize state-owned assets for maximum efficiency.
+                        </p>
+                        <span class="text-brand-primary text-sm mt-3 inline-block font-medium">Read more &rarr;</span>
+                    </div>
+                </article>
+
+                <!-- Note Item 2 -->
+                <article class="flex flex-col md:flex-row gap-6 p-6 rounded-2xl hover:bg-white/5 transition-colors border border-transparent hover:border-white/5 cursor-pointer">
+                    <div class="md:w-1/4">
+                        <span class="text-sm text-slate-500">Sep 15, 2024</span>
+                        <div class="mt-2 inline-block px-2 py-1 bg-slate-800 rounded text-xs text-slate-300">Productivity</div>
+                    </div>
+                    <div class="md:w-3/4">
+                        <h3 class="text-xl font-bold text-white hover:text-brand-primary transition-colors">Adapting to AI in Policy Research</h3>
+                        <p class="text-slate-400 mt-2 line-clamp-2">
+                            How I use LLMs to synthesize large datasets without compromising analytical rigor.
+                        </p>
+                        <span class="text-brand-primary text-sm mt-3 inline-block font-medium">Read more &rarr;</span>
+                    </div>
+                </article>
+            </div>
+            
+            <div class="text-center mt-10">
+                <a href="#" class="inline-block px-6 py-2 border border-slate-700 rounded-full text-slate-400 hover:text-white hover:border-white transition-all text-sm">View All Notes</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section (Photography Portfolio) -->
+    <section id="gallery" class="py-24 bg-black">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="flex justify-between items-end mb-10 px-2">
+                <div>
+                    <span class="text-brand-primary font-semibold tracking-wider text-sm uppercase">Through My Lens</span>
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mt-2">Photography</h2>
+                </div>
+                <div class="hidden md:block text-slate-500 text-sm">
+                    <i class="fas fa-camera mr-2"></i> Portfolio Selection
+                </div>
+            </div>
+
+            <!-- Masonry-like Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 h-[600px] md:h-[500px]">
+                <!-- Item 1 (Large) -->
+                <div class="col-span-2 row-span-2 relative group overflow-hidden rounded-xl bg-slate-800">
+                    <img src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?auto=format&fit=crop&w=800&q=80" alt="Landscape" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                        <p class="text-white font-medium">Mountain Landscapes</p>
+                    </div>
+                </div>
+                <!-- Item 2 -->
+                <div class="col-span-1 row-span-1 relative group overflow-hidden rounded-xl bg-slate-800">
+                    <img src="https://images.unsplash.com/photo-1517816428104-797678c7cf0c?auto=format&fit=crop&w=400&q=80" alt="City" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100">
+                </div>
+                <!-- Item 3 -->
+                <div class="col-span-1 row-span-1 relative group overflow-hidden rounded-xl bg-slate-800">
+                    <img src="https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=400&q=80" alt="Finance" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100">
+                </div>
+                <!-- Item 4 (Wide) -->
+                <div class="col-span-2 row-span-1 relative group overflow-hidden rounded-xl bg-slate-800">
+                    <img src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?auto=format&fit=crop&w=800&q=80" alt="Nature" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100">
+                     <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                        <p class="text-white font-medium">Serenity</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer / Contact -->
+    <footer id="footer" class="bg-brand-darker py-16 border-t border-white/5">
         <div class="max-w-4xl mx-auto px-4 text-center">
-            <h2 class="text-2xl font-bold text-white mb-6">Let's Connect!</h2>
-            <div class="flex justify-center space-x-6 mb-8">
-                <!-- X (Twitter) -->
-                <a href="https://x.com/iroqin" target="_blank" class="text-slate-400 hover:text-white transition-colors"><i class="fab fa-twitter text-xl"></i></a>
-                <!-- Github (Inferred from your URL) -->
-                <a href="https://github.com/iroqin" target="_blank" class="text-slate-400 hover:text-white transition-colors"><i class="fab fa-github text-xl"></i></a>
-                <!-- Email Placeholder -->
-                <a href="mailto:your-email@example.com" class="text-slate-400 hover:text-white transition-colors"><i class="fas fa-envelope text-xl"></i></a>
+            <h2 class="text-2xl font-bold text-white mb-8">Let's Connect</h2>
+            <div class="flex justify-center space-x-8 mb-8">
+                <!-- LinkedIn -->
+                <a href="https://www.linkedin.com/in/qorikharismawan/" target="_blank" class="text-slate-400 hover:text-[#0077b5] transition-colors transform hover:-translate-y-1">
+                    <i class="fab fa-linkedin text-3xl"></i>
+                </a>
+                <!-- Instagram -->
+                <a href="https://instagram.com/iroqin" target="_blank" class="text-slate-400 hover:text-[#E1306C] transition-colors transform hover:-translate-y-1">
+                    <i class="fab fa-instagram text-3xl"></i>
+                </a>
+                <!-- Twitter/X -->
+                <a href="https://x.com/iroqin" target="_blank" class="text-slate-400 hover:text-white transition-colors transform hover:-translate-y-1">
+                    <i class="fab fa-twitter text-3xl"></i>
+                </a>
+                <!-- Github -->
+                <a href="https://github.com/iroqin" target="_blank" class="text-slate-400 hover:text-white transition-colors transform hover:-translate-y-1">
+                    <i class="fab fa-github text-3xl"></i>
+                </a>
             </div>
             <p class="text-slate-600 text-sm">
-                &copy; 2024 Qori Kharismawan. Made with Tailwind CSS.
+                &copy; 2024 Qori Kharismawan. All rights reserved.<br>
+                <span class="text-xs mt-2 block">Built with Tailwind CSS.</span>
             </p>
         </div>
     </footer>
@@ -225,9 +402,14 @@
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
             });
         });
     </script>
