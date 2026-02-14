@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MINTS GLOBE 2026 | Daftar Perguruan Tinggi</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#0f172a',
+                            darker: '#020617',
+                            primary: '#3b82f6',
+                            accent: '#60a5fa',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom animations */
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Table specific styles */
+        th {
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+        }
+        td {
+            vertical-align: top;
+        }
+        
+        /* Custom Scrollbar for Table */
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 8px;
+            width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0f172a; 
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #334155; 
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #475569; 
+        }
+
+        /* Filter Input Styles */
+        .filter-input {
+            background-color: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #cbd5e1;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            width: 100%;
+            outline: none;
+            transition: all 0.2s;
+        }
+        .filter-input:focus {
+            border-color: #3b82f6;
+            background-color: rgba(15, 23, 42, 0.8);
+        }
+        .sort-icon {
+            opacity: 0.3;
+            transition: opacity 0.2s;
+        }
+        th:hover .sort-icon {
+            opacity: 1;
+        }
+        th.active-sort .sort-icon {
+            opacity: 1;
+            color: #3b82f6;
+        }
+    </style>
+</head>
+<body class="bg-brand-dark text-slate-200 font-sans selection:bg-brand-primary selection:text-white flex flex-col min-h-screen">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-brand-dark/90 backdrop-blur-md border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex-shrink-0 font-bold text-xl text-white tracking-wider cursor-pointer" onclick="window.scrollTo(0,0)">
+                    QK<span class="text-brand-primary">.</span>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden lg:block">
+                    <div class="ml-10 flex items-baseline space-x-1">
+                        <a href="#policy" class="hover:text-brand-primary hover:bg-white/5 px-3 py-2 rounded-md text-sm font-medium transition-colors">Policy</a>
+                        <a href="#academic" class="hover:text-brand-primary hover:bg-white/5 px-3 py-2 rounded-md text-sm font-medium transition-colors">Academic</a>
+                        <a href="#ielts" class="hover:text-brand-primary hover:bg-white/5 px-3 py-2 rounded-md text-sm font-medium transition-colors">IELTS</a>
+                        <a href="#notes" class="hover:text-brand-primary hover:bg-white/5 px-3 py-2 rounded-md text-sm font-medium transition-colors">Notes</a>
+                        <a href="#gallery" class="hover:text-brand-primary hover:bg-white/5 px-3 py-2 rounded-md text-sm font-medium transition-colors">Gallery</a>
+                        <a href="https://iroqin.github.io/page/about.html" class="hover:text-brand-primary hover:bg-white/5 px-3 py-2 rounded-md text-sm font-medium transition-colors">About</a>
+                    </div>
+                </div>
+
+                <!-- Contact Button (Right Top) -->
+                <div class="hidden md:block">
+                    <a href="#footer" class="bg-brand-primary hover:bg-blue-600 text-white px-5 py-2 rounded-full text-sm font-medium transition-all shadow-lg shadow-blue-500/20">
+                        Contact Me
+                    </a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="lg:hidden">
+                    <button class="text-gray-300 hover:text-white p-2">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow pt-28 pb-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            
+            <!-- Header for Table Section -->
+            <div class="mb-8 fade-in-up">
+                <span class="text-brand-primary font-semibold tracking-wider text-sm uppercase">Tabel</span>
+                <h1 class="text-2xl md:text-3xl font-bold text-white mt-2 mb-2 leading-tight">
+                    Daftar Perguruan Tinggi dan Program Studi MINTS GLOBE 2026
+                </h1>
+                <p class="text-slate-400 text-sm max-w-3xl italic border-l-2 border-brand-primary pl-4 py-1 bg-white/5 rounded-r-lg mb-6">
+                    Sumber: LAMPIRAN I Pengumuman Kepala Pusat Nomor: PENG-6/PP.7/2026 Tanggal: 13 Februari 2026
+                </p>
+
+                <!-- Search and Stats -->
+                <div class="flex flex-col md:flex-row gap-4 justify-between items-end md:items-center">
+                    <div class="flex-1 text-sm text-slate-400">
+                        Total Data: <span id="totalCount" class="font-bold text-brand-primary">0</span> entri
+                    </div>
+                    <div>
+                         <button onclick="resetFilters()" class="text-xs text-brand-primary hover:text-white underline transition-colors mr-2">Reset All Filters</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table Container -->
+            <div class="glass-card rounded-xl overflow-hidden shadow-2xl fade-in-up border border-white/10 flex flex-col h-[70vh]" style="animation-delay: 0.1s;">
+                <div class="overflow-auto custom-scrollbar flex-grow">
+                    <table class="w-full text-left text-sm text-slate-400">
+                        <thead class="bg-brand-darker text-xs uppercase font-semibold text-slate-200 sticky top-0 z-10 shadow-md">
+                            <!-- Sortable Headers -->
+                            <tr>
+                                <th scope="col" class="px-6 py-4 w-16 bg-brand-darker cursor-pointer hover:bg-slate-800 transition" onclick="sortData('no')">
+                                    No <i class="fas fa-sort sort-icon ml-1"></i>
+                                </th>
+                                <th scope="col" class="px-6 py-4 bg-brand-darker cursor-pointer hover:bg-slate-800 transition" onclick="sortData('cluster')">
+                                    Cluster <i class="fas fa-sort sort-icon ml-1"></i>
+                                </th>
+                                <th scope="col" class="px-6 py-4 bg-brand-darker cursor-pointer hover:bg-slate-800 transition" onclick="sortData('region')">
+                                    Region <i class="fas fa-sort sort-icon ml-1"></i>
+                                </th>
+                                <th scope="col" class="px-6 py-4 bg-brand-darker cursor-pointer hover:bg-slate-800 transition" onclick="sortData('country')">
+                                    Negara <i class="fas fa-sort sort-icon ml-1"></i>
+                                </th>
+                                <th scope="col" class="px-6 py-4 bg-brand-darker cursor-pointer hover:bg-slate-800 transition" onclick="sortData('degree')">
+                                    Jenjang <i class="fas fa-sort sort-icon ml-1"></i>
+                                </th>
+                                <th scope="col" class="px-6 py-4 bg-brand-darker cursor-pointer hover:bg-slate-800 transition" onclick="sortData('univ')">
+                                    Universitas <i class="fas fa-sort sort-icon ml-1"></i>
+                                </th>
+                                <th scope="col" class="px-6 py-4 bg-brand-darker cursor-pointer hover:bg-slate-800 transition" onclick="sortData('prog')">
+                                    Program Studi <i class="fas fa-sort sort-icon ml-1"></i>
+                                </th>
+                            </tr>
+                            <!-- Column Filters -->
+                            <tr>
+                                <th class="px-2 py-2 bg-brand-darker border-b border-white/10">
+                                    <!-- No Filter for 'No' -->
+                                </th>
+                                <th class="px-2 py-2 bg-brand-darker border-b border-white/10">
+                                    <select id="filterCluster" class="filter-input" onchange="applyFilters()">
+                                        <option value="">All</option>
+                                    </select>
+                                </th>
+                                <th class="px-2 py-2 bg-brand-darker border-b border-white/10">
+                                    <select id="filterRegion" class="filter-input" onchange="applyFilters()">
+                                        <option value="">All</option>
+                                    </select>
+                                </th>
+                                <th class="px-2 py-2 bg-brand-darker border-b border-white/10">
+                                    <select id="filterCountry" class="filter-input" onchange="applyFilters()">
+                                        <option value="">All</option>
+                                    </select>
+                                </th>
+                                <th class="px-2 py-2 bg-brand-darker border-b border-white/10">
+                                    <select id="filterDegree" class="filter-input" onchange="applyFilters()">
+                                        <option value="">All</option>
+                                    </select>
+                                </th>
+                                <th class="px-2 py-2 bg-brand-darker border-b border-white/10">
+                                    <input type="text" id="filterUniv" placeholder="Filter..." class="filter-input" oninput="applyFilters()">
+                                </th>
+                                <th class="px-2 py-2 bg-brand-darker border-b border-white/10">
+                                    <input type="text" id="filterProg" placeholder="Filter..." class="filter-input" oninput="applyFilters()">
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody" class="divide-y divide-white/5 border-t border-white/5">
+                            <!-- JS will populate this -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Pagination -->
+                <div class="px-6 py-4 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between bg-brand-darker/50 gap-4">
+                    <span class="text-xs text-slate-500" id="paginationInfo">Showing 0-0 of 0</span>
+                    <div class="flex gap-2">
+                        <button id="btnPrev" class="px-3 py-1 text-xs rounded bg-white/5 text-slate-400 hover:text-white hover:bg-white/10 transition disabled:opacity-30 disabled:cursor-not-allowed">Previous</button>
+                        <div id="pageNumbers" class="flex gap-1"></div>
+                        <button id="btnNext" class="px-3 py-1 text-xs rounded bg-white/5 text-slate-400 hover:text-white hover:bg-white/10 transition disabled:opacity-30 disabled:cursor-not-allowed">Next</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer id="footer" class="bg-brand-darker py-16 border-t border-white/5 mt-auto">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="text-2xl font-bold text-white mb-8">Let's Connect</h2>
+            <div class="flex justify-center space-x-8 mb-8">
+                <a href="https://www.linkedin.com/in/qorikharismawan/" target="_blank" class="text-slate-400 hover:text-[#0077b5] transition-colors"><i class="fab fa-linkedin text-3xl"></i></a>
+                <a href="https://instagram.com/iroqin" target="_blank" class="text-slate-400 hover:text-[#E1306C] transition-colors"><i class="fab fa-instagram text-3xl"></i></a>
+                <a href="https://x.com/iroqin" target="_blank" class="text-slate-400 hover:text-white transition-colors"><i class="fab fa-twitter text-3xl"></i></a>
+                <a href="https://github.com/iroqin" target="_blank" class="text-slate-400 hover:text-white transition-colors"><i class="fab fa-github text-3xl"></i></a>
+            </div>
+            <p class="text-slate-600 text-sm">&copy; 2026 Qori Kharismawan. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Data Script -->
+    <script>
+        // FULL DATASET extracted from PDF
+        const scholarshipData = [
+            {no:1,cluster:"Computer Science and Information Systems",region:"Amerika",country:"Amerika Serikat",degree:"Doktoral",univ:"Cornell University",prog:"Computer Science Ph.D."},
+            {no:2,cluster:"Computer Science and Information Systems",region:"Amerika",country:"Amerika Serikat",degree:"Doktoral",univ:"Harvard University",prog:"PhD Computer Science"},
+            {no:3,cluster:"Computer Science and Information Systems",region:"Amerika",country:"Amerika Serikat",degree:"Doktoral",univ:"Massachusetts Institute of Technology (MIT)",prog:"PhD in Computational Science and Engineering"},
+            {no:4,cluster:"Computer Science and Information Systems",region:"Amerika",country:"Amerika Serikat",degree:"Doktoral",univ:"Stanford University",prog:"PhD Computational and Mathematical Engineering"},
+            {no:5,cluster:"Computer Science and Information Systems",region:"Amerika",country:"Amerika Serikat",degree:"Doktoral",univ:"Stanford University",prog:"PhD Computer Science"},
+            {no:6,cluster:"Computer Science and Information Systems",region:"Amerika",country:"Amerika Serikat",degree:"Doktoral",univ:"University of California, Berkeley (UCB)",prog:"Doctor of Philosophy in Computer Science"},
+            {no:7,cluster:"Computer Science and Information Systems",region:"Amerika",country:"Amerika Serikat",degree:"Doktoral",univ:"University of Pennsylvania",prog:"PhD in Computer and Information Science"},
+            {no:8,cluster:"Computer Science and Information Systems",region:"Asia",country:"Jepang",degree:"Doktoral",univ:"Kyoto University",prog:"PhD Intelligence Science and Technology"},
+            {no:9,cluster:"Computer Science and Information Systems",region:"Asia",country:"Jepang",degree:"Doktoral",univ:"Kyoto University",prog:"PhD Social Informatics"},
+            {no:10,cluster:"Computer Science and Information Systems",region:"Asia",country:"Jepang",degree:"Doktoral",univ:"Kyoto University",prog:"PhD Systems Science"},
+            {no:11,cluster:"Computer Science and Information Systems",region:"Asia",country:"Jepang",degree:"Doktoral",univ:"Kyoto University",prog:"PhD Communications and Computer Engineering"},
+            {no:12,cluster:"Computer Science and Information Systems",region:"Asia",country:"Jepang",degree:"Doktoral",univ:"The University of Osaka",prog:"Doctor of Computer Science"},
+            {no:13,cluster:"Computer Science and Information Systems",region:"Asia",country:"Jepang",degree:"Doktoral",univ:"Tokyo Institute of Technology (Tokyo Tech)",prog:"Doctor of Mathematical and Computing Science"},
+            {no:14,cluster:"Computer Science and Information Systems",region:"Asia",country:"Jepang",degree:"Doktoral",univ:"Tokyo Institute of Technology (Tokyo Tech)",prog:"Doctor of Computer Science"},
+            {no:15,cluster:"Computer Science and Information Systems",region:"Asia",country:"Jepang",degree:"Doktoral",univ:"University of Tokyo",prog:"Doctor in Computer Science"},
+            {no:16,cluster:"Computer Science and Information Systems",region:"Asia",country:"RRT",degree:"Doktoral",univ:"Peking University",prog:"PhD Computer Science and Technology"},
+            {no:17,cluster:"Computer Science and Information Systems",region:"Asia",country:"RRT",degree:"Doktoral",univ:"Shanghai Jiao Tong University",prog:"PhD Computer Science and Technology"},
+            {no:18,cluster:"Computer Science and Information Systems",region:"Asia",country:"RRT",degree:"Doktoral",univ:"Tsinghua University",prog:"PhD in Advanced Computing"},
+            {no:19,cluster:"Computer Science and Information Systems",region:"Asia",country:"RRT",degree:"Doktoral",univ:"Zhejiang University",prog:"Computer Science and Technology, Ph.D."},
+            {no:20,cluster:"Computer Science and Information Systems",region:"Asia",country:"RRT",degree:"Doktoral",univ:"Zhejiang University",prog:"Software Engineering, Ph.D."},
+            {no:21,cluster:"Computer Science and Information Systems",region:"Eropa",country:"Inggris",degree:"Doktoral",univ:"University College London",prog:"Computer Science MPhil/PhD"},
+            {no:22,cluster:"Computer Science and Information Systems",region:"Eropa",country:"Inggris",degree:"Doktoral",univ:"University of Oxford",prog:"DPhil in Computer Science"},
+            {no:23,cluster:"Computer Science and Information Systems",region:"Eropa",country:"Prancis",degree:"Doktoral",univ:"EPFL - École polytechnique fédérale de Lausanne",prog:"PhD in Computer and Communication Sciences (EDIC)"},
+            {no:24,cluster:"Computer Science and Information Systems",region:"Eropa",country:"Prancis",degree:"Doktoral",univ:"EPFL - École polytechnique fédérale de Lausanne",prog:"Doctoral Program in Computer and Communication Sciences"},
+            {no:25,cluster:"Computer Science and Information Systems",region:"Eropa",country:"Prancis",degree:"Doktoral",univ:"Institut Polytechnique de Paris",prog:"PhD in Computing, Data and Artificial Intelligence"},
+            {no:26,cluster:"Computer Science and Information Systems",region:"Eropa",country:"Prancis",degree:"Doktoral",univ:"Institut Polytechnique de Paris",prog:"PhD in Information, Communications and Electronics"},
+            {no:27,cluster:"Computer Science and Information Systems",region:"Eropa",country:"Prancis",degree:"Doktoral",univ:"Université Paris-Saclay",prog:"PhD in Sciences and Technologies of Information and Communication"},
+            {no:28,cluster:"Computer Science and Information Systems",region:"Eropa",country:"Prancis",degree:"Doktoral",univ:"Université PSL",prog:"PhD track in Computer science"},
+            {no:29,cluster:"Computer Science and Information Systems",region:"Eropa",country:"Swiss",degree:"Doktoral",univ:"University of Zurich",prog:"Doctorate Informatics"},
+            {no:30,cluster:"Computer Science and Information Systems",region:"Eropa",country:"Swiss",degree:"Doktoral",univ:"University of Zurich",prog:"Doctoral program in Computational Science"},
+            {no:31,cluster:"Computer Science and Information Systems",region:"Skandinavia",country:"Denmark",degree:"Doktoral",univ:"Aarhus University",prog:"PhD in Computer Science"},
+            {no:32,cluster:"Computer Science and Information Systems",region:"Skandinavia",country:"Denmark",degree:"Doktoral",univ:"Technical University of Denmark",prog:"PhD in Computer Science"},
+            {no:33,cluster:"Computer Science and Information Systems",region:"Skandinavia",country:"Denmark",degree:"Doktoral",univ:"University of Copenhagen",prog:"PhD in Computer Science"},
+            {no:34,cluster:"Computer Science and Information Systems",region:"Skandinavia",country:"Finlandia",degree:"Doktoral",univ:"Aalto University",prog:"PhD in Computer Science"},
+            {no:35,cluster:"Computer Science and Information Systems",region:"Skandinavia",country:"Finlandia",degree:"Doktoral",univ:"University of Helsinki",prog:"Doctoral Programme in Science (Computer Science)"},
+            {no:36,cluster:"Computer Science and Information Systems",region:"Skandinavia",country:"Norwegia",degree:"Doktoral",univ:"University of Oslo",prog:"PhD Computer Science"},
+            {no:37,cluster:"Computer Science and Information Systems",region:"Skandinavia",country:"Swedia",degree:"Doktoral",univ:"KTH Royal Institute of Technology",prog:"PhD in Computer Science"},
+            {no:38,cluster:"Computer Science and Information Systems",region:"Skandinavia",country:"Swedia",degree:"Doktoral",univ:"Lund University",prog:"PhD in Computer Science"},
+            {no:39,cluster:"Computer Science and Information Systems",region:"Skandinavia",country:"Swedia",degree:"Doktoral",univ:"Stockholm University",prog:"PhD Computer and Systems Sciences"},
+            {no:40,cluster:"Data Science and Statistics",region:"Amerika",country:"Amerika Serikat",degree:"Doktoral",univ:"Massachusetts Institute of Technology (MIT)",prog:"PhD in Physics, Statistics, and Data Science"},
+            {no:41,cluster:"Data Science and Statistics",region:"Amerika",country:"Amerika Serikat",degree:"Doktoral",univ:"Stanford University",prog:"PhD in Data Science"},
+            {no:42,cluster:"Data Science and Statistics",region:"Amerika",country:"Amerika Serikat",degree:"Doktoral",univ:"University of California, Berkeley (UCB)",prog:"PhD in Statistics/CDSS"},
+            {no:43,cluster:"Data Science and Statistics",region:"Amerika",country:"Amerika Serikat",degree:"Doktoral",univ:"University of Pennsylvania",prog:"PhD in Statistics"},
+            {no:44,cluster:"Data Science and Statistics",region:"Asia",country:"Jepang",degree:"Doktoral",univ:"Tokyo Institute of Technology (Tokyo Tech)",prog:"PhD in Computer Science"},
+            {no:45,cluster:"Data Science and Statistics",region:"Asia",country:"RRT",degree:"Doktoral",univ:"Peking University",prog:"Doctoral Program in Databases and big Data"},
+            {no:46,cluster:"Data Science and Statistics",region:"Asia",country:"RRT",degree:"Doktoral",univ:"Tsinghua University",prog:"Doctoral Program in Data Science and Information Technology"},
+            {no:47,cluster:"Data Science and Statistics",region:"Eropa",country:"Inggris",degree:"Doktoral",univ:"Imperial College London",prog:"Data Science Imperial"},
+            {no:48,cluster:"Data Science and Statistics",region:"Eropa",country:"Inggris",degree:"Doktoral",univ:"University of Oxford",prog:"DPhil in Social Data Science"},
+            {no:49,cluster:"Data Science and Statistics",region:"Eropa",country:"Jerman",degree:"Doktoral",univ:"KIT, Karlsruhe Institute of Technology",prog:"KCDS Doctoral Program"},
+            {no:50,cluster:"Data Science and Statistics",region:"Eropa",country:"Jerman",degree:"Doktoral",univ:"Ludwig-Maximilians-Universität München",prog:"Doctoral Program at MUDS - Munich School for Data Science"},
+            {no:51,cluster:"Data Science and Statistics",region:"Eropa",country:"Prancis",degree:"Doktoral",univ:"Institut Polytechnique de Paris",prog:"PhD in Data & Artificial Intelligence"},
+            {no:52,cluster:"Data Science and Statistics",region:"Eropa",country:"Prancis",degree:"Doktoral",univ:"Université Paris-Saclay",prog:"PhD program in Computer science"},
+            {no:53,cluster:"Data Science and Statistics",region:"Eropa",country:"Swiss",degree:"Doktoral",univ:"University of Zurich",prog:"PhD Programme in Data Science"},
+            {no:54,cluster:"Data Science and Statistics",region:"Skandinavia",country:"Denmark",degree:"Doktoral",univ:"Technical University of Denmark",prog:"PhD in Statistics and Data Analysis"},
+            {no:55,cluster:"Data Science and Statistics",region:"Skandinavia",country:"Denmark",degree:"Doktoral",univ:"University of Copenhagen",prog:"Social Data Science (SODAS) doctoral (PhD) program"},
+            {no:56,cluster:"Data Science and Statistics",region:"Skandinavia",country:"Finlandia",degree:"Doktoral",univ:"University of Helsinki",prog:"Doctoral Programme in Computer Science"},
+            {no:57,cluster:"Economic and Econometrics",region:"Amerika",country:"Amerika Serikat",degree:"Doktoral",univ:"Cornell University",prog:"Applied Economics and Management Ph.D."},
+            {no:58,cluster:"Economic and Econometrics",region:"Amerika",country:"Amerika Serikat",degree:"Doktoral",univ:"Cornell University",prog:"Economics Ph.D."},
+            {no:59,cluster:"Economic and Econometrics",region:"Amerika",country:"Amerika Serikat",degree:"Doktoral",univ:"Harvard University",prog:"PhD (Economics)"},
+            {no:60,cluster:"Economic and Econometrics",region:"Amerika",country:"Amerika Serikat",degree:"Doktoral",univ:"Harvard University",prog:"PhD (Business Economics)"},
+            {no:61,cluster:"Economic and Econometrics",region:"Amerika",country:"Amerika Serikat",degree:"Doktoral",univ:"Massachusetts Institute of Technology (MIT)",prog:"PhD (Economics)"},
+            {no:62,cluster:"Economic and Econometrics",region:"Amerika",country:"Amerika Serikat",degree:"Doktoral",univ:"Stanford University",prog:"PhD Economics"},
+            {no:63,cluster:"Economic and Econometrics",region:"Amerika",country:"Amerika Serikat",degree:"Doktoral",univ:"Stanford University",prog:"PhD (Economics Analysis and Policy)"},
+            {no:64,cluster:"Economic and Econometrics",region:"Amerika",country:"Amerika Serikat",degree:"Doktoral",univ:"Stanford University",prog:"PhD (Political Economics)"},
+            {no:65,cluster:"Economic and Econometrics",region:"Amerika",country:"Amerika Serikat",degree:"Doktoral",univ:"University of California, Berkeley (UCB)",prog:"PhD in Economics"},
+            {no:66,cluster:"Economic and Econometrics",region:"Amerika",country:"Amerika Serikat",degree:"Doktoral",univ:"University of Pennsylvania",prog:"PhD in Applied Economics"},
+            {no:67,cluster:"Economic and Econometrics",region:"Amerika",country:"Amerika Serikat",degree:"Doktoral",univ:"University of Pennsylvania",prog:"PhD in Economics"},
+            {no:68,cluster:"Economic and Econometrics",region:"Asia",country:"Jepang",degree:"Doktoral",univ:"Kyoto University",prog:"PhD in Economics"},
+            {no:69,cluster:"Economic and Econometrics",region:"Asia",country:"Jepang",degree:"Doktoral",univ:"The University of Osaka",prog:"Doctor of Philosophy in Economics"},
+            {no:70,cluster:"Economic and Econometrics",region:"Asia",country:"Jepang",degree:"Doktoral",univ:"The University of Osaka",prog:"Doctor of Philosophy in Applied Economics"},
+            {no:71,cluster:"Economic and Econometrics",region:"Asia",country:"Jepang",degree:"Doktoral",univ:"University of Tokyo",prog:"Doctor in Economics"},
+            {no:72,cluster:"Economic and Econometrics",region:"Asia",country:"RRT",degree:"Doktoral",univ:"Peking University",prog:"PhD National Economics"},
+            {no:73,cluster:"Economic and Econometrics",region:"Asia",country:"RRT",degree:"Doktoral",univ:"Peking University",prog:"PhD Industrial Economics"},
+            {no:74,cluster:"Economic and Econometrics",region:"Asia",country:"RRT",degree:"Doktoral",univ:"Peking University",prog:"PhD Economics"},
+            {no:75,cluster:"Economic and Econometrics",region:"Asia",country:"RRT",degree:"Doktoral",univ:"Tsinghua University",prog:"PhD in Economics"},
+            {no:76,cluster:"Economic and Econometrics",region:"Eropa",country:"Inggris",degree:"Doktoral",univ:"University College London",prog:"Economics PhD"},
+            {no:77,cluster:"Economic and Econometrics",region:"Eropa",country:"Inggris",degree:"Doktoral",univ:"University College London",prog:"Ph.D. in Financial Economics"},
+            {no:78,cluster:"Economic and Econometrics",region:"Eropa",country:"Inggris",degree:"Doktoral",univ:"University of Cambridge",prog:"PhD in Economics"},
+            {no:79,cluster:"Economic and Econometrics",region:"Eropa",country:"Inggris",degree:"Doktoral",univ:"University of Oxford",prog:"DPhil in Economics"},
+            {no:80,cluster:"Economic and Econometrics",region:"Eropa",country:"Jerman",degree:"Doktoral",univ:"Ludwig-Maximilians-Universität München",prog:"PhD in Economics"},
+            {no:81,cluster:"Economic and Econometrics",region:"Eropa",country:"Prancis",degree:"Doktoral",univ:"Institut Polytechnique de Paris",prog:"PhD in Economics"},
+            {no:82,cluster:"Economic and Econometrics",region:"Eropa",country:"Prancis",degree:"Doktoral",univ:"Université PSL",prog:"PhD in Economics"},
+            {no:83,cluster:"Economic and Econometrics",region:"Eropa",country:"Swiss",degree:"Doktoral",univ:"University of Zurich",prog:"Doctorate Business and Economics (Economics)"},
+            {no:84,cluster:"Economic and Econometrics",region:"Eropa",country:"Swiss",degree:"Doktoral",univ:"University of Zurich",prog:"Doctorate Business and Economics (Managements and Economics)"},
+            {no:85,cluster:"Economic and Econometrics",region:"Skandinavia",country:"Denmark",degree:"Doktoral",univ:"Aarhus University",prog:"PhD in Economics and Business Economics"},
+            {no:86,cluster:"Economic and Econometrics",region:"Skandinavia",country:"Denmark",degree:"Doktoral",univ:"University of Copenhagen",prog:"PhD Programme in Economics"},
+            {no:87,cluster:"Economic and Econometrics",region:"Skandinavia",country:"Finlandia",degree:"Doktoral",univ:"University of Helsinki",prog:"Doctoral Programme in Social Sciences (Economic)"},
+            {no:88,cluster:"Economic and Econometrics",region:"Skandinavia",country:"Norwegia",degree:"Doktoral",univ:"University of Oslo",prog:"PhD in Social Science (Economics)"},
+            {no:89,cluster:"Economic and Econometrics",region:"Skandinavia",country:"Swedia",degree:"Doktoral",univ:"Lund University",prog:"PhD in Economic"},
+            {no:90,cluster:"Economic and Econometrics",region:"Skandinavia",country:"Swedia",degree:"Doktoral",univ:"Stockholm University",prog:"PhD Programme in Economics"},
+            {no:91,cluster:"Economic and Econometrics",region:"Skandinavia",country:"Swedia",degree:"Doktoral",univ:"Uppsala University",prog:"PhD in Economic"},
+            {no:92,cluster:"Law and Legal Studies",region:"Amerika",country:"Amerika Serikat",degree:"Doktoral",univ:"Cornell University",prog:"Doctor of Science in Law"},
+            {no:93,cluster:"Law and Legal Studies",region:"Amerika",country:"Amerika Serikat",degree:"Doktoral",univ:"Harvard University",prog:"Doctor of Juridical Science"},
+            {no:94,cluster:"Law and Legal Studies",region:"Amerika",country:"Amerika Serikat",degree:"Doktoral",univ:"Stanford University",prog:"Doctor of the Science of Law"},
+            {no:95,cluster:"Law and Legal Studies",region:"Amerika",country:"Amerika Serikat",degree:"Doktoral",univ:"University of California, Berkeley (UCB)",prog:"Doctor of the Science of Law"},
+            {no:96,cluster:"Law and Legal Studies",region:"Amerika",country:"Amerika Serikat",degree:"Doktoral",univ:"University of Pennsylvania",prog:"Doctor of the Science of Law"},
+            {no:97,cluster:"Law and Legal Studies",region:"Asia",country:"Jepang",degree:"Doktoral",univ:"University of Tokyo",prog:"Doctor of Law"},
+            {no:98,cluster:"Law and Legal Studies",region:"Asia",country:"RRT",degree:"Doktoral",univ:"Shanghai Jiao Tong University",prog:"Doctor of Juridical Science"},
+            {no:99,cluster:"Law and Legal Studies",region:"Eropa",country:"Inggris",degree:"Doktoral",univ:"University College London",prog:"Law MPhil/PhD"},
+            {no:100,cluster:"Law and Legal Studies",region:"Eropa",country:"Inggris",degree:"Doktoral",univ:"University of Cambridge",prog:"PhD in Law"},
+            {no:101,cluster:"Law and Legal Studies",region:"Eropa",country:"Inggris",degree:"Doktoral",univ:"University of Oxford",prog:"DPhil in Law"},
+            {no:102,cluster:"Law and Legal Studies",region:"Eropa",country:"Prancis",degree:"Doktoral",univ:"Université PSL",prog:"PhD in Law"},
+            {no:103,cluster:"Law and Legal Studies",region:"Eropa",country:"Swiss",degree:"Doktoral",univ:"University of Zurich",prog:"PhD in Law"},
+            {no:104,cluster:"Law and Legal Studies",region:"Skandinavia",country:"Denmark",degree:"Doktoral",univ:"Aarhus University",prog:"PhD in Law"},
+            {no:105,cluster:"Law and Legal Studies",region:"Skandinavia",country:"Denmark",degree:"Doktoral",univ:"University of Copenhagen",prog:"PhD in Law"},
+            {no:106,cluster:"Law and Legal Studies",region:"Skandinavia",country:"Finlandia",degree:"Doktoral",univ:"University of Helsinki",prog:"Doctoral Programme in Law"},
+            {no:107,cluster:"Law and Legal Studies",region:"Skandinavia",country:"Norwegia",degree:"Doktoral",univ:"University of Oslo",prog:"PhD in Law"},
+            {no:108,cluster:"Law and Legal Studies",region:"Skandinavia",country:"Swedia",degree:"Doktoral",univ:"Lund University",prog:"PhD in Business Law"},
+            {no:109,cluster:"Law and Legal Studies",region:"Skandinavia",country:"Swedia",degree:"Doktoral",univ:"Stockholm University",prog:"Doctor of Laws"},
+            {no:110,cluster:"Law and Legal Studies",region:"Skandinavia",country:"Swedia",degree:"Doktoral",univ:"Uppsala University",prog:"PhD in Law"},
+            {no:111,cluster:"Accounting and Finance",region:"Amerika",country:"Amerika Serikat",degree:"Doktoral",univ:"University of California, Berkeley (UCB)",prog:"PhD in Finance"},
+            {no:112,cluster:"Accounting and Finance",region:"Amerika",country:"Amerika Serikat",degree:"Doktoral",univ:"University of Pennsylvania",prog:"PhD program in Finance"},
+            {no:113,cluster:"Accounting and Finance",region:"Asia",country:"RRT",degree:"Doktoral",univ:"Peking University",prog:"PhD Program in Finance"},
+            {no:114,cluster:"Accounting and Finance",region:"Eropa",country:"Inggris",degree:"Doktoral",univ:"University of Oxford",prog:"DPhil Finance"},
+            {no:115,cluster:"Accounting and Finance",region:"Eropa",country:"Prancis",degree:"Doktoral",univ:"EPFL- École polytechnique fédérale de Lausanne",prog:"PhD in Finance"},
+            {no:116,cluster:"Accounting and Finance",region:"Eropa",country:"Swiss",degree:"Doktoral",univ:"University of Zurich",prog:"PhD Program in Finance"},
+            {no:117,cluster:"Computer Science and Information Systems",region:"Amerika",country:"Amerika Serikat",degree:"Master",univ:"Cornell University",prog:"Master of Engineering Computer Science"},
+            {no:118,cluster:"Computer Science and Information Systems",region:"Amerika",country:"Amerika Serikat",degree:"Master",univ:"Cornell University",prog:"MS Computer Science"},
+            {no:119,cluster:"Computer Science and Information Systems",region:"Amerika",country:"Amerika Serikat",degree:"Master",univ:"Massachusetts Institute of Technology (MIT)",prog:"Master of Science in Technology and Policy (SM)"},
+            {no:120,cluster:"Computer Science and Information Systems",region:"Amerika",country:"Amerika Serikat",degree:"Master",univ:"Stanford University",prog:"MS Computational and Mathematical Engineering"},
+            {no:121,cluster:"Computer Science and Information Systems",region:"Amerika",country:"Amerika Serikat",degree:"Master",univ:"Stanford University",prog:"MS Computer Science"},
+            {no:122,cluster:"Computer Science and Information Systems",region:"Amerika",country:"Amerika Serikat",degree:"Master",univ:"University of California, Berkeley (UCB)",prog:"Master of Science in Computer Science"},
+            {no:123,cluster:"Computer Science and Information Systems",region:"Amerika",country:"Amerika Serikat",degree:"Master",univ:"University of California, Berkeley (UCB)",prog:"Master of Information Management and Systems (MIMS)"},
+            {no:124,cluster:"Computer Science and Information Systems",region:"Amerika",country:"Amerika Serikat",degree:"Master",univ:"University of Pennsylvania",prog:"Master of Computer & Information Science"},
+            {no:125,cluster:"Computer Science and Information Systems",region:"Amerika",country:"Amerika Serikat",degree:"Master",univ:"University of Pennsylvania",prog:"Master of Computer and Information Technology"},
+            {no:126,cluster:"Computer Science and Information Systems",region:"Amerika",country:"Amerika Serikat",degree:"Master",univ:"University of Pennsylvania",prog:"MSE Program in Systems Engineering"},
+            {no:127,cluster:"Computer Science and Information Systems",region:"Asia",country:"Jepang",degree:"Master",univ:"Kyoto University",prog:"Master Intelligence Science and Technology"},
+            {no:128,cluster:"Computer Science and Information Systems",region:"Asia",country:"Jepang",degree:"Master",univ:"Kyoto University",prog:"Master Social Informatics"},
+            {no:129,cluster:"Computer Science and Information Systems",region:"Asia",country:"Jepang",degree:"Master",univ:"Kyoto University",prog:"Master Systems Science"},
+            {no:130,cluster:"Computer Science and Information Systems",region:"Asia",country:"Jepang",degree:"Master",univ:"Kyoto University",prog:"Master Communications and Computer Engineering"},
+            {no:131,cluster:"Computer Science and Information Systems",region:"Asia",country:"Jepang",degree:"Master",univ:"The University of Osaka",prog:"Master of Computer Science"},
+            {no:132,cluster:"Computer Science and Information Systems",region:"Asia",country:"Jepang",degree:"Master",univ:"The University of Osaka",prog:"Master of Information Systems Engineering"},
+            {no:133,cluster:"Computer Science and Information Systems",region:"Asia",country:"Jepang",degree:"Master",univ:"Tokyo Institute of Technology (Tokyo Tech)",prog:"Master of Mathematical and Computing Science"},
+            {no:134,cluster:"Computer Science and Information Systems",region:"Asia",country:"Jepang",degree:"Master",univ:"Tokyo Institute of Technology (Tokyo Tech)",prog:"Master of Computer Science"},
+            {no:135,cluster:"Computer Science and Information Systems",region:"Asia",country:"Jepang",degree:"Master",univ:"University of Tokyo",prog:"Master in Computer Science"},
+            {no:136,cluster:"Computer Science and Information Systems",region:"Asia",country:"RRT",degree:"Master",univ:"Peking University",prog:"Master Computer Science and Technology"},
+            {no:137,cluster:"Computer Science and Information Systems",region:"Asia",country:"RRT",degree:"Master",univ:"Shanghai Jiao Tong University",prog:"Master Computer Science and Technology"},
+            {no:138,cluster:"Computer Science and Information Systems",region:"Asia",country:"RRT",degree:"Master",univ:"Tsinghua University",prog:"Master in Advanced Computing"},
+            {no:139,cluster:"Computer Science and Information Systems",region:"Asia",country:"RRT",degree:"Master",univ:"Zhejiang University",prog:"Computer Science and Technology, Msc"},
+            {no:140,cluster:"Computer Science and Information Systems",region:"Asia",country:"RRT",degree:"Master",univ:"Zhejiang University",prog:"Software Engineering, Msc"},
+            {no:141,cluster:"Computer Science and Information Systems",region:"Eropa",country:"Inggris",degree:"Master",univ:"Imperial College London",prog:"Msc Advance Computing"},
+            {no:142,cluster:"Computer Science and Information Systems",region:"Eropa",country:"Inggris",degree:"Master",univ:"Imperial College London",prog:"Msc Computing"},
+            {no:143,cluster:"Computer Science and Information Systems",region:"Eropa",country:"Inggris",degree:"Master",univ:"Imperial College London",prog:"Msc Computing (Artificial Intelligence and Machine Learning)"},
+            {no:144,cluster:"Computer Science and Information Systems",region:"Eropa",country:"Inggris",degree:"Master",univ:"Imperial College London",prog:"Msc Computing (Management and Finance)"},
+            {no:145,cluster:"Computer Science and Information Systems",region:"Eropa",country:"Inggris",degree:"Master",univ:"Imperial College London",prog:"Msc Computing (Security and Reliability)"},
+            {no:146,cluster:"Computer Science and Information Systems",region:"Eropa",country:"Inggris",degree:"Master",univ:"Imperial College London",prog:"Msc Computing (Software Engineering)"},
+            {no:147,cluster:"Computer Science and Information Systems",region:"Eropa",country:"Inggris",degree:"Master",univ:"Imperial College London",prog:"Msc Computing (Visual Computing and Robotics)"},
+            {no:148,cluster:"Computer Science and Information Systems",region:"Eropa",country:"Inggris",degree:"Master",univ:"University College London",prog:"Computer Science MSc"},
+            {no:149,cluster:"Computer Science and Information Systems",region:"Eropa",country:"Inggris",degree:"Master",univ:"University College London",prog:"Software Systems Engineering MSc"},
+            {no:150,cluster:"Computer Science and Information Systems",region:"Eropa",country:"Inggris",degree:"Master",univ:"University of Cambridge",prog:"MPhil in Advanced Computer Science"},
+            {no:151,cluster:"Computer Science and Information Systems",region:"Eropa",country:"Inggris",degree:"Master",univ:"University of Oxford",prog:"MSc in Advanced Computer Science"},
+            {no:152,cluster:"Computer Science and Information Systems",region:"Eropa",country:"Jerman",degree:"Master",univ:"KIT, Karlsruhe Institute of Technology",prog:"MSc in Computer Science"},
+            {no:153,cluster:"Computer Science and Information Systems",region:"Eropa",country:"Jerman",degree:"Master",univ:"Technical University of Munich",prog:"Master's Program in Computational Mechanics"},
+            {no:154,cluster:"Computer Science and Information Systems",region:"Eropa",country:"Jerman",degree:"Master",univ:"Technical University of Munich",prog:"Msc Informatics"},
+            {no:155,cluster:"Computer Science and Information Systems",region:"Eropa",country:"Jerman",degree:"Master",univ:"Technical University of Munich",prog:"Msc Information Systems"},
+            {no:156,cluster:"Computer Science and Information Systems",region:"Eropa",country:"Jerman",degree:"Master",univ:"Technical University of Munich",prog:"Msc Software Engineering"},
+            {no:157,cluster:"Computer Science and Information Systems",region:"Eropa",country:"Prancis",degree:"Master",univ:"EPFL- École polytechnique fédérale de Lausanne",prog:"MSc in Computational Science and Engineering"},
+            {no:158,cluster:"Computer Science and Information Systems",region:"Eropa",country:"Prancis",degree:"Master",univ:"EPFL- École polytechnique fédérale de Lausanne",prog:"MSc in Computer Science"},
+            {no:159,cluster:"Computer Science and Information Systems",region:"Eropa",country:"Prancis",degree:"Master",univ:"Institut Polytechnique de Paris",prog:"MSc in Computer Science"},
+            {no:160,cluster:"Computer Science and Information Systems",region:"Eropa",country:"Prancis",degree:"Master",univ:"Sorbonne University",prog:"Master of Computer Science: Digital International Program"},
+            {no:161,cluster:"Computer Science and Information Systems",region:"Eropa",country:"Prancis",degree:"Master",univ:"Université Paris-Saclay",prog:"Master in Computer Science"},
+            {no:162,cluster:"Computer Science and Information Systems",region:"Eropa",country:"Swiss",degree:"Master",univ:"ETH Zurich",prog:"Master Computational Science and Engineering"},
+            {no:163,cluster:"Computer Science and Information Systems",region:"Eropa",country:"Swiss",degree:"Master",univ:"ETH Zurich",prog:"Master in Computer Science"},
+            {no:164,cluster:"Computer Science and Information Systems",region:"Eropa",country:"Swiss",degree:"Master",univ:"University of Zurich",prog:"Master of Science in Informatics (Information Systems)"},
+            {no:165,cluster:"Computer Science and Information Systems",region:"Eropa",country:"Swiss",degree:"Master",univ:"University of Zurich",prog:"Master of Science in Informatics (Software Systems)"},
+            {no:166,cluster:"Computer Science and Information Systems",region:"Eropa",country:"Swiss",degree:"Master",univ:"University of Zurich",prog:"Master of Science in Informatics (Human-Centered Computing)"},
+            {no:167,cluster:"Computer Science and Information Systems",region:"Skandinavia",country:"Denmark",degree:"Master",univ:"Aarhus University",prog:"Master of Science in Computer Engineering"},
+            {no:168,cluster:"Computer Science and Information Systems",region:"Skandinavia",country:"Denmark",degree:"Master",univ:"Aarhus University",prog:"Master's programme in Computer Science"},
+            {no:169,cluster:"Computer Science and Information Systems",region:"Skandinavia",country:"Denmark",degree:"Master",univ:"Aarhus University",prog:"MSc in IT Product Development"},
+            {no:170,cluster:"Computer Science and Information Systems",region:"Skandinavia",country:"Denmark",degree:"Master",univ:"Technical University of Denmark",prog:"Master of Science (MSc) in Computer Science and Engineering"},
+            {no:171,cluster:"Computer Science and Information Systems",region:"Skandinavia",country:"Denmark",degree:"Master",univ:"University of Copenhagen",prog:"Master of Science (MSc) in Computer Science"},
+            {no:172,cluster:"Computer Science and Information Systems",region:"Skandinavia",country:"Denmark",degree:"Master",univ:"University of Copenhagen",prog:"Master of Science (MSc) in IT and Cognition"},
+            {no:173,cluster:"Computer Science and Information Systems",region:"Skandinavia",country:"Finlandia",degree:"Master",univ:"Aalto University",prog:"Master's Programme in Computer, Communication and Information Sciences"},
+            {no:174,cluster:"Computer Science and Information Systems",region:"Skandinavia",country:"Finlandia",degree:"Master",univ:"University of Helsinki",prog:"Master's Programme in Computer Science"},
+            {no:175,cluster:"Computer Science and Information Systems",region:"Skandinavia",country:"Norwegia",degree:"Master",univ:"University of Oslo",prog:"Master Informatics: Information Security"},
+            {no:176,cluster:"Computer Science and Information Systems",region:"Skandinavia",country:"Norwegia",degree:"Master",univ:"University of Oslo",prog:"Master Informatics: Programming and Systems Architecture"},
+            {no:177,cluster:"Computer Science and Information Systems",region:"Skandinavia",country:"Swedia",degree:"Master",univ:"Chalmers University of Technology",prog:"PhD in Computer science and engineering"},
+            {no:178,cluster:"Computer Science and Information Systems",region:"Skandinavia",country:"Swedia",degree:"Master",univ:"Chalmers University of Technology",prog:"Software engineering and technology, MSc"},
+            {no:179,cluster:"Computer Science and Information Systems",region:"Skandinavia",country:"Swedia",degree:"Master",univ:"Chalmers University of Technology",prog:"Computer science - algorithms, languages and logic, MSc"},
+            {no:180,cluster:"Computer Science and Information Systems",region:"Skandinavia",country:"Swedia",degree:"Master",univ:"Chalmers University of Technology",prog:"Computer systems and cybersecurity, MSc"},
+            {no:181,cluster:"Computer Science and Information Systems",region:"Skandinavia",country:"Swedia",degree:"Master",univ:"KTH Royal Institute of Technology",prog:"MSc Computer Science"},
+            {no:182,cluster:"Computer Science and Information Systems",region:"Skandinavia",country:"Swedia",degree:"Master",univ:"KTH Royal Institute of Technology",prog:"MSc Software Engineering of Distributed Systems"},
+            {no:183,cluster:"Computer Science and Information Systems",region:"Skandinavia",country:"Swedia",degree:"Master",univ:"Lund University",prog:"Master Applied Computational Science, Environmental Science"},
+            {no:184,cluster:"Computer Science and Information Systems",region:"Skandinavia",country:"Swedia",degree:"Master",univ:"Lund University",prog:"Master Computational Science, Scientific Computing"},
+            {no:185,cluster:"Computer Science and Information Systems",region:"Skandinavia",country:"Swedia",degree:"Master",univ:"Lund University",prog:"Master Information Systems"},
+            {no:186,cluster:"Computer Science and Information Systems",region:"Skandinavia",country:"Swedia",degree:"Master",univ:"Stockholm University",prog:"Master's Programme in Information Security"},
+            {no:187,cluster:"Computer Science and Information Systems",region:"Skandinavia",country:"Swedia",degree:"Master",univ:"Stockholm University",prog:"Master's Programme in Computer and Systems Sciences"},
+            {no:188,cluster:"Computer Science and Information Systems",region:"Skandinavia",country:"Swedia",degree:"Master",univ:"Uppsala University",prog:"Master's Programme in Information Systems"},
+            {no:189,cluster:"Computer Science and Information Systems",region:"Skandinavia",country:"Swedia",degree:"Master",univ:"Uppsala University",prog:"Master's Programme in Computer Science"},
+            {no:190,cluster:"Data Science and Statistics",region:"Amerika",country:"Amerika Serikat",degree:"Master",univ:"Cornell University",prog:"Master of Professional Studies Data Science and Applied Statistics"},
+            {no:191,cluster:"Data Science and Statistics",region:"Amerika",country:"Amerika Serikat",degree:"Master",univ:"Cornell University",prog:"Master of Professional Studies (MPS) in Data Science and Applied Statistics"},
+            {no:192,cluster:"Data Science and Statistics",region:"Amerika",country:"Amerika Serikat",degree:"Master",univ:"Harvard University",prog:"Msc Data Science"},
+            {no:193,cluster:"Data Science and Statistics",region:"Amerika",country:"Amerika Serikat",degree:"Master",univ:"Stanford University",prog:"Master of Science in Statistics"},
+            {no:194,cluster:"Data Science and Statistics",region:"Amerika",country:"Amerika Serikat",degree:"Master",univ:"University of California, Berkeley (UCB)",prog:"Master of Information and Data Science"},
+            {no:195,cluster:"Data Science and Statistics",region:"Amerika",country:"Amerika Serikat",degree:"Master",univ:"University of California, Berkeley (UCB)",prog:"Master of Arts in Statistics & Data Science Program Information"},
+            {no:196,cluster:"Data Science and Statistics",region:"Amerika",country:"Amerika Serikat",degree:"Master",univ:"University of Pennsylvania",prog:"Master of Science in Engineering (MSE) in Data Science"},
+            {no:197,cluster:"Data Science and Statistics",region:"Asia",country:"Jepang",degree:"Master",univ:"Kyoto University",prog:"Master Data Science"},
+            {no:198,cluster:"Data Science and Statistics",region:"Asia",country:"RRT",degree:"Master",univ:"Tsinghua University",prog:"Master Data Science and Technology"},
+            {no:199,cluster:"Data Science and Statistics",region:"Asia",country:"RRT",degree:"Master",univ:"Zhejiang University",prog:"International Master of Data Science"},
+            {no:200,cluster:"Data Science and Statistics",region:"Asia",country:"RRT",degree:"Master",univ:"Zhejiang University",prog:"Master in Applied Statistics"},
+            {no:201,cluster:"Data Science and Statistics",region:"Eropa",country:"Inggris",degree:"Master",univ:"Imperial College London",prog:"Msc Applied Computational Science and Engineering"},
+            {no:202,cluster:"Data Science and Statistics",region:"Eropa",country:"Inggris",degree:"Master",univ:"Imperial College London",prog:"MSc Statistics (Data Science and Machine Learning)"},
+            {no:203,cluster:"Data Science and Statistics",region:"Eropa",country:"Inggris",degree:"Master",univ:"Imperial College London",prog:"Master of Science in Statistics"},
+            {no:204,cluster:"Data Science and Statistics",region:"Eropa",country:"Inggris",degree:"Master",univ:"University College London",prog:"Data Science and Machine Learning MSc"},
+            {no:205,cluster:"Data Science and Statistics",region:"Eropa",country:"Inggris",degree:"Master",univ:"University College London",prog:"Data Science and Public Policy (Economics) MSc"},
+            {no:206,cluster:"Data Science and Statistics",region:"Eropa",country:"Inggris",degree:"Master",univ:"University College London",prog:"Data Science MSc"},
+            {no:207,cluster:"Data Science and Statistics",region:"Eropa",country:"Inggris",degree:"Master",univ:"University College London",prog:"Master of Science in Statistics"},
+            {no:208,cluster:"Data Science and Statistics",region:"Eropa",country:"Inggris",degree:"Master",univ:"University of Cambridge",prog:"MASt in Mathematics (Mathematical Statistics)"},
+            {no:209,cluster:"Data Science and Statistics",region:"Eropa",country:"Inggris",degree:"Master",univ:"University of Oxford",prog:"MSc in Social Data Science"},
+            {no:210,cluster:"Data Science and Statistics",region:"Eropa",country:"Inggris",degree:"Master",univ:"University of Oxford",prog:"Master of Science in Statistical Science"},
+            {no:211,cluster:"Data Science and Statistics",region:"Eropa",country:"Jerman",degree:"Master",univ:"Freie Universitaet Berlin",prog:"Master of Data Science"},
+            {no:212,cluster:"Data Science and Statistics",region:"Eropa",country:"Jerman",degree:"Master",univ:"Freie Universitaet Berlin",prog:"Master of Science in Statistics"},
+            {no:213,cluster:"Data Science and Statistics",region:"Eropa",country:"Jerman",degree:"Master",univ:"Ludwig-Maximilians-Universität München",prog:"Master's Program Statistics and Data Science"},
+            {no:214,cluster:"Data Science and Statistics",region:"Eropa",country:"Jerman",degree:"Master",univ:"Ludwig-Maximilians-Universität München",prog:"Master of Science Statistics & Data Science"},
+            {no:215,cluster:"Data Science and Statistics",region:"Eropa",country:"Jerman",degree:"Master",univ:"Technical University of Munich",prog:"Msc Data Engineering and Analytics"},
+            {no:216,cluster:"Data Science and Statistics",region:"Eropa",country:"Jerman",degree:"Master",univ:"Technical University of Munich",prog:"Msc Mathematics in Data Science"},
+            {no:217,cluster:"Data Science and Statistics",region:"Eropa",country:"Jerman",degree:"Master",univ:"Universität Heidelberg",prog:"Master Data and Computer Science"},
+            {no:218,cluster:"Data Science and Statistics",region:"Eropa",country:"Prancis",degree:"Master",univ:"EPFL- École polytechnique fédérale de Lausanne",prog:"MSc in Data Science"},
+            {no:219,cluster:"Data Science and Statistics",region:"Eropa",country:"Prancis",degree:"Master",univ:"EPFL- École polytechnique fédérale de Lausanne",prog:"Master of Science MSc in Statistics"},
+            {no:220,cluster:"Data Science and Statistics",region:"Eropa",country:"Prancis",degree:"Master",univ:"Institut Polytechnique de Paris",prog:"Master of Science Applied Math & Stats"},
+            {no:221,cluster:"Data Science and Statistics",region:"Eropa",country:"Prancis",degree:"Master",univ:"Université Paris-Saclay",prog:"Master of Science Statistics / Math & AI"},
+            {no:222,cluster:"Data Science and Statistics",region:"Eropa",country:"Swiss",degree:"Master",univ:"ETH Zurich",prog:"Master Data Science"},
+            {no:223,cluster:"Data Science and Statistics",region:"Eropa",country:"Swiss",degree:"Master",univ:"ETH Zurich",prog:"Master of Science in Statistics"},
+            {no:224,cluster:"Data Science and Statistics",region:"Eropa",country:"Swiss",degree:"Master",univ:"University of Zurich",prog:"Master of Science in Informatics (Data Science)"},
+            {no:225,cluster:"Data Science and Statistics",region:"Skandinavia",country:"Denmark",degree:"Master",univ:"Aarhus University",prog:"Master's programme in Data Science"},
+            {no:226,cluster:"Data Science and Statistics",region:"Skandinavia",country:"Denmark",degree:"Master",univ:"Aarhus University",prog:"Master of Science in Statistics"},
+            {no:227,cluster:"Data Science and Statistics",region:"Skandinavia",country:"Denmark",degree:"Master",univ:"Technical University of Denmark",prog:"Master of Science Mathematical Modelling & Comp."},
+            {no:228,cluster:"Data Science and Statistics",region:"Skandinavia",country:"Denmark",degree:"Master",univ:"University of Copenhagen",prog:"Master of Science (MSc) in Social Data Science"},
+            {no:229,cluster:"Data Science and Statistics",region:"Skandinavia",country:"Denmark",degree:"Master",univ:"University of Copenhagen",prog:"Master of Science (MSc) in Statistics"},
+            {no:230,cluster:"Data Science and Statistics",region:"Skandinavia",country:"Finlandia",degree:"Master",univ:"University of Helsinki",prog:"Master's Programme in Data Science"},
+            {no:231,cluster:"Data Science and Statistics",region:"Skandinavia",country:"Finlandia",degree:"Master",univ:"University of Helsinki",prog:"Master of Science in Mathematics & Statistics"},
+            {no:232,cluster:"Data Science and Statistics",region:"Skandinavia",country:"Norwegia",degree:"Master",univ:"University of Oslo",prog:"Master Computational Science"},
+            {no:233,cluster:"Data Science and Statistics",region:"Skandinavia",country:"Norwegia",degree:"Master",univ:"University of Oslo",prog:"Master Data Science"},
+            {no:234,cluster:"Data Science and Statistics",region:"Skandinavia",country:"Norwegia",degree:"Master",univ:"University of Oslo",prog:"Master of Science in Statistics"},
+            {no:235,cluster:"Data Science and Statistics",region:"Skandinavia",country:"Swedia",degree:"Master",univ:"Chalmers University of Technology",prog:"Data science and AI, MSc"},
+            {no:236,cluster:"Data Science and Statistics",region:"Skandinavia",country:"Swedia",degree:"Master",univ:"KTH Royal Institute of Technology",prog:"MSc Applied and Computational Mathematics"},
+            {no:237,cluster:"Data Science and Statistics",region:"Skandinavia",country:"Swedia",degree:"Master",univ:"Lund University",prog:"Master Data Analytics and Business Economics"},
+            {no:238,cluster:"Data Science and Statistics",region:"Skandinavia",country:"Swedia",degree:"Master",univ:"Lund University",prog:"Master Social Scientific Data Analysis"},
+            {no:239,cluster:"Data Science and Statistics",region:"Skandinavia",country:"Swedia",degree:"Master",univ:"Lund University",prog:"Master of Science Mathematical Statistics"},
+            {no:240,cluster:"Data Science and Statistics",region:"Skandinavia",country:"Swedia",degree:"Master",univ:"Stockholm University",prog:"Master's Program in Data Science, Statistics and Decision Analysis"},
+            {no:241,cluster:"Data Science and Statistics",region:"Skandinavia",country:"Swedia",degree:"Master",univ:"Stockholm University",prog:"Master's Programme in Strategic Information Systems Management"},
+            {no:242,cluster:"Data Science and Statistics",region:"Skandinavia",country:"Swedia",degree:"Master",univ:"Stockholm University",prog:"Master in Statistics"},
+            {no:243,cluster:"Data Science and Statistics",region:"Skandinavia",country:"Swedia",degree:"Master",univ:"Uppsala University",prog:"Master's Programme in Data Science - Data Engineering"},
+            {no:244,cluster:"Data Science and Statistics",region:"Skandinavia",country:"Swedia",degree:"Master",univ:"Uppsala University",prog:"Master's Programme in Data Science - Machine Learning and Statistics"},
+            {no:245,cluster:"Data Science and Statistics",region:"Skandinavia",country:"Swedia",degree:"Master",univ:"Uppsala University",prog:"Master of Science in Statistics & Data Science"},
+            {no:246,cluster:"Economic and Econometrics",region:"Amerika",country:"Amerika Serikat",degree:"Master",univ:"Cornell University",prog:"MS Applied Economics and Management"},
+            {no:247,cluster:"Economic and Econometrics",region:"Amerika",country:"Amerika Serikat",degree:"Master",univ:"Massachusetts Institute of Technology (MIT)",prog:"Master of Applied Science in Data, Economics, and Design of Policy"},
+            {no:248,cluster:"Economic and Econometrics",region:"Amerika",country:"Amerika Serikat",degree:"Master",univ:"University of Pennsylvania",prog:"MAEDS (Master of Applied Economics and Data Science)"},
+            {no:249,cluster:"Economic and Econometrics",region:"Asia",country:"Jepang",degree:"Master",univ:"Kyoto University",prog:"Master of Sustainable Economic Development"},
+            {no:250,cluster:"Economic and Econometrics",region:"Asia",country:"Jepang",degree:"Master",univ:"The University of Osaka",prog:"Master of Economics"},
+            {no:251,cluster:"Economic and Econometrics",region:"Asia",country:"Jepang",degree:"Master",univ:"The University of Osaka",prog:"Master of Applied Economics"},
+            {no:252,cluster:"Economic and Econometrics",region:"Asia",country:"Jepang",degree:"Master",univ:"University of Tokyo",prog:"Master of Economics"},
+            {no:253,cluster:"Economic and Econometrics",region:"Asia",country:"RRT",degree:"Master",univ:"Peking University",prog:"Master of National Economics"},
+            {no:254,cluster:"Economic and Econometrics",region:"Asia",country:"RRT",degree:"Master",univ:"Peking University",prog:"Master of Industrial Economics"},
+            {no:255,cluster:"Economic and Econometrics",region:"Asia",country:"RRT",degree:"Master",univ:"Peking University",prog:"Master of Economics"},
+            {no:256,cluster:"Economic and Econometrics",region:"Asia",country:"RRT",degree:"Master",univ:"Zhejiang University",prog:"Master in Chinese Economy"},
+            {no:257,cluster:"Economic and Econometrics",region:"Eropa",country:"Inggris",degree:"Master",univ:"Imperial College London",prog:"Msc Economics and Strategy for Business"},
+            {no:258,cluster:"Economic and Econometrics",region:"Eropa",country:"Inggris",degree:"Master",univ:"University College London",prog:"Economics MSc"},
+            {no:259,cluster:"Economic and Econometrics",region:"Eropa",country:"Inggris",degree:"Master",univ:"University College London",prog:"MA in Comparative Business Economics"},
+            {no:260,cluster:"Economic and Econometrics",region:"Eropa",country:"Inggris",degree:"Master",univ:"University College London",prog:"MSc in Health Economics and Decision Science"},
+            {no:261,cluster:"Economic and Econometrics",region:"Eropa",country:"Inggris",degree:"Master",univ:"University College London",prog:"MSc in Sustainable Resources: Economics, Policy and Transitions"},
+            {no:262,cluster:"Economic and Econometrics",region:"Eropa",country:"Inggris",degree:"Master",univ:"University of Cambridge",prog:"MPhil in Finance and Economics"},
+            {no:263,cluster:"Economic and Econometrics",region:"Eropa",country:"Inggris",degree:"Master",univ:"University of Cambridge",prog:"MPhil in Economic and Social History"},
+            {no:264,cluster:"Economic and Econometrics",region:"Eropa",country:"Inggris",degree:"Master",univ:"University of Cambridge",prog:"MPhil in Economic Research"},
+            {no:265,cluster:"Economic and Econometrics",region:"Eropa",country:"Inggris",degree:"Master",univ:"University of Cambridge",prog:"MPhil in Economics"},
+            {no:266,cluster:"Economic and Econometrics",region:"Eropa",country:"Inggris",degree:"Master",univ:"University of Cambridge",prog:"MPhil in Economics and Data Science"},
+            {no:267,cluster:"Economic and Econometrics",region:"Eropa",country:"Inggris",degree:"Master",univ:"University of Oxford",prog:"MSc in Economic and Social History"},
+            {no:268,cluster:"Economic and Econometrics",region:"Eropa",country:"Inggris",degree:"Master",univ:"University of Oxford",prog:"MPhil in Economic and Social History"},
+            {no:269,cluster:"Economic and Econometrics",region:"Eropa",country:"Inggris",degree:"Master",univ:"University of Oxford",prog:"MPhil in Economics"},
+            {no:270,cluster:"Economic and Econometrics",region:"Eropa",country:"Inggris",degree:"Master",univ:"University of Oxford",prog:"MSc in Economics for Development"},
+            {no:271,cluster:"Economic and Econometrics",region:"Eropa",country:"Inggris",degree:"Master",univ:"University of Oxford",prog:"MSc Financial Economics"},
+            {no:272,cluster:"Economic and Econometrics",region:"Eropa",country:"Jerman",degree:"Master",univ:"Freie Universitaet Berlin",prog:"Master of Economic Systems"},
+            {no:273,cluster:"Economic and Econometrics",region:"Eropa",country:"Jerman",degree:"Master",univ:"Ludwig-Maximilians-Universität München",prog:"Master of Science in Economics"},
+            {no:274,cluster:"Economic and Econometrics",region:"Eropa",country:"Jerman",degree:"Master",univ:"Ludwig-Maximilians-Universität München",prog:"Master in Quantitative Economics"},
+            {no:275,cluster:"Economic and Econometrics",region:"Eropa",country:"Jerman",degree:"Master",univ:"Universität Heidelberg",prog:"Master of Economics"},
+            {no:276,cluster:"Economic and Econometrics",region:"Eropa",country:"Prancis",degree:"Master",univ:"Institut Polytechnique de Paris",prog:"MSc in Economics"},
+            {no:277,cluster:"Economic and Econometrics",region:"Eropa",country:"Prancis",degree:"Master",univ:"Université Paris-Saclay",prog:"Master of Economics"},
+            {no:278,cluster:"Economic and Econometrics",region:"Eropa",country:"Prancis",degree:"Master",univ:"Université PSL",prog:"Master Analysis and Policy in Economics"},
+            {no:279,cluster:"Economic and Econometrics",region:"Eropa",country:"Prancis",degree:"Master",univ:"Université PSL",prog:"Master in Applied Economics: Public Policy and Development"},
+            {no:280,cluster:"Economic and Econometrics",region:"Eropa",country:"Prancis",degree:"Master",univ:"Université PSL",prog:"Master Quantitative Economics"},
+            {no:281,cluster:"Economic and Econometrics",region:"Eropa",country:"Swiss",degree:"Master",univ:"University of Zurich",prog:"Master of Arts in Business and Economics"},
+            {no:282,cluster:"Economic and Econometrics",region:"Skandinavia",country:"Denmark",degree:"Master",univ:"Aarhus University",prog:"MSc programme in Economics"},
+            {no:283,cluster:"Economic and Econometrics",region:"Skandinavia",country:"Denmark",degree:"Master",univ:"University of Copenhagen",prog:"Master of Science (MSc) in Economics"},
+            {no:284,cluster:"Economic and Econometrics",region:"Skandinavia",country:"Denmark",degree:"Master",univ:"University of Copenhagen",prog:"Master of Science (MSc) in Mathematics-Economics"},
+            {no:285,cluster:"Economic and Econometrics",region:"Skandinavia",country:"Denmark",degree:"Master",univ:"University of Copenhagen",prog:"Master of Science (MSc) in Agricultural Economics"},
+            {no:286,cluster:"Economic and Econometrics",region:"Skandinavia",country:"Finlandia",degree:"Master",univ:"Aalto University",prog:"Master's Programme in Economics"},
+            {no:287,cluster:"Economic and Econometrics",region:"Skandinavia",country:"Finlandia",degree:"Master",univ:"University of Helsinki",prog:"Master's Programme in Economics"},
+            {no:288,cluster:"Economic and Econometrics",region:"Skandinavia",country:"Norwegia",degree:"Master",univ:"University of Oslo",prog:"Master of Economics"},
+            {no:289,cluster:"Economic and Econometrics",region:"Skandinavia",country:"Swedia",degree:"Master",univ:"Lund University",prog:"Master Economics"},
+            {no:290,cluster:"Economic and Econometrics",region:"Skandinavia",country:"Swedia",degree:"Master",univ:"Stockholm University",prog:"Master's Programme in Economics"},
+            {no:291,cluster:"Economic and Econometrics",region:"Skandinavia",country:"Swedia",degree:"Master",univ:"Uppsala University",prog:"Master's Programme in Economics"},
+            {no:292,cluster:"Law and Legal Studies",region:"Amerika",country:"Amerika Serikat",degree:"Master",univ:"Cornell University",prog:"Master of Law (LLM)"},
+            {no:293,cluster:"Law and Legal Studies",region:"Amerika",country:"Amerika Serikat",degree:"Master",univ:"Harvard University",prog:"Master of Laws (LLM)"},
+            {no:294,cluster:"Law and Legal Studies",region:"Amerika",country:"Amerika Serikat",degree:"Master",univ:"Stanford University",prog:"LLM in Corporate Governance and Practice"},
+            {no:295,cluster:"Law and Legal Studies",region:"Amerika",country:"Amerika Serikat",degree:"Master",univ:"Stanford University",prog:"LLM in Environmental Law and Policy"},
+            {no:296,cluster:"Law and Legal Studies",region:"Amerika",country:"Amerika Serikat",degree:"Master",univ:"Stanford University",prog:"LLM in International Economic Law, Business and Policy"},
+            {no:297,cluster:"Law and Legal Studies",region:"Amerika",country:"Amerika Serikat",degree:"Master",univ:"Stanford University",prog:"LLM in Law, Science and Technology"},
+            {no:298,cluster:"Law and Legal Studies",region:"Amerika",country:"Amerika Serikat",degree:"Master",univ:"Stanford University",prog:"Master of Legal Studies (MLS)"},
+            {no:299,cluster:"Law and Legal Studies",region:"Amerika",country:"Amerika Serikat",degree:"Master",univ:"University of California, Berkeley (UCB)",prog:"Master of Law (LLM)"},
+            {no:300,cluster:"Law and Legal Studies",region:"Amerika",country:"Amerika Serikat",degree:"Master",univ:"University of Pennsylvania",prog:"Masters in Comparative Law"},
+            {no:301,cluster:"Law and Legal Studies",region:"Amerika",country:"Amerika Serikat",degree:"Master",univ:"University of Pennsylvania",prog:"Master of Law (LLM)"},
+            {no:302,cluster:"Law and Legal Studies",region:"Amerika",country:"Amerika Serikat",degree:"Master",univ:"University of Pennsylvania",prog:"Master in Law"},
+            {no:303,cluster:"Law and Legal Studies",region:"Asia",country:"RRT",degree:"Master",univ:"Fudan University",prog:"Master in Chinese Business Law"},
+            {no:304,cluster:"Law and Legal Studies",region:"Asia",country:"RRT",degree:"Master",univ:"Peking University",prog:"Master Civil and Commercial Law"},
+            {no:305,cluster:"Law and Legal Studies",region:"Asia",country:"RRT",degree:"Master",univ:"Tsinghua University",prog:"LL.M. in International Arbitration and Dispute Settlement"},
+            {no:306,cluster:"Law and Legal Studies",region:"Asia",country:"RRT",degree:"Master",univ:"Tsinghua University",prog:"LL.M. in Intellectual Property and Innovation Policy"},
+            {no:307,cluster:"Law and Legal Studies",region:"Eropa",country:"Inggris",degree:"Master",univ:"University College London",prog:"Law LLM"},
+            {no:308,cluster:"Law and Legal Studies",region:"Eropa",country:"Inggris",degree:"Master",univ:"University College London",prog:"MSc Law and Finance"},
+            {no:309,cluster:"Law and Legal Studies",region:"Eropa",country:"Inggris",degree:"Master",univ:"University of Cambridge",prog:"Master of Corporate Law"},
+            {no:310,cluster:"Law and Legal Studies",region:"Eropa",country:"Inggris",degree:"Master",univ:"University of Cambridge",prog:"Master of Law (LLM)"},
+            {no:311,cluster:"Law and Legal Studies",region:"Eropa",country:"Inggris",degree:"Master",univ:"University of Cambridge",prog:"MLitt in Law"},
+            {no:312,cluster:"Law and Legal Studies",region:"Eropa",country:"Inggris",degree:"Master",univ:"University of Oxford",prog:"MPhil in Law"},
+            {no:313,cluster:"Law and Legal Studies",region:"Eropa",country:"Inggris",degree:"Master",univ:"University of Oxford",prog:"MSc in Law and Finance"},
+            {no:314,cluster:"Law and Legal Studies",region:"Eropa",country:"Inggris",degree:"Master",univ:"University of Oxford",prog:"Magister Juris"},
+            {no:315,cluster:"Law and Legal Studies",region:"Eropa",country:"Jerman",degree:"Master",univ:"Ludwig-Maximilians-Universität München",prog:"Master European and International Economic Law"},
+            {no:316,cluster:"Law and Legal Studies",region:"Eropa",country:"Swiss",degree:"Master",univ:"University of Zurich",prog:"Master of Law"},
+            {no:317,cluster:"Law and Legal Studies",region:"Eropa",country:"Swiss",degree:"Master",univ:"University of Zurich",prog:"Master of Law in International and Comparative Law"},
+            {no:318,cluster:"Law and Legal Studies",region:"Skandinavia",country:"Denmark",degree:"Master",univ:"University of Copenhagen",prog:"Master of Laws (LLM)"},
+            {no:319,cluster:"Law and Legal Studies",region:"Skandinavia",country:"Finlandia",degree:"Master",univ:"Aalto University",prog:"Master's Programme in Business Law"},
+            {no:320,cluster:"Law and Legal Studies",region:"Skandinavia",country:"Finlandia",degree:"Master",univ:"University of Helsinki",prog:"Master's Programme in Global Governance Law"},
+            {no:321,cluster:"Law and Legal Studies",region:"Skandinavia",country:"Norwegia",degree:"Master",univ:"University of Oslo",prog:"Master Information and Communication Technology Law"},
+            {no:322,cluster:"Law and Legal Studies",region:"Skandinavia",country:"Norwegia",degree:"Master",univ:"University of Oslo",prog:"Master Public International Law"},
+            {no:323,cluster:"Law and Legal Studies",region:"Skandinavia",country:"Swedia",degree:"Master",univ:"Lund University",prog:"Master European and International Trade and Tax Law"},
+            {no:324,cluster:"Law and Legal Studies",region:"Skandinavia",country:"Swedia",degree:"Master",univ:"Lund University",prog:"Master European Economic Law"},
+            {no:325,cluster:"Law and Legal Studies",region:"Skandinavia",country:"Swedia",degree:"Master",univ:"Lund University",prog:"Master International Human Rights Law"},
+            {no:326,cluster:"Law and Legal Studies",region:"Skandinavia",country:"Swedia",degree:"Master",univ:"Stockholm University",prog:"Master of Laws (LL.M.) in Public International Law"},
+            {no:327,cluster:"Law and Legal Studies",region:"Skandinavia",country:"Swedia",degree:"Master",univ:"Stockholm University",prog:"Master of Laws in Environmental Law"},
+            {no:328,cluster:"Law and Legal Studies",region:"Skandinavia",country:"Swedia",degree:"Master",univ:"Stockholm University",prog:"Master of Laws (LL.M.) in European Economic Law"},
+            {no:329,cluster:"Law and Legal Studies",region:"Skandinavia",country:"Swedia",degree:"Master",univ:"Stockholm University",prog:"Master of Laws (LL.M.) in European Intellectual Property Law"},
+            {no:330,cluster:"Law and Legal Studies",region:"Skandinavia",country:"Swedia",degree:"Master",univ:"Stockholm University",prog:"Master of Laws (LL.M.) in International Commercial Arbitration"},
+            {no:331,cluster:"Law and Legal Studies",region:"Skandinavia",country:"Swedia",degree:"Master",univ:"Uppsala University",prog:"Master's Programme in Investment Treaty Arbitration"},
+            {no:332,cluster:"Accounting and Finance",region:"Amerika",country:"Amerika Serikat",degree:"Master",univ:"Massachusetts Institute of Technology (MIT)",prog:"Master of Finance"},
+            {no:333,cluster:"Accounting and Finance",region:"Amerika",country:"Amerika Serikat",degree:"Master",univ:"University of California, Berkeley (UCB)",prog:"Master of Financial Engineering"},
+            {no:334,cluster:"Accounting and Finance",region:"Amerika",country:"Amerika Serikat",degree:"Master",univ:"University of Pennsylvania",prog:"Accounting, MBA"},
+            {no:335,cluster:"Accounting and Finance",region:"Asia",country:"RRT",degree:"Master",univ:"Peking University",prog:"Master of Accounting"},
+            {no:336,cluster:"Accounting and Finance",region:"Asia",country:"RRT",degree:"Master",univ:"Peking University",prog:"Master in Finance"},
+            {no:337,cluster:"Accounting and Finance",region:"Asia",country:"RRT",degree:"Master",univ:"Tsinghua University",prog:"Master of Professional Accounting"},
+            {no:338,cluster:"Accounting and Finance",region:"Asia",country:"RRT",degree:"Master",univ:"Tsinghua University",prog:"Master of Finance"},
+            {no:339,cluster:"Accounting and Finance",region:"Asia",country:"RRT",degree:"Master",univ:"Zhejiang University",prog:"International Master of Finance"},
+            {no:340,cluster:"Accounting and Finance",region:"Eropa",country:"Inggris",degree:"Master",univ:"Imperial College London",prog:"Msc Finance and Accounting"},
+            {no:341,cluster:"Accounting and Finance",region:"Eropa",country:"Inggris",degree:"Master",univ:"Imperial College London",prog:"MSc Finance"},
+            {no:342,cluster:"Accounting and Finance",region:"Eropa",country:"Inggris",degree:"Master",univ:"University College London",prog:"Strategic Accounting and Finance MSc"},
+            {no:343,cluster:"Accounting and Finance",region:"Eropa",country:"Inggris",degree:"Master",univ:"University College London",prog:"Finance MSc"},
+            {no:344,cluster:"Accounting and Finance",region:"Eropa",country:"Inggris",degree:"Master",univ:"University of Cambridge",prog:"MPhil in Finance"},
+            {no:345,cluster:"Accounting and Finance",region:"Eropa",country:"Inggris",degree:"Master",univ:"University of Cambridge",prog:"Master of Finance"},
+            {no:346,cluster:"Accounting and Finance",region:"Eropa",country:"Jerman",degree:"Master",univ:"Ludwig-Maximilians-Universität München",prog:"Master in Financial and Insurance Mathematics"},
+            {no:347,cluster:"Accounting and Finance",region:"Eropa",country:"Jerman",degree:"Master",univ:"Technical University of Munich",prog:"Msc Finance and Information Management"},
+            {no:348,cluster:"Accounting and Finance",region:"Eropa",country:"Prancis",degree:"Master",univ:"EPFL- École polytechnique fédérale de Lausanne",prog:"Master in Financial Engineering"},
+            {no:349,cluster:"Accounting and Finance",region:"Eropa",country:"Prancis",degree:"Master",univ:"Université Paris-Saclay",prog:"Master in Finance"},
+            {no:350,cluster:"Accounting and Finance",region:"Eropa",country:"Prancis",degree:"Master",univ:"Université PSL",prog:"Master of Finance"},
+            {no:351,cluster:"Accounting and Finance",region:"Eropa",country:"Swiss",degree:"Master",univ:"University of Zurich",prog:"Master of Arts in Banking and Finance"},
+            {no:352,cluster:"Accounting and Finance",region:"Skandinavia",country:"Denmark",degree:"Master",univ:"Aarhus University",prog:"Master's degree programme in finance"},
+            {no:353,cluster:"Accounting and Finance",region:"Skandinavia",country:"Finlandia",degree:"Master",univ:"Aalto University",prog:"Master's Programme in Accounting"},
+            {no:354,cluster:"Accounting and Finance",region:"Skandinavia",country:"Finlandia",degree:"Master",univ:"Aalto University",prog:"Master's Programme in Finance"},
+            {no:355,cluster:"Accounting and Finance",region:"Skandinavia",country:"Swedia",degree:"Master",univ:"Lund University",prog:"Master Accounting and Finance"},
+            {no:356,cluster:"Accounting and Finance",region:"Skandinavia",country:"Swedia",degree:"Master",univ:"Lund University",prog:"Master's programme in Finance"},
+            {no:357,cluster:"Accounting and Finance",region:"Skandinavia",country:"Swedia",degree:"Master",univ:"Stockholm University",prog:"Master's Programme in Accounting and Management Control"},
+            {no:358,cluster:"Accounting and Finance",region:"Skandinavia",country:"Swedia",degree:"Master",univ:"Stockholm University",prog:"Master's Programme in Banking and Finance"},
+            {no:359,cluster:"Accounting and Finance",region:"Skandinavia",country:"Swedia",degree:"Master",univ:"Uppsala University",prog:"Master's Programme in Accounting and Financial Management"},
+            {no:360,cluster:"Actuarial",region:"Asia",country:"Australia",degree:"Master",univ:"The University of New South Wales (UNSW Sydney)",prog:"Master of Actuarial Studies"},
+            {no:361,cluster:"Actuarial",region:"Asia",country:"Australia",degree:"Master",univ:"The University of New South Wales (UNSW Sydney)",prog:"Master of Actuarial Studies (Extension)"},
+            {no:362,cluster:"Actuarial",region:"Eropa",country:"Jerman",degree:"Master",univ:"Technical University of Munich",prog:"Msc Mathematical Finance and Actuarial Science"},
+            {no:363,cluster:"Actuarial",region:"Skandinavia",country:"Denmark",degree:"Master",univ:"University of Copenhagen",prog:"Master of Science (MSc) in Actuarial Mathematics"},
+            {no:364,cluster:"Management (Taxation and Risk)",region:"Eropa",country:"Inggris",degree:"Master",univ:"Imperial College London",prog:"Master of Science in Risk Management & Financial Engineering"},
+            {no:365,cluster:"Management (Taxation and Risk)",region:"Eropa",country:"Inggris",degree:"Master",univ:"University College London",prog:"Master of Science in Financial Risk Management"},
+            {no:366,cluster:"Management (Taxation and Risk)",region:"Eropa",country:"Inggris",degree:"Master",univ:"University of Cambridge",prog:"Master of Philosophy in Global Risk and Resilience"},
+            {no:367,cluster:"Management (Taxation and Risk)",region:"Eropa",country:"Inggris",degree:"Master",univ:"University of Oxford",prog:"Master of Science in Taxation"},
+            {no:368,cluster:"Management (Taxation and Risk)",region:"Eropa",country:"Jerman",degree:"Master",univ:"Freie Universitaet Berlin",prog:"Master's programs in Finance, Accounting and Taxation"},
+            {no:369,cluster:"Management (Taxation and Risk)",region:"Eropa",country:"Jerman",degree:"Master",univ:"Universität Heidelberg",prog:"Master's program in Governance of Risk and Resources"},
+            {no:370,cluster:"Management (Taxation and Risk)",region:"Eropa",country:"Prancis",degree:"Master",univ:"Institut Polytechnique de Paris",prog:"Master of Science in Finance and Risk Management"},
+            {no:371,cluster:"Management (Taxation and Risk)",region:"Skandinavia",country:"Denmark",degree:"Master",univ:"University of Copenhagen",prog:"Master of Science (MSc) in Security Risk Management"},
+            {no:372,cluster:"Management (Taxation and Risk)",region:"Skandinavia",country:"Swedia",degree:"Master",univ:"Uppsala University",prog:"Master's Programme in Comparative and International Tax Law"},
+            {no:373,cluster:"International Relations",region:"Asia",country:"RRT",degree:"Master",univ:"Peking University",prog:"Master's Program in International Relations (MIR)"},
+            {no:374,cluster:"International Relations",region:"Eropa",country:"Inggris",degree:"Master",univ:"University of Cambridge",prog:"MPhil in Politics and International Studies"},
+            {no:375,cluster:"International Relations",region:"Eropa",country:"Inggris",degree:"Master",univ:"University of Oxford",prog:"MPhil in International Relations"},
+            {no:376,cluster:"International Relations",region:"Eropa",country:"Jerman",degree:"Master",univ:"Freie Universitaet Berlin",prog:"Master of Arts International Relations"},
+            {no:377,cluster:"International Relations",region:"Skandinavia",country:"Swedia",degree:"Master",univ:"Stockholm University",prog:"Master's Programme in International Relations"}
+        ];
+
+        // --- Logic for Pagination, Search, Sorting, and Filtering ---
+        let currentPage = 1;
+        const rowsPerPage = 15;
+        let filteredData = [...scholarshipData];
+        
+        let sortState = {
+            column: 'no',
+            direction: 'asc'
+        };
+
+        const tableBody = document.getElementById('tableBody');
+        const paginationInfo = document.getElementById('paginationInfo');
+        const btnPrev = document.getElementById('btnPrev');
+        const btnNext = document.getElementById('btnNext');
+        const totalCount = document.getElementById('totalCount');
+        const pageNumbers = document.getElementById('pageNumbers');
+
+        // Populate Dropdowns
+        function populateFilters() {
+            const uniqueClusters = [...new Set(scholarshipData.map(item => item.cluster))].sort();
+            const uniqueRegions = [...new Set(scholarshipData.map(item => item.region))].sort();
+            const uniqueCountries = [...new Set(scholarshipData.map(item => item.country))].sort();
+            const uniqueDegrees = [...new Set(scholarshipData.map(item => item.degree))].sort();
+
+            const createOptions = (id, data) => {
+                const select = document.getElementById(id);
+                // Keep the first option (All)
+                select.innerHTML = '<option value="">All</option>';
+                data.forEach(val => {
+                    const opt = document.createElement('option');
+                    opt.value = val;
+                    opt.innerText = val;
+                    opt.className = 'bg-slate-800 text-slate-200'; // Style for options in dark mode
+                    select.appendChild(opt);
+                });
+            };
+
+            createOptions('filterCluster', uniqueClusters);
+            createOptions('filterRegion', uniqueRegions);
+            createOptions('filterCountry', uniqueCountries);
+            createOptions('filterDegree', uniqueDegrees);
+        }
+
+        // Apply Filters
+        function applyFilters() {
+            const clusterVal = document.getElementById('filterCluster').value;
+            const regionVal = document.getElementById('filterRegion').value;
+            const countryVal = document.getElementById('filterCountry').value;
+            const degreeVal = document.getElementById('filterDegree').value;
+            const univVal = document.getElementById('filterUniv').value.toLowerCase();
+            const progVal = document.getElementById('filterProg').value.toLowerCase();
+
+            filteredData = scholarshipData.filter(item => {
+                return (clusterVal === "" || item.cluster === clusterVal) &&
+                       (regionVal === "" || item.region === regionVal) &&
+                       (countryVal === "" || item.country === countryVal) &&
+                       (degreeVal === "" || item.degree === degreeVal) &&
+                       (univVal === "" || item.univ.toLowerCase().includes(univVal)) &&
+                       (progVal === "" || item.prog.toLowerCase().includes(progVal));
+            });
+            
+            // Re-apply sort after filter
+            sortFilteredData();
+
+            currentPage = 1;
+            renderTable();
+        }
+
+        function resetFilters() {
+             document.getElementById('filterCluster').value = "";
+             document.getElementById('filterRegion').value = "";
+             document.getElementById('filterCountry').value = "";
+             document.getElementById('filterDegree').value = "";
+             document.getElementById('filterUniv').value = "";
+             document.getElementById('filterProg').value = "";
+             applyFilters();
+        }
+
+        // Sorting Logic
+        function sortData(column) {
+            if (sortState.column === column) {
+                // Toggle direction
+                sortState.direction = sortState.direction === 'asc' ? 'desc' : 'asc';
+            } else {
+                sortState.column = column;
+                sortState.direction = 'asc';
+            }
+            
+            // Update UI Icons
+            document.querySelectorAll('th').forEach(th => th.classList.remove('active-sort'));
+            const activeHeader = document.querySelector(`th[onclick="sortData('${column}')"]`);
+            if (activeHeader) {
+                activeHeader.classList.add('active-sort');
+                const icon = activeHeader.querySelector('.sort-icon');
+                icon.className = `fas fa-sort-${sortState.direction === 'asc' ? 'up' : 'down'} sort-icon ml-1`;
+            }
+
+            sortFilteredData();
+            renderTable();
+        }
+
+        function sortFilteredData() {
+            const col = sortState.column;
+            const dir = sortState.direction;
+
+            filteredData.sort((a, b) => {
+                let valA = a[col];
+                let valB = b[col];
+
+                if (typeof valA === 'string') valA = valA.toLowerCase();
+                if (typeof valB === 'string') valB = valB.toLowerCase();
+
+                if (valA < valB) return dir === 'asc' ? -1 : 1;
+                if (valA > valB) return dir === 'asc' ? 1 : -1;
+                return 0;
+            });
+        }
+
+        function renderTable() {
+            tableBody.innerHTML = '';
+            
+            const start = (currentPage - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
+            const paginatedItems = filteredData.slice(start, end);
+
+            if (paginatedItems.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="7" class="px-6 py-8 text-center text-slate-500">Tidak ada data ditemukan.</td></tr>`;
+                paginationInfo.innerText = 'Showing 0-0 of 0';
+                return;
+            }
+
+            paginatedItems.forEach(item => {
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-white/5 transition-colors group';
+                
+                // Badge color logic
+                let degreeBadgeColor = item.degree === 'Doktoral' ? 'bg-purple-500/20 text-purple-300' : 'bg-blue-500/20 text-blue-300';
+                
+                row.innerHTML = `
+                    <td class="px-6 py-4 font-medium text-white group-hover:text-brand-primary transition-colors">${item.no}</td>
+                    <td class="px-6 py-4 text-xs font-semibold text-slate-300 uppercase tracking-wide">${item.cluster}</td>
+                    <td class="px-6 py-4">${item.region}</td>
+                    <td class="px-6 py-4 text-white">${item.country}</td>
+                    <td class="px-6 py-4"><span class="px-2 py-1 rounded text-xs font-bold ${degreeBadgeColor}">${item.degree}</span></td>
+                    <td class="px-6 py-4 font-semibold text-slate-200">${item.univ}</td>
+                    <td class="px-6 py-4 text-slate-300 italic">${item.prog}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+
+            // Update Pagination Info
+            paginationInfo.innerText = `Showing ${start + 1}-${Math.min(end, filteredData.length)} of ${filteredData.length}`;
+            totalCount.innerText = filteredData.length;
+
+            // Update Buttons
+            btnPrev.disabled = currentPage === 1;
+            btnNext.disabled = end >= filteredData.length;
+
+            renderPageNumbers();
+        }
+
+        function renderPageNumbers() {
+            pageNumbers.innerHTML = '';
+            const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+            
+            if (totalPages <= 1) return;
+
+            let pagesToShow = [];
+            if (totalPages <= 5) {
+                pagesToShow = Array.from({length: totalPages}, (_, i) => i + 1);
+            } else {
+                if (currentPage <= 3) pagesToShow = [1, 2, 3, 4, '...', totalPages];
+                else if (currentPage >= totalPages - 2) pagesToShow = [1, '...', totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
+                else pagesToShow = [1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages];
+            }
+
+            pagesToShow.forEach(p => {
+                const btn = document.createElement('button');
+                btn.className = `px-2 py-1 text-xs rounded transition ${p === currentPage ? 'bg-brand-primary text-white' : 'bg-white/5 text-slate-400 hover:bg-white/10'}`;
+                btn.innerText = p;
+                if (p === '...') {
+                    btn.disabled = true;
+                    btn.classList.add('cursor-default');
+                } else {
+                    btn.onclick = () => {
+                        currentPage = p;
+                        renderTable();
+                    };
+                }
+                pageNumbers.appendChild(btn);
+            });
+        }
+
+        // Event Listeners for Pagination
+        btnPrev.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderTable();
+            }
+        });
+
+        btnNext.addEventListener('click', () => {
+            const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderTable();
+            }
+        });
+
+        // Initialize
+        populateFilters();
+        renderTable();
+
+    </script>
+</body>
+</html>
