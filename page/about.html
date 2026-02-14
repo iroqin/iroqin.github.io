@@ -56,6 +56,7 @@
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
+        /* Timeline Specific Style */
         .timeline-line::before {
             content: '';
             position: absolute;
@@ -74,31 +75,35 @@
         }
     </style>
 </head>
-<body class="bg-brand-dark text-slate-200 font-sans selection:bg-brand-primary selection:text-white">
+<body class="bg-brand-dark text-slate-200 font-sans selection:bg-brand-primary selection:text-white flex flex-col min-h-screen">
 
-    <!-- Navigation -->
+    <!-- Navigation (Same as TablePage.html) -->
     <nav class="fixed w-full z-50 bg-brand-dark/90 backdrop-blur-md border-b border-white/10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 <!-- Logo -->
-                <a href="https://iroqin.github.io/" class="flex-shrink-0 font-bold text-xl text-white tracking-wider cursor-pointer">
+                <div class="flex-shrink-0 font-bold text-xl text-white tracking-wider cursor-pointer" onclick="window.location.href='TablePage.html'">
                     QK<span class="text-brand-primary">.</span>
-                </a>
+                </div>
                 
                 <!-- Desktop Menu -->
                 <div class="hidden lg:block">
                     <div class="ml-10 flex items-baseline space-x-1">
-                        <a href="https://iroqin.github.io/" class="hover:text-brand-primary hover:bg-white/5 px-3 py-2 rounded-md text-sm font-medium transition-colors">Home</a>
-                        <a href="#experience" class="text-white bg-white/10 px-3 py-2 rounded-md text-sm font-medium transition-colors">Experience</a>
-                        <a href="#education" class="hover:text-brand-primary hover:bg-white/5 px-3 py-2 rounded-md text-sm font-medium transition-colors">Education</a>
-                        <a href="#skills" class="hover:text-brand-primary hover:bg-white/5 px-3 py-2 rounded-md text-sm font-medium transition-colors">Skills</a>
+                        <!-- Links pointing back to main sections, usually on the homepage -->
+                        <a href="TablePage.html#policy" class="hover:text-brand-primary hover:bg-white/5 px-3 py-2 rounded-md text-sm font-medium transition-colors">Policy</a>
+                        <a href="TablePage.html#academic" class="hover:text-brand-primary hover:bg-white/5 px-3 py-2 rounded-md text-sm font-medium transition-colors">Academic</a>
+                        <a href="TablePage.html#ielts" class="hover:text-brand-primary hover:bg-white/5 px-3 py-2 rounded-md text-sm font-medium transition-colors">IELTS</a>
+                        <a href="TablePage.html#notes" class="hover:text-brand-primary hover:bg-white/5 px-3 py-2 rounded-md text-sm font-medium transition-colors">Notes</a>
+                        <a href="TablePage.html#gallery" class="hover:text-brand-primary hover:bg-white/5 px-3 py-2 rounded-md text-sm font-medium transition-colors">Gallery</a>
+                        <!-- Active State for About -->
+                        <a href="#" class="text-brand-primary bg-white/5 px-3 py-2 rounded-md text-sm font-medium transition-colors">About</a>
                     </div>
                 </div>
 
                 <!-- Contact Button (Right Top) -->
                 <div class="hidden md:block">
-                    <a href="mailto:qori.kharismawan@kemenkeu.go.id" class="bg-brand-primary hover:bg-blue-600 text-white px-5 py-2 rounded-full text-sm font-medium transition-all shadow-lg shadow-blue-500/20">
-                        Get in Touch
+                    <a href="#footer" class="bg-brand-primary hover:bg-blue-600 text-white px-5 py-2 rounded-full text-sm font-medium transition-all shadow-lg shadow-blue-500/20">
+                        Contact Me
                     </a>
                 </div>
 
@@ -112,7 +117,7 @@
         </div>
     </nav>
 
-    <!-- Header / Title -->
+    <!-- Header / Title Section -->
     <section class="pt-32 pb-12 bg-brand-darker relative overflow-hidden">
         <div class="absolute top-0 right-0 w-96 h-96 bg-brand-primary/5 rounded-full blur-3xl -z-10"></div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -127,7 +132,7 @@
     </section>
 
     <!-- Main Content Grid -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
             
             <!-- Left Column (Experience & Education) -->
@@ -205,7 +210,27 @@
                             </div>
                         </div>
 
-                        <!-- Item 4 -->
+                        <!-- Item 4 (Added: Business Valuation Intern) -->
+                        <div class="relative pl-12 md:pl-16">
+                            <div class="absolute left-0 top-1 w-12 h-12 md:w-14 md:h-14 bg-brand-dark border border-white/10 rounded-full flex items-center justify-center z-10">
+                                <span class="text-xs font-bold text-slate-400">2021</span>
+                            </div>
+                            <div class="glass-card p-6 rounded-xl">
+                                <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-2">
+                                    <div>
+                                        <h3 class="text-lg font-bold text-white">Business Valuation Intern</h3>
+                                        <p class="text-brand-accent text-sm">KJPP Dasaat, Yudistira, dan Rekan (Semarang)</p>
+                                    </div>
+                                    <span class="text-xs text-slate-500 mt-1 md:mt-0 bg-slate-800 px-2 py-1 rounded">Sept 2021</span>
+                                </div>
+                                <ul class="list-disc list-outside ml-4 mt-3 space-y-2 text-slate-400 text-sm">
+                                    <li>Assisted in business valuation of PT Kawasan Industri Wijayakusuma (KIW).</li>
+                                    <li>Conducted market data analysis and defined assignment scopes for public appraisal.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Item 5 (Renumbered) -->
                         <div class="relative pl-12 md:pl-16">
                             <div class="absolute left-0 top-1 w-12 h-12 md:w-14 md:h-14 bg-brand-dark border border-white/10 rounded-full flex items-center justify-center z-10">
                                 <span class="text-xs font-bold text-slate-400">2009</span>
@@ -246,7 +271,7 @@
                             <p class="text-slate-300">Universitas Gadjah Mada, Indonesia <span class="text-slate-500 text-sm">| 2020 - 2022</span></p>
                             <div class="mt-4 text-sm text-slate-400">
                                 <p class="mb-2"><strong class="text-white">Funding:</strong> LPDP Scholarship (Full merit-based).</p>
-                                <p><strong class="text-white">Thesis:</strong> "The influence of ESG factors on corporate performance and resilience during the COVID-19 pandemic in Indonesia."</p>
+                                <p><strong class="text-white">Focus:</strong> Sustainable Finance, ESG, Asset Management, Business Valuation.</p>
                             </div>
                         </div>
 
@@ -262,6 +287,46 @@
                                 <p class="text-slate-400 text-sm mt-1">State College of Accountancy (STAN)</p>
                                 <p class="text-slate-500 text-xs mt-1">2006 - 2009</p>
                                 <p class="text-xs text-brand-accent mt-2"><i class="fas fa-star mr-1"></i> Top 2.5% Acceptance Rate</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Publications & Scholarly Output (Added Section) -->
+                <section class="fade-in-up delay-300">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="p-2 bg-blue-500/10 rounded-lg text-blue-400">
+                            <i class="fas fa-scroll text-xl"></i>
+                        </div>
+                        <h2 class="text-xl font-bold text-white">Publications & Research</h2>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="glass-card p-5 rounded-xl">
+                            <div class="flex items-start gap-3">
+                                <i class="fas fa-newspaper text-slate-500 mt-1"></i>
+                                <div>
+                                    <h4 class="font-bold text-white text-sm">Policy Article: Integrating Sustainability into State Asset Management</h4>
+                                    <p class="text-xs text-slate-400">Directorate General of State Asset Management, Ministry of Finance (Aug 2024)</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="glass-card p-5 rounded-xl">
+                            <div class="flex items-start gap-3">
+                                <i class="fas fa-book text-slate-500 mt-1"></i>
+                                <div>
+                                    <h4 class="font-bold text-white text-sm">Thesis: The influence of ESG factors on corporate performance & resilience</h4>
+                                    <p class="text-xs text-slate-400">Universitas Gadjah Mada (2022) | Advisor: Eddy Junarsin, Ph.D.</p>
+                                    <p class="text-xs text-slate-500 mt-1">Analyzed ESG adoption and financial resilience in Indonesian firms during global shocks.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="glass-card p-5 rounded-xl">
+                            <div class="flex items-start gap-3">
+                                <i class="fas fa-book text-slate-500 mt-1"></i>
+                                <div>
+                                    <h4 class="font-bold text-white text-sm">Thesis: Impact of Inflation & Exchange Rates on Bank Profitability</h4>
+                                    <p class="text-xs text-slate-400">Perbanas Institute (2015)</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -323,11 +388,13 @@
                     <h3 class="text-lg font-bold text-white mb-4 pl-2 border-l-2 border-brand-primary">Skills & Tools</h3>
                     <div class="flex flex-wrap gap-2">
                         <span class="px-3 py-1 bg-slate-800 text-slate-300 rounded-full text-xs border border-white/5">STATA</span>
+                        <span class="px-3 py-1 bg-slate-800 text-slate-300 rounded-full text-xs border border-white/5">Spreadsheet Modeling</span>
                         <span class="px-3 py-1 bg-slate-800 text-slate-300 rounded-full text-xs border border-white/5">Financial Analysis</span>
                         <span class="px-3 py-1 bg-slate-800 text-slate-300 rounded-full text-xs border border-white/5">Prompt Engineering</span>
                         <span class="px-3 py-1 bg-slate-800 text-slate-300 rounded-full text-xs border border-white/5">Asset Valuation</span>
                         <span class="px-3 py-1 bg-slate-800 text-slate-300 rounded-full text-xs border border-white/5">Public Budgeting</span>
                         <span class="px-3 py-1 bg-slate-800 text-slate-300 rounded-full text-xs border border-white/5">HTML/JS</span>
+                        <span class="px-3 py-1 bg-slate-800 text-slate-300 rounded-full text-xs border border-white/5">LLM Integration</span>
                         <span class="px-3 py-1 bg-slate-800 text-slate-300 rounded-full text-xs border border-white/5">Adobe Creative Suite</span>
                     </div>
                 </div>
@@ -335,11 +402,20 @@
                 <!-- Certifications -->
                 <div class="fade-in-up delay-300">
                      <h3 class="text-lg font-bold text-white mb-4 pl-2 border-l-2 border-brand-primary">Certifications</h3>
-                     <div class="glass-card p-4 rounded-xl flex items-center gap-3">
-                        <i class="fab fa-google text-2xl text-white"></i>
-                        <div>
-                            <h4 class="font-bold text-white text-sm">Gemini Certified Educator</h4>
-                            <p class="text-xs text-slate-400">Google AI Tools (2025)</p>
+                     <div class="space-y-4">
+                        <div class="glass-card p-4 rounded-xl flex items-center gap-3">
+                            <i class="fab fa-google text-2xl text-white"></i>
+                            <div>
+                                <h4 class="font-bold text-white text-sm">Gemini Certified Educator</h4>
+                                <p class="text-xs text-slate-400">Google AI Tools (2025)</p>
+                            </div>
+                        </div>
+                        <div class="glass-card p-4 rounded-xl flex items-center gap-3">
+                            <i class="fas fa-robot text-2xl text-blue-400"></i>
+                            <div>
+                                <h4 class="font-bold text-white text-sm">AI Training for Economic & Business</h4>
+                                <p class="text-xs text-slate-400">KORIKA / Google.org / AVPN (2025)</p>
+                            </div>
                         </div>
                      </div>
                 </div>
@@ -352,6 +428,7 @@
                         <li class="flex items-start"><i class="fas fa-angle-right text-brand-primary mt-1 mr-2"></i> Public Sector Balance Sheet</li>
                         <li class="flex items-start"><i class="fas fa-angle-right text-brand-primary mt-1 mr-2"></i> ESG Integration in State Assets</li>
                         <li class="flex items-start"><i class="fas fa-angle-right text-brand-primary mt-1 mr-2"></i> Fiscal Risk Mitigation</li>
+                        <li class="flex items-start"><i class="fas fa-angle-right text-brand-primary mt-1 mr-2"></i> Spatial Econometrics</li>
                     </ul>
                 </div>
 
@@ -371,21 +448,44 @@
                             <h4 class="text-white font-medium text-sm">Best Employee</h4>
                             <p class="text-xs text-slate-500 mt-1">KPKNL Palembang (2018)</p>
                         </div>
+                        <div class="border-b border-white/5 pb-3">
+                            <h4 class="text-white font-medium text-sm">STAN Scholarship</h4>
+                            <p class="text-xs text-slate-500 mt-1">Full-ride Associate Degree (2006)</p>
+                        </div>
                     </div>
                 </div>
 
             </div>
         </div>
-    </div>
+    </main>
 
-    <!-- Footer -->
-    <footer class="bg-brand-darker py-8 border-t border-white/5 mt-12">
-        <div class="max-w-7xl mx-auto px-4 text-center">
+    <!-- Footer (Same as TablePage.html) -->
+    <footer id="footer" class="bg-brand-darker py-16 border-t border-white/5 mt-auto">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="text-2xl font-bold text-white mb-8">Let's Connect</h2>
+            <div class="flex justify-center space-x-8 mb-8">
+                <!-- LinkedIn -->
+                <a href="https://www.linkedin.com/in/qorikharismawan/" target="_blank" class="text-slate-400 hover:text-[#0077b5] transition-colors transform hover:-translate-y-1">
+                    <i class="fab fa-linkedin text-3xl"></i>
+                </a>
+                <!-- Instagram -->
+                <a href="https://instagram.com/iroqin" target="_blank" class="text-slate-400 hover:text-[#E1306C] transition-colors transform hover:-translate-y-1">
+                    <i class="fab fa-instagram text-3xl"></i>
+                </a>
+                <!-- Twitter/X -->
+                <a href="https://x.com/iroqin" target="_blank" class="text-slate-400 hover:text-white transition-colors transform hover:-translate-y-1">
+                    <i class="fab fa-twitter text-3xl"></i>
+                </a>
+                <!-- Github -->
+                <a href="https://github.com/iroqin" target="_blank" class="text-slate-400 hover:text-white transition-colors transform hover:-translate-y-1">
+                    <i class="fab fa-github text-3xl"></i>
+                </a>
+            </div>
             <p class="text-slate-600 text-sm">
-                &copy; 2026 Qori Kharismawan. All rights reserved.
+                &copy; 2026 Qori Kharismawan. All rights reserved.<br>
+                <span class="text-xs mt-2 block">Built with Tailwind CSS.</span>
             </p>
         </div>
     </footer>
-
 </body>
 </html>
