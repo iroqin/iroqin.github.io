@@ -682,7 +682,7 @@
 
         // --- Logic for Pagination, Search, Sorting, and Filtering ---
         let currentPage = 1;
-        let rowsPerPage = 20; // Default changed to 20 as requested
+        let rowsPerPage = 20;
         let filteredData = [...scholarshipData];
         
         let sortState = {
@@ -696,36 +696,10 @@
         const btnNext = document.getElementById('btnNext');
         const totalCount = document.getElementById('totalCount');
         const pageNumbers = document.getElementById('pageNumbers');
-        const rowsPerPageSelect = document.getElementById('rowsPerPageSelect'); // Get Select Element
+        const rowsPerPageSelect = document.getElementById('rowsPerPageSelect');
 
-        // Populate Dropdowns
-        function populateFilters() {
-            const uniqueClusters = [...new Set(scholarshipData.map(item => item.cluster))].sort();
-            const uniqueRegions = [...new Set(scholarshipData.map(item => item.region))].sort();
-            const uniqueCountries = [...new Set(scholarshipData.map(item => item.country))].sort();
-            const uniqueDegrees = [...new Set(scholarshipData.map(item => item.degree))].sort();
-
-            const createOptions = (id, data) => {
-                const select = document.getElementById(id);
-                // Keep the first option (All)
-                select.innerHTML = '<option value="">All</option>';
-                data.forEach(val => {
-                    const opt = document.createElement('option');
-                    opt.value = val;
-                    opt.innerText = val;
-                    opt.className = 'bg-slate-800 text-slate-200'; // Style for options in dark mode
-                    select.appendChild(opt);
-                });
-            };
-
-            createOptions('filterCluster', uniqueClusters);
-            createOptions('filterRegion', uniqueRegions);
-            createOptions('filterCountry', uniqueCountries);
-            createOptions('filterDegree', uniqueDegrees);
-        }
-
-        // Apply Filters
-        function applyFilters() {
+        // Helper: Get available options for a specific column based on CURRENT filtered state
+        function getAvailableOptions(columnKey) {
             const clusterVal = document.getElementById('filterCluster').value;
             const regionVal = document.getElementById('filterRegion').value;
             const countryVal = document.getElementById('filterCountry').value;
@@ -733,6 +707,75 @@
             const univVal = document.getElementById('filterUniv').value.toLowerCase();
             const progVal = document.getElementById('filterProg').value.toLowerCase();
 
+            // We filter scholarshipData based on ALL other active filters EXCEPT the current columnKey
+            // This ensures "Doktoral" shows only countries that have Doctoral programs
+            const validItems = scholarshipData.filter(item => {
+                const matchCluster = columnKey === 'cluster' || clusterVal === "" || item.cluster === clusterVal;
+                const matchRegion = columnKey === 'region' || regionVal === "" || item.region === regionVal;
+                const matchCountry = columnKey === 'country' || countryVal === "" || item.country === countryVal;
+                const matchDegree = columnKey === 'degree' || degreeVal === "" || item.degree === degreeVal;
+                
+                // Text inputs generally constrain everything (optional choice, but standard behavior)
+                const matchUniv = univVal === "" || item.univ.toLowerCase().includes(univVal);
+                const matchProg = progVal === "" || item.prog.toLowerCase().includes(progVal);
+
+                return matchCluster && matchRegion && matchCountry && matchDegree && matchUniv && matchProg;
+            });
+
+            return [...new Set(validItems.map(item => item[columnKey]))].sort();
+        }
+
+        // Helper: Update dropdown options dynamically
+        function updateDropdowns() {
+            const configs = [
+                { id: 'filterCluster', key: 'cluster' },
+                { id: 'filterRegion', key: 'region' },
+                { id: 'filterCountry', key: 'country' },
+                { id: 'filterDegree', key: 'degree' }
+            ];
+
+            let needsRefilter = false;
+
+            configs.forEach(conf => {
+                const select = document.getElementById(conf.id);
+                const currentVal = select.value;
+                const options = getAvailableOptions(conf.key);
+
+                // Check if current selection is still valid
+                // If currentVal is NOT in new options (and not empty), it means the combination is invalid.
+                // We reset it to "" (All).
+                if (currentVal !== "" && !options.includes(currentVal)) {
+                    select.value = "";
+                    needsRefilter = true; // Flag that we changed a value programmatically
+                }
+
+                // Rebuild options HTML
+                select.innerHTML = '<option value="">All</option>';
+                options.forEach(val => {
+                    const opt = document.createElement('option');
+                    opt.value = val;
+                    opt.innerText = val;
+                    opt.className = 'bg-slate-800 text-slate-200';
+                    select.appendChild(opt);
+                });
+
+                // Restore selection if it was valid (or just reset to "")
+                select.value = (currentVal !== "" && options.includes(currentVal)) ? currentVal : "";
+            });
+
+            return needsRefilter;
+        }
+
+        // Apply Filters Main Function
+        function applyFilters(recurse = false) {
+            const clusterVal = document.getElementById('filterCluster').value;
+            const regionVal = document.getElementById('filterRegion').value;
+            const countryVal = document.getElementById('filterCountry').value;
+            const degreeVal = document.getElementById('filterDegree').value;
+            const univVal = document.getElementById('filterUniv').value.toLowerCase();
+            const progVal = document.getElementById('filterProg').value.toLowerCase();
+
+            // 1. Filter Data for Table
             filteredData = scholarshipData.filter(item => {
                 return (clusterVal === "" || item.cluster === clusterVal) &&
                        (regionVal === "" || item.region === regionVal) &&
@@ -742,11 +785,21 @@
                        (progVal === "" || item.prog.toLowerCase().includes(progVal));
             });
             
-            // Re-apply sort after filter
+            // 2. Sort & Render Table
             sortFilteredData();
-
             currentPage = 1;
             renderTable();
+
+            // 3. Dynamic Dropdown Update
+            // Only run if not already recursively correcting values to prevent infinite loops
+            if (!recurse) {
+                const valuesChanged = updateDropdowns();
+                if (valuesChanged) {
+                    // If updateDropdowns forced a reset (e.g. selected country no longer valid), 
+                    // re-run applyFilters to show correct data for the new state (e.g. showing "All" countries)
+                    applyFilters(true); 
+                }
+            }
         }
 
         function resetFilters() {
@@ -762,14 +815,12 @@
         // Sorting Logic
         function sortData(column) {
             if (sortState.column === column) {
-                // Toggle direction
                 sortState.direction = sortState.direction === 'asc' ? 'desc' : 'asc';
             } else {
                 sortState.column = column;
                 sortState.direction = 'asc';
             }
             
-            // Update UI Icons
             document.querySelectorAll('th').forEach(th => th.classList.remove('active-sort'));
             const activeHeader = document.querySelector(`th[onclick="sortData('${column}')"]`);
             if (activeHeader) {
@@ -816,7 +867,6 @@
                 const row = document.createElement('tr');
                 row.className = 'hover:bg-white/5 transition-colors group';
                 
-                // Badge color logic
                 let degreeBadgeColor = item.degree === 'Doktoral' ? 'bg-purple-500/20 text-purple-300' : 'bg-blue-500/20 text-blue-300';
                 
                 row.innerHTML = `
@@ -831,11 +881,9 @@
                 tableBody.appendChild(row);
             });
 
-            // Update Pagination Info
             paginationInfo.innerText = `Showing ${start + 1}-${Math.min(end, filteredData.length)} of ${filteredData.length}`;
             totalCount.innerText = filteredData.length;
 
-            // Update Buttons
             btnPrev.disabled = currentPage === 1;
             btnNext.disabled = end >= filteredData.length;
 
@@ -874,14 +922,12 @@
             });
         }
 
-        // Event Listener for Rows Per Page Change
         rowsPerPageSelect.addEventListener('change', (e) => {
             rowsPerPage = parseInt(e.target.value);
-            currentPage = 1; // Reset to first page whenever user changes rows per page
+            currentPage = 1;
             renderTable();
         });
 
-        // Event Listeners for Pagination
         btnPrev.addEventListener('click', () => {
             if (currentPage > 1) {
                 currentPage--;
@@ -897,10 +943,7 @@
             }
         });
 
-        // Initialize
-        populateFilters();
-        renderTable();
+        // Initialize App (Populate dropdowns for the first time)
+        applyFilters(); 
 
     </script>
-</body>
-</html>
