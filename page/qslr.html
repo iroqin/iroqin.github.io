@@ -716,7 +716,8 @@ ER  - `;
                 if (!currentArticleId) return;
 
                 setDecisions(prev => ({ ...prev, [currentArticleId]: decision }));
-                if (currentIndex < filteredArticles.length - 1 && activeTab === 'screening') setCurrentIndex(prev => prev + 1);
+                // Auto-advance removed per user request to allow note entry
+                // if (currentIndex < filteredArticles.length - 1 && activeTab === 'screening') setCurrentIndex(prev => prev + 1);
             }, [articles, currentIndex, activeTab, filterKeywords]); // filterKeywords dependency for filteredArticles calc
             
             const handleReasonChange = (id, text) => setReasons(prev => ({ ...prev, [id]: text }));
