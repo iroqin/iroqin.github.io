@@ -57,8 +57,7 @@
     <script type="text/babel">
         const { useState, useEffect, useCallback, useRef } = React;
 
-        // --- ICONS (SVG Components replacement for lucide-react) ---
-        // Karena kita tidak pakai build tool, kita definisikan icon manual sebagai komponen
+        // --- ICONS ---
         const IconWrapper = ({ children, className }) => (
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>{children}</svg>
         );
@@ -108,6 +107,7 @@
                             records.push({ 
                                 ...currentRecord, 
                                 id: generateStableId(currentRecord),
+                                index: records.length + 1, // Stable Index Numbering
                                 title: currentRecord.title || 'Untitled',
                                 authors: currentRecord.authors || [],
                                 year: currentRecord.year || 'N/A'
@@ -233,6 +233,64 @@ ER  - `;
             </header>
         );
 
+        const FilterSidebar = ({ filterKeywords, newKeyword, setNewKeyword, onAddKeyword, onToggleKeyword, onRemoveKeyword }) => (
+            <div className="w-80 bg-[#020617] border-l border-white/10 flex flex-col shrink-0 z-20">
+                <div className="px-6 py-5 border-b border-white/10">
+                    <h3 className="text-xs font-bold text-white uppercase tracking-widest flex items-center gap-2">
+                        <Filter className="w-3 h-3 text-blue-500" /> Filters
+                    </h3>
+                </div>
+                
+                <div className="p-6 flex-1 overflow-y-auto custom-scrollbar">
+                    <div className="mb-6">
+                        <label className="text-[10px] font-bold text-slate-500 uppercase mb-2 block">Add Keyword</label>
+                        <div className="flex shadow-sm rounded-md bg-white/5 border border-white/10 focus-within:border-blue-500/50 transition-colors">
+                            <input 
+                                type="text" 
+                                value={newKeyword}
+                                onChange={(e) => setNewKeyword(e.target.value)}
+                                onKeyDown={(e) => e.key === 'Enter' && onAddKeyword()}
+                                placeholder="Type & Enter..."
+                                className="flex-1 min-w-0 block w-full px-3 py-2 bg-transparent text-xs text-slate-200 placeholder-slate-600 focus:outline-none"
+                            />
+                            <button 
+                                onClick={onAddKeyword}
+                                className="inline-flex items-center px-3 border-l border-white/10 text-slate-400 hover:text-white hover:bg-white/5"
+                            >
+                                <Plus className="w-3 h-3" />
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="space-y-2">
+                        {filterKeywords.length === 0 && (
+                            <div className="text-center py-8 text-xs text-slate-600 border border-dashed border-white/10 rounded-lg">
+                                No filters active.
+                            </div>
+                        )}
+                        {filterKeywords.map((k, idx) => (
+                            <div key={idx} className="flex items-center justify-between group px-3 py-2 rounded-lg bg-white/5 border border-transparent hover:border-white/10 hover:bg-white/10 transition-all">
+                                <label className="flex items-center gap-3 cursor-pointer flex-1 min-w-0">
+                                    <input 
+                                        type="checkbox" 
+                                        checked={k.active} 
+                                        onChange={() => onToggleKeyword(idx)}
+                                        className="w-3.5 h-3.5 text-blue-500 rounded border-slate-600 bg-slate-800 focus:ring-0 cursor-pointer"
+                                    />
+                                    <span className={`text-xs truncate ${k.active ? 'font-medium text-blue-400' : 'text-slate-400'}`}>
+                                        {k.text}
+                                    </span>
+                                </label>
+                                <button onClick={() => onRemoveKeyword(idx)} className="text-slate-600 hover:text-red-400 opacity-0 group-hover:opacity-100 px-1 transition-all">
+                                    <X className="w-3 h-3" />
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        );
+
         const OverviewView = ({ articles, stats }) => {
             const total = articles.length || 1;
             const pInc = (stats.include / total) * 100;
@@ -344,9 +402,9 @@ ER  - `;
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y divide-white/5">
-                                        {filteredArticles.length > 0 ? filteredArticles.map((art, idx) => (
+                                        {filteredArticles.length > 0 ? filteredArticles.map((art) => (
                                             <tr key={art.id} className="hover:bg-white/5 transition-colors group">
-                                                <td className="p-4 text-center text-slate-500 text-xs font-mono group-hover:text-blue-400 transition-colors">{idx + 1}</td>
+                                                <td className="p-4 text-center text-slate-500 text-xs font-mono group-hover:text-blue-400 transition-colors">{art.index}</td>
                                                 <td className="p-4 text-center">
                                                     {decisions[art.id] === 'include' && <span className="inline-flex px-2 py-1 rounded text-[10px] font-bold bg-green-500/20 text-green-400 border border-green-500/20 tracking-wider uppercase">Inc</span>}
                                                     {decisions[art.id] === 'exclude' && <span className="inline-flex px-2 py-1 rounded text-[10px] font-bold bg-red-500/20 text-red-400 border border-red-500/20 tracking-wider uppercase">Exc</span>}
@@ -374,70 +432,24 @@ ER  - `;
                         </div>
                     </div>
 
-                    <div className="w-80 bg-[#020617] border-l border-white/10 flex flex-col shrink-0 z-20">
-                        <div className="px-6 py-5 border-b border-white/10">
-                            <h3 className="text-xs font-bold text-white uppercase tracking-widest flex items-center gap-2">
-                                <Filter className="w-3 h-3 text-blue-500" /> Filters
-                            </h3>
-                        </div>
-                        
-                        <div className="p-6 flex-1 overflow-y-auto custom-scrollbar">
-                            <div className="mb-6">
-                                <label className="text-[10px] font-bold text-slate-500 uppercase mb-2 block">Add Keyword</label>
-                                <div className="flex shadow-sm rounded-md bg-white/5 border border-white/10 focus-within:border-blue-500/50 transition-colors">
-                                    <input 
-                                        type="text" 
-                                        value={newKeyword}
-                                        onChange={(e) => setNewKeyword(e.target.value)}
-                                        onKeyDown={(e) => e.key === 'Enter' && onAddKeyword()}
-                                        placeholder="Type & Enter..."
-                                        className="flex-1 min-w-0 block w-full px-3 py-2 bg-transparent text-xs text-slate-200 placeholder-slate-600 focus:outline-none"
-                                    />
-                                    <button 
-                                        onClick={onAddKeyword}
-                                        className="inline-flex items-center px-3 border-l border-white/10 text-slate-400 hover:text-white hover:bg-white/5"
-                                    >
-                                        <Plus className="w-3 h-3" />
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div className="space-y-2">
-                                {filterKeywords.length === 0 && (
-                                    <div className="text-center py-8 text-xs text-slate-600 border border-dashed border-white/10 rounded-lg">
-                                        No filters active.
-                                    </div>
-                                )}
-                                {filterKeywords.map((k, idx) => (
-                                    <div key={idx} className="flex items-center justify-between group px-3 py-2 rounded-lg bg-white/5 border border-transparent hover:border-white/10 hover:bg-white/10 transition-all">
-                                        <label className="flex items-center gap-3 cursor-pointer flex-1 min-w-0">
-                                            <input 
-                                                type="checkbox" 
-                                                checked={k.active} 
-                                                onChange={() => onToggleKeyword(idx)}
-                                                className="w-3.5 h-3.5 text-blue-500 rounded border-slate-600 bg-slate-800 focus:ring-0 cursor-pointer"
-                                            />
-                                            <span className={`text-xs truncate ${k.active ? 'font-medium text-blue-400' : 'text-slate-400'}`}>
-                                                {k.text}
-                                            </span>
-                                        </label>
-                                        <button onClick={() => onRemoveKeyword(idx)} className="text-slate-600 hover:text-red-400 opacity-0 group-hover:opacity-100 px-1 transition-all">
-                                            <X className="w-3 h-3" />
-                                        </button>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
+                    <FilterSidebar 
+                        filterKeywords={filterKeywords}
+                        newKeyword={newKeyword}
+                        setNewKeyword={setNewKeyword}
+                        onAddKeyword={onAddKeyword}
+                        onToggleKeyword={onToggleKeyword}
+                        onRemoveKeyword={onRemoveKeyword}
+                    />
                 </div>
             );
         };
 
-        const ScreeningView = ({ articles, currentIndex, setCurrentIndex, decisions, reasons, onDecision, onReasonChange }) => {
+        const ScreeningView = ({ articles, currentIndex, setCurrentIndex, decisions, reasons, onDecision, onReasonChange, filterProps }) => {
             const currentArticle = articles[currentIndex];
 
             return (
                 <div className="flex flex-1 h-full overflow-hidden bg-[#0f172a] pt-16">
+                    {/* Left: Compact List */}
                     <div className="w-80 bg-[#020617] border-r border-white/10 flex flex-col shrink-0 hidden lg:flex">
                         <div className="px-5 py-4 border-b border-white/10 flex justify-between items-center">
                             <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">List</span>
@@ -457,7 +469,7 @@ ER  - `;
                                     {currentIndex === idx && <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)]"></div>}
                                     
                                     <div className="flex justify-between items-start mb-2">
-                                        <span className={`font-mono text-[10px] ${currentIndex === idx ? 'text-blue-400 font-bold' : 'text-slate-500'}`}>#{idx + 1}</span>
+                                        <span className={`font-mono text-[10px] ${currentIndex === idx ? 'text-blue-400 font-bold' : 'text-slate-500'}`}>#{art.index}</span>
                                         {decisions[art.id] === 'include' && <div className="w-1.5 h-1.5 rounded-full bg-green-500 shadow-[0_0_5px_rgba(34,197,94,0.5)]"></div>}
                                         {decisions[art.id] === 'exclude' && <div className="w-1.5 h-1.5 rounded-full bg-red-500 shadow-[0_0_5px_rgba(239,68,68,0.5)]"></div>}
                                         {decisions[art.id] === 'maybe' && <div className="w-1.5 h-1.5 rounded-full bg-amber-500 shadow-[0_0_5px_rgba(245,158,11,0.5)]"></div>}
@@ -470,10 +482,11 @@ ER  - `;
                         </div>
                     </div>
 
+                    {/* Center: Reading Pane (Full Width) */}
                     <div className="flex-1 flex flex-col min-w-0 bg-[#0f172a]">
-                        <div className="flex-1 overflow-y-auto p-8 lg:p-12 custom-scrollbar">
+                        <div className="flex-1 overflow-y-auto p-8 custom-scrollbar w-full">
                             {currentArticle ? (
-                                <div className="max-w-3xl mx-auto">
+                                <div className="w-full">
                                     <div className="mb-8">
                                         <div className="flex flex-wrap items-center gap-3 mb-4">
                                             {currentArticle.journal && (
@@ -486,7 +499,7 @@ ER  - `;
                                             </span>
                                         </div>
 
-                                        <h1 className="text-xl md:text-2xl font-bold text-white leading-snug mb-4 tracking-tight">
+                                        <h1 className="text-2xl md:text-3xl font-bold text-white leading-tight mb-4 tracking-tight">
                                             {currentArticle.title}
                                         </h1>
 
@@ -495,9 +508,9 @@ ER  - `;
                                         </div>
                                     </div>
 
-                                    <div className="mb-10 bg-white/5 rounded-xl p-6 border border-white/5 shadow-inner">
+                                    <div className="mb-10 bg-white/5 rounded-xl p-8 border border-white/5 shadow-inner">
                                         <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">Abstract</h3>
-                                        <p className="text-base text-slate-300 leading-8 text-justify font-light">
+                                        <p className="text-base md:text-lg text-slate-300 leading-8 text-justify font-light">
                                             {currentArticle.abstract || <span className="text-slate-600 italic">Abstract not available.</span>}
                                         </p>
                                     </div>
@@ -515,7 +528,7 @@ ER  - `;
                                         </div>
                                     )}
                                     
-                                    <div className="flex gap-6 text-xs pt-8 border-t border-white/10">
+                                    <div className="flex gap-6 text-xs pt-8 border-t border-white/10 mb-10">
                                         {currentArticle.doi && (
                                             <div className="flex flex-col gap-1">
                                                 <span className="font-bold text-slate-500 uppercase tracking-wider">DOI</span>
@@ -532,6 +545,86 @@ ER  - `;
                                         )}
                                     </div>
 
+                                    {/* DECISION AREA (Bottom of Center Column) */}
+                                    <div className="bg-[#020617] rounded-xl border border-white/10 p-6 mt-8">
+                                        <div className="flex items-center justify-between mb-4">
+                                            <h3 className="text-sm font-bold text-white uppercase tracking-widest">Decision & Notes</h3>
+                                            <div className={`px-3 py-1 rounded text-xs font-bold uppercase tracking-wider border
+                                                ${!decisions[currentArticle?.id] ? 'bg-white/5 text-slate-500 border-white/10' : ''}
+                                                ${decisions[currentArticle?.id] === 'include' ? 'bg-green-500/10 text-green-400 border-green-500/30' : ''}
+                                                ${decisions[currentArticle?.id] === 'exclude' ? 'bg-red-500/10 text-red-400 border-red-500/30' : ''}
+                                                ${decisions[currentArticle?.id] === 'maybe' ? 'bg-amber-500/10 text-amber-400 border-amber-500/30' : ''}
+                                            `}>
+                                                {decisions[currentArticle?.id] || 'Undecided'}
+                                            </div>
+                                        </div>
+
+                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                                            <button 
+                                                onClick={() => onDecision('include')}
+                                                className={`flex items-center justify-center gap-2 p-4 rounded-lg border transition-all group
+                                                    ${decisions[currentArticle?.id] === 'include' ? 'bg-green-500/20 border-green-500/50 text-green-400' : 'bg-white/5 border-white/5 text-slate-400 hover:border-green-500/30 hover:bg-green-500/10 hover:text-green-400'}
+                                                `}
+                                                title="Shortcut: I"
+                                            >
+                                                <CheckCircle className="w-5 h-5" />
+                                                <span className="font-bold text-sm">Include</span>
+                                            </button>
+
+                                            <button 
+                                                onClick={() => onDecision('exclude')}
+                                                className={`flex items-center justify-center gap-2 p-4 rounded-lg border transition-all group
+                                                    ${decisions[currentArticle?.id] === 'exclude' ? 'bg-red-500/20 border-red-500/50 text-red-400' : 'bg-white/5 border-white/5 text-slate-400 hover:border-red-500/30 hover:bg-red-500/10 hover:text-red-400'}
+                                                `}
+                                                title="Shortcut: E"
+                                            >
+                                                <XCircle className="w-5 h-5" />
+                                                <span className="font-bold text-sm">Exclude</span>
+                                            </button>
+
+                                            <button 
+                                                onClick={() => onDecision('maybe')}
+                                                className={`flex items-center justify-center gap-2 p-4 rounded-lg border transition-all group
+                                                    ${decisions[currentArticle?.id] === 'maybe' ? 'bg-amber-500/20 border-amber-500/50 text-amber-400' : 'bg-white/5 border-white/5 text-slate-400 hover:border-amber-500/30 hover:bg-amber-500/10 hover:text-amber-400'}
+                                                `}
+                                                title="Shortcut: M"
+                                            >
+                                                <HelpCircle className="w-5 h-5" />
+                                                <span className="font-bold text-sm">Maybe</span>
+                                            </button>
+                                        </div>
+
+                                        <div className="flex gap-4">
+                                            <div className="flex-1">
+                                                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Reason / Note</label>
+                                                <textarea 
+                                                    value={reasons[currentArticle?.id] || ''}
+                                                    onChange={(e) => onReasonChange(currentArticle?.id, e.target.value)}
+                                                    placeholder="Add note..."
+                                                    className="w-full p-3 text-sm bg-white/5 border border-white/10 rounded-lg focus:border-blue-500/50 text-slate-300 focus:outline-none min-h-[80px] resize-none"
+                                                />
+                                            </div>
+                                            <div className="flex flex-col gap-2 justify-end">
+                                                <button 
+                                                    onClick={() => currentIndex > 0 && setCurrentIndex(c => c - 1)}
+                                                    className="p-3 bg-white/5 text-slate-400 rounded-lg hover:bg-white/10 hover:text-white disabled:opacity-30 border border-white/5 transition-all"
+                                                    disabled={currentIndex === 0}
+                                                    title="Previous"
+                                                >
+                                                    <ArrowLeft className="w-6 h-6"/>
+                                                </button>
+                                                <button 
+                                                    onClick={() => currentIndex < articles.length - 1 && setCurrentIndex(c => c + 1)}
+                                                    className="p-3 bg-white/5 text-slate-400 rounded-lg hover:bg-white/10 hover:text-white disabled:opacity-30 border border-white/5 transition-all"
+                                                    disabled={currentIndex === articles.length - 1}
+                                                    title="Next"
+                                                >
+                                                    <ArrowRight className="w-6 h-6"/>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             ) : (
                                 <div className="h-full flex items-center justify-center text-slate-500 text-sm">Select an article to review</div>
@@ -539,85 +632,8 @@ ER  - `;
                         </div>
                     </div>
 
-                    <div className="w-72 bg-[#020617] border-l border-white/10 flex flex-col shrink-0 z-20">
-                        <div className="p-6 border-b border-white/10">
-                            <div className="text-[10px] font-bold text-slate-500 uppercase mb-3 text-center tracking-widest">Status</div>
-                            <div className={`py-3 px-4 rounded-lg text-center text-sm font-bold uppercase tracking-widest border transition-all duration-300
-                                ${!decisions[currentArticle?.id] ? 'bg-white/5 text-slate-500 border-white/10' : ''}
-                                ${decisions[currentArticle?.id] === 'include' ? 'bg-green-500/10 text-green-400 border-green-500/30 shadow-[0_0_15px_rgba(34,197,94,0.2)]' : ''}
-                                ${decisions[currentArticle?.id] === 'exclude' ? 'bg-red-500/10 text-red-400 border-red-500/30 shadow-[0_0_15px_rgba(239,68,68,0.2)]' : ''}
-                                ${decisions[currentArticle?.id] === 'maybe' ? 'bg-amber-500/10 text-amber-400 border-amber-500/30 shadow-[0_0_15px_rgba(245,158,11,0.2)]' : ''}
-                            `}>
-                                {decisions[currentArticle?.id] || 'Undecided'}
-                            </div>
-                        </div>
-
-                        <div className="p-6 flex-1 flex flex-col gap-4 overflow-y-auto">
-                            <div className="text-[10px] font-bold text-slate-500 uppercase mb-1 tracking-widest">Decision</div>
-                            
-                            <button 
-                                onClick={() => onDecision('include')}
-                                className="w-full flex items-center gap-3 p-3.5 bg-white/5 rounded-lg border border-white/5 hover:border-green-500/50 hover:bg-green-500/10 hover:text-green-400 transition-all text-slate-400 group"
-                                title="Shortcut: I"
-                            >
-                                <CheckCircle className="w-5 h-5 text-slate-600 group-hover:text-green-500 transition-colors" />
-                                <span className="text-sm font-medium">Include</span>
-                            </button>
-
-                            <button 
-                                onClick={() => onDecision('exclude')}
-                                className="w-full flex items-center gap-3 p-3.5 bg-white/5 rounded-lg border border-white/5 hover:border-red-500/50 hover:bg-red-500/10 hover:text-red-400 transition-all text-slate-400 group"
-                                title="Shortcut: E"
-                            >
-                                <XCircle className="w-5 h-5 text-slate-600 group-hover:text-red-500 transition-colors" />
-                                <span className="text-sm font-medium">Exclude</span>
-                            </button>
-
-                            <button 
-                                onClick={() => onDecision('maybe')}
-                                className="w-full flex items-center gap-3 p-3.5 bg-white/5 rounded-lg border border-white/5 hover:border-amber-500/50 hover:bg-amber-500/10 hover:text-amber-400 transition-all text-slate-400 group"
-                                title="Shortcut: M"
-                            >
-                                <HelpCircle className="w-5 h-5 text-slate-600 group-hover:text-amber-500 transition-colors" />
-                                <span className="text-sm font-medium">Maybe</span>
-                            </button>
-
-                            <div className="mt-4 pt-6 border-t border-white/10">
-                                <div className="flex items-center gap-2 mb-3">
-                                    <Edit3 className="w-3 h-3 text-slate-500" />
-                                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Reason / Notes</label>
-                                </div>
-                                <textarea 
-                                    value={reasons[currentArticle?.id] || ''}
-                                    onChange={(e) => onReasonChange(currentArticle?.id, e.target.value)}
-                                    placeholder="Why this decision?..."
-                                    className="w-full p-3 text-xs bg-[#0f172a] border border-white/10 rounded-lg focus:border-blue-500/50 text-slate-300 focus:outline-none min-h-[100px] resize-y placeholder-slate-700"
-                                />
-                            </div>
-                        </div>
-
-                        <div className="p-4 border-t border-white/10 bg-[#020617]">
-                            <div className="flex gap-3 mb-2">
-                                <button 
-                                    onClick={() => currentIndex > 0 && setCurrentIndex(c => c - 1)}
-                                    className="flex-1 py-2 bg-white/5 text-slate-400 rounded-lg hover:bg-white/10 hover:text-white disabled:opacity-30 flex justify-center border border-white/5 transition-all"
-                                    disabled={currentIndex === 0}
-                                >
-                                    <ArrowLeft className="w-4 h-4"/>
-                                </button>
-                                <button 
-                                    onClick={() => currentIndex < articles.length - 1 && setCurrentIndex(c => c + 1)}
-                                    className="flex-1 py-2 bg-white/5 text-slate-400 rounded-lg hover:bg-white/10 hover:text-white disabled:opacity-30 flex justify-center border border-white/5 transition-all"
-                                    disabled={currentIndex === articles.length - 1}
-                                >
-                                    <ArrowRight className="w-4 h-4"/>
-                                </button>
-                            </div>
-                            <div className="text-center text-[10px] text-slate-600 font-mono">
-                                Use Arrow Keys to Navigate
-                            </div>
-                        </div>
-                    </div>
+                    {/* Right: Filters (Reused) */}
+                    <FilterSidebar {...filterProps} />
                 </div>
             );
         };
@@ -706,12 +722,19 @@ ER  - `;
 
             const handleDecision = useCallback((decision) => {
                 if (articles.length === 0) return;
-                setDecisions(prev => ({ ...prev, [articles[currentIndex].id]: decision }));
-                if (currentIndex < articles.length - 1 && activeTab === 'screening') setCurrentIndex(prev => prev + 1);
-            }, [articles, currentIndex, activeTab]);
+                // Use filtered list to find current article ID, because index is based on that list
+                const currentArticleId = filteredArticles[currentIndex]?.id;
+                if (!currentArticleId) return;
+
+                setDecisions(prev => ({ ...prev, [currentArticleId]: decision }));
+                if (currentIndex < filteredArticles.length - 1 && activeTab === 'screening') setCurrentIndex(prev => prev + 1);
+            }, [articles, currentIndex, activeTab, filterKeywords]); // filterKeywords dependency for filteredArticles calc
             
             const handleReasonChange = (id, text) => setReasons(prev => ({ ...prev, [id]: text }));
             
+            // Re-calculate filtered articles
+            const filteredArticles = activeTab === 'review' || activeTab === 'screening' ? (filterKeywords.some(k => k.active) ? articles.filter(art => filterKeywords.filter(k => k.active).some(k => `${art.title} ${art.abstract} ${art.keywords?.join(' ')}`.toLowerCase().includes(k.text.toLowerCase()))) : articles) : articles;
+
             useEffect(() => {
                 const handleKeyDown = (e) => {
                     if (activeTab !== 'screening' || ['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
@@ -719,13 +742,13 @@ ER  - `;
                         case 'i': handleDecision('include'); break;
                         case 'e': handleDecision('exclude'); break;
                         case 'm': handleDecision('maybe'); break;
-                        case 'arrowright': if(currentIndex < articles.length - 1) setCurrentIndex(c => c + 1); break;
+                        case 'arrowright': if(currentIndex < filteredArticles.length - 1) setCurrentIndex(c => c + 1); break;
                         case 'arrowleft': if(currentIndex > 0) setCurrentIndex(c => c - 1); break;
                         default: break;
                     }
                 };
                 window.addEventListener('keydown', handleKeyDown); return () => window.removeEventListener('keydown', handleKeyDown);
-            }, [activeTab, currentIndex, articles.length, handleDecision]);
+            }, [activeTab, currentIndex, filteredArticles.length, handleDecision]);
 
             const addKeyword = () => { 
                 if (newKeyword.trim() && !filterKeywords.find(k => k.text.toLowerCase() === newKeyword.toLowerCase())) 
@@ -734,9 +757,13 @@ ER  - `;
             };
             const toggleKeyword = (i) => { const n = [...filterKeywords]; n[i].active = !n[i].active; setFilterKeywords(n); };
             const removeKeyword = (i) => setFilterKeywords(filterKeywords.filter((_, idx) => idx !== i));
-            const filteredArticles = activeTab === 'review' ? (filterKeywords.some(k => k.active) ? articles.filter(art => filterKeywords.filter(k => k.active).some(k => `${art.title} ${art.abstract} ${art.keywords?.join(' ')}`.toLowerCase().includes(k.text.toLowerCase()))) : articles) : articles;
+            
             const stats = { include: 0, exclude: 0, maybe: 0, undecided: 0 };
             articles.forEach(a => stats[decisions[a.id] || 'undecided']++);
+
+            const filterProps = {
+                filterKeywords, newKeyword, setNewKeyword, onAddKeyword: addKeyword, onToggleKeyword: toggleKeyword, onRemoveKeyword: removeKeyword
+            };
 
             if (activeTab === 'upload') {
                 return (
@@ -829,23 +856,19 @@ ER  - `;
                                     totalArticles={articles.length}
                                     decisions={decisions}
                                     reasons={reasons}
-                                    filterKeywords={filterKeywords}
-                                    newKeyword={newKeyword}
-                                    setNewKeyword={setNewKeyword}
-                                    onAddKeyword={addKeyword}
-                                    onToggleKeyword={toggleKeyword}
-                                    onRemoveKeyword={removeKeyword}
+                                    {...filterProps}
                                 />
                             )}
                             {activeTab === 'screening' && (
                                 <ScreeningView 
-                                    articles={articles}
+                                    articles={filteredArticles} // Pass filtered articles to screening
                                     currentIndex={currentIndex}
                                     setCurrentIndex={setCurrentIndex}
                                     decisions={decisions}
                                     reasons={reasons}
                                     onDecision={handleDecision}
                                     onReasonChange={handleReasonChange}
+                                    filterProps={filterProps} // Pass filter props
                                 />
                             )}
                         </div>
