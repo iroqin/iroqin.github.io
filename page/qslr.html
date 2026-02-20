@@ -79,6 +79,7 @@
         const GitMerge = ({ className }) => <IconWrapper className={className}><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M6 21V9a9 9 0 0 0 9 9"/></IconWrapper>;
         const UserIcon = ({ className }) => <IconWrapper className={className}><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></IconWrapper>;
         const FileText = ({ className }) => <IconWrapper className={className}><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></IconWrapper>;
+        const Pencil = ({ className }) => <IconWrapper className={className}><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></IconWrapper>;
 
         // --- LOGIC UTILS ---
         const generateStableId = (record) => {
@@ -304,6 +305,78 @@ ER  - `;
             </div>
         );
 
+        const EditArticleModal = ({ article, onSave, onClose }) => {
+            const [formData, setFormData] = useState({
+                ...article,
+                authorsText: article.authors ? article.authors.join('; ') : ''
+            });
+
+            const handleChange = (e) => {
+                const { name, value } = e.target;
+                setFormData(prev => ({ ...prev, [name]: value }));
+            };
+
+            const handleSubmit = () => {
+                const updatedArticle = {
+                    ...formData,
+                    authors: formData.authorsText.split(';').map(a => a.trim()).filter(a => a !== '')
+                };
+                delete updatedArticle.authorsText;
+                onSave(updatedArticle);
+            };
+
+            return (
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex justify-center items-center p-4">
+                    <div className="bg-[#0f172a] border border-white/10 rounded-xl w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl">
+                        <div className="flex justify-between items-center p-5 border-b border-white/10">
+                            <h2 className="text-lg font-bold text-white">Edit Article Data</h2>
+                            <button onClick={onClose} className="text-slate-400 hover:text-white transition-colors">
+                                <X className="w-5 h-5" />
+                            </button>
+                        </div>
+                        <div className="p-6 overflow-y-auto custom-scrollbar flex-1 space-y-4">
+                            <div>
+                                <label className="block text-xs font-bold text-slate-400 uppercase mb-1">Title</label>
+                                <input type="text" name="title" value={formData.title || ''} onChange={handleChange} className="w-full bg-white/5 border border-white/10 rounded p-2 text-sm text-white focus:border-blue-500 outline-none" />
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-xs font-bold text-slate-400 uppercase mb-1">Year</label>
+                                    <input type="text" name="year" value={formData.year || ''} onChange={handleChange} className="w-full bg-white/5 border border-white/10 rounded p-2 text-sm text-white focus:border-blue-500 outline-none" />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-bold text-slate-400 uppercase mb-1">Journal</label>
+                                    <input type="text" name="journal" value={formData.journal || ''} onChange={handleChange} className="w-full bg-white/5 border border-white/10 rounded p-2 text-sm text-white focus:border-blue-500 outline-none" />
+                                </div>
+                            </div>
+                            <div>
+                                <label className="block text-xs font-bold text-slate-400 uppercase mb-1">Authors (Semicolon separated)</label>
+                                <input type="text" name="authorsText" value={formData.authorsText || ''} onChange={handleChange} className="w-full bg-white/5 border border-white/10 rounded p-2 text-sm text-white focus:border-blue-500 outline-none" />
+                            </div>
+                            <div>
+                                <label className="block text-xs font-bold text-slate-400 uppercase mb-1">Abstract</label>
+                                <textarea name="abstract" value={formData.abstract || ''} onChange={handleChange} className="w-full bg-white/5 border border-white/10 rounded p-2 text-sm text-white focus:border-blue-500 outline-none min-h-[150px] resize-y"></textarea>
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-xs font-bold text-slate-400 uppercase mb-1">DOI</label>
+                                    <input type="text" name="doi" value={formData.doi || ''} onChange={handleChange} className="w-full bg-white/5 border border-white/10 rounded p-2 text-sm text-white focus:border-blue-500 outline-none" />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-bold text-slate-400 uppercase mb-1">URL / Source</label>
+                                    <input type="text" name="url" value={formData.url || ''} onChange={handleChange} className="w-full bg-white/5 border border-white/10 rounded p-2 text-sm text-white focus:border-blue-500 outline-none" />
+                                </div>
+                            </div>
+                        </div>
+                        <div className="p-5 border-t border-white/10 flex justify-end gap-3 bg-[#020617] rounded-b-xl">
+                            <button onClick={onClose} className="px-4 py-2 text-sm font-medium text-slate-300 hover:text-white transition-colors">Cancel</button>
+                            <button onClick={handleSubmit} className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium rounded shadow-lg transition-colors">Save Changes</button>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
         const OverviewView = ({ articles, stats, projectTitle, setProjectTitle, researcherName, setResearcherName }) => {
             const total = articles.length || 1;
             const pInc = (stats.include / total) * 100;
@@ -419,7 +492,7 @@ ER  - `;
             );
         };
 
-        const ReviewView = ({ filteredArticles, totalArticles, decisions, reasons, filterKeywords, newKeyword, setNewKeyword, onAddKeyword, onToggleKeyword, onRemoveKeyword }) => {
+        const ReviewView = ({ filteredArticles, totalArticles, decisions, reasons, filterKeywords, newKeyword, setNewKeyword, onAddKeyword, onToggleKeyword, onRemoveKeyword, onEditArticle }) => {
             return (
                 <div className="flex flex-1 h-full overflow-hidden bg-[#0f172a] pt-16">
                     <div className="flex-1 flex flex-col min-w-0">
@@ -444,6 +517,7 @@ ER  - `;
                                             <th className="p-4 w-auto">Title / Abstract Snippet</th>
                                             <th className="p-4 w-24 text-right">Year</th>
                                             <th className="p-4 w-40 hidden md:table-cell">Journal</th>
+                                            <th className="p-4 w-16 text-center">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y divide-white/5">
@@ -465,10 +539,15 @@ ER  - `;
                                                 </td>
                                                 <td className="p-4 text-right text-slate-400 font-mono text-xs">{art.year}</td>
                                                 <td className="p-4 text-slate-500 text-xs truncate hidden md:table-cell">{art.journal || '-'}</td>
+                                                <td className="p-4 text-center">
+                                                    <button onClick={() => onEditArticle(art)} className="text-slate-500 hover:text-blue-400 opacity-0 group-hover:opacity-100 transition-all p-1" title="Edit Article">
+                                                        <Pencil className="w-4 h-4" />
+                                                    </button>
+                                                </td>
                                             </tr>
                                         )) : (
                                             <tr>
-                                                <td colSpan="6" className="p-12 text-center text-slate-500 italic text-sm">No matches found.</td>
+                                                <td colSpan="7" className="p-12 text-center text-slate-500 italic text-sm">No matches found.</td>
                                             </tr>
                                         )}
                                     </tbody>
@@ -697,6 +776,7 @@ ER  - `;
             const [projectTitle, setProjectTitle] = useState('');
             const [researcherName, setResearcherName] = useState('');
             const [statusFilter, setStatusFilter] = useState('all');
+            const [editingArticle, setEditingArticle] = useState(null);
 
             const fileInputRef = useRef(null);
             const loadInputRef = useRef(null);
@@ -871,6 +951,11 @@ ER  - `;
             
             const handleReasonChange = (id, text) => setReasons(prev => ({ ...prev, [id]: text }));
             
+            const handleUpdateArticle = (updatedArt) => {
+                setArticles(prev => prev.map(a => a.id === updatedArt.id ? updatedArt : a));
+                setEditingArticle(null);
+            };
+
             // Re-calculate filtered articles
             const filteredArticles = activeTab === 'review' || activeTab === 'screening' ? articles.filter(art => {
                 // Keyword Filter
@@ -1027,6 +1112,7 @@ ER  - `;
                                     totalArticles={articles.length}
                                     decisions={decisions}
                                     reasons={reasons}
+                                    onEditArticle={setEditingArticle}
                                     {...filterProps}
                                 />
                             )}
@@ -1045,6 +1131,14 @@ ER  - `;
                                 />
                             )}
                         </div>
+                        
+                        {editingArticle && (
+                            <EditArticleModal 
+                                article={editingArticle} 
+                                onSave={handleUpdateArticle} 
+                                onClose={() => setEditingArticle(null)} 
+                            />
+                        )}
                     </main>
                 </div>
             );
