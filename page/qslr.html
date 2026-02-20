@@ -525,7 +525,7 @@ ER  - `;
                                 <div 
                                     key={art.id}
                                     onClick={() => setCurrentIndex(idx)}
-                                    className={`px-5 py-4 border-b border-white/5 cursor-pointer text-xs group transition-all relative
+                                    className={`px-5 py-4 border-b border-white/5 cursor-pointer group transition-all relative
                                         ${currentIndex === idx ? 'bg-white/5' : 'hover:bg-white/5 opacity-70 hover:opacity-100'}
                                     `}
                                 >
@@ -537,7 +537,7 @@ ER  - `;
                                         {decisions[art.id] === 'exclude' && <div className="w-1.5 h-1.5 rounded-full bg-red-500 shadow-[0_0_5px_rgba(239,68,68,0.5)]"></div>}
                                         {decisions[art.id] === 'maybe' && <div className="w-1.5 h-1.5 rounded-full bg-amber-500 shadow-[0_0_5px_rgba(245,158,11,0.5)]"></div>}
                                     </div>
-                                    <div className={`line-clamp-2 leading-relaxed ${currentIndex === idx ? 'text-slate-200 font-medium' : 'text-slate-400'}`}>
+                                    <div className={`line-clamp-2 leading-relaxed text-sm ${currentIndex === idx ? 'text-slate-200 font-medium' : 'text-slate-400'}`}>
                                         {art.title}
                                     </div>
                                 </div>
@@ -598,9 +598,9 @@ ER  - `;
                              </div>
                         </div>
 
-                        <div className="flex-1 overflow-y-auto p-8 custom-scrollbar w-full">
+                        <div className="flex-1 overflow-y-auto p-6 md:p-8 custom-scrollbar w-full">
                             {currentArticle ? (
-                                <div className="w-full max-w-4xl mx-auto pb-20">
+                                <div className="w-full pb-20">
                                     <div className="mb-8">
                                         <div className="flex flex-wrap items-center gap-3 mb-4">
                                             {currentArticle.journal && (
@@ -981,8 +981,13 @@ ER  - `;
                                 </div>
                             </div>
                             
-                            <div className="mt-8 text-[10px] text-slate-600 text-center uppercase tracking-widest">
-                                Serverless Systematic Literature Review Tool
+                            <div className="mt-8 flex flex-col items-center gap-2">
+                                <div className="text-[10px] text-slate-600 text-center uppercase tracking-widest">
+                                    Serverless Systematic Literature Review Tool
+                                </div>
+                                <div className="text-[10px] text-slate-500 font-mono">
+                                    Last updated: 2026-02-20 08:32 WIB
+                                </div>
                             </div>
                         </div>
                     </div>
