@@ -72,6 +72,7 @@
         const ExternalLink = ({ className }) => <IconWrapper className={className}><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></IconWrapper>;
         const Save = ({ className }) => <IconWrapper className={className}><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></IconWrapper>;
         const FolderOpen = ({ className }) => <IconWrapper className={className}><path d="m6 14 1.45-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-3.25 7a2 2 0 0 1-1.94 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/></IconWrapper>;
+        const Download = ({ className }) => <IconWrapper className={className}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></IconWrapper>;
         const Plus = ({ className }) => <IconWrapper className={className}><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></IconWrapper>;
         const X = ({ className }) => <IconWrapper className={className}><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></IconWrapper>;
         const Edit3 = ({ className }) => <IconWrapper className={className}><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></IconWrapper>;
@@ -182,7 +183,7 @@ ER  - `;
 
         // --- COMPONENTS ---
 
-        const Header = ({ activeTab, setActiveTab, onLoad, onSave, onMerge }) => (
+        const Header = ({ activeTab, setActiveTab, onLoad, onSave, onMerge, onExport }) => (
             <header className="bg-[#0f172a]/90 backdrop-blur-md border-b border-white/10 h-16 flex items-center justify-between px-6 shrink-0 z-30 fixed top-0 w-full">
                 <div className="flex items-center gap-6">
                     <div className="flex items-center gap-2 text-white cursor-pointer group">
@@ -223,6 +224,14 @@ ER  - `;
                         title="Merge another JSON"
                     >
                         <GitMerge className="w-3.5 h-3.5" /> <span className="hidden sm:inline">Merge</span>
+                    </button>
+
+                    <button 
+                        onClick={onExport}
+                        className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-slate-300 hover:text-white hover:bg-white/10 rounded border border-white/10 transition-colors"
+                        title="Export to CSV/Excel"
+                    >
+                        <Download className="w-3.5 h-3.5" /> <span className="hidden sm:inline">Export</span>
                     </button>
 
                     <button 
@@ -790,6 +799,65 @@ ER  - `;
                 document.body.removeChild(link);
             };
 
+            const handleExportCSV = () => {
+                if (articles.length === 0) {
+                    alert('Tidak ada data untuk diekspor.');
+                    return;
+                }
+
+                // Menyiapkan nama kolom
+                const headers = ['No', 'Title', 'Authors', 'Year', 'Journal', 'Keywords', 'Abstract', 'DOI', 'Source', 'Decision', 'Reason'];
+                
+                // Fungsi untuk memastikan format teks aman untuk file CSV (mengatasi tanda koma, baris baru, dan tanda kutip)
+                const escapeCSV = (str) => {
+                    if (str === null || str === undefined) return '';
+                    const stringified = String(str);
+                    if (stringified.includes(',') || stringified.includes('"') || stringified.includes('\n')) {
+                        return `"${stringified.replace(/"/g, '""')}"`;
+                    }
+                    return stringified;
+                };
+
+                // Menyusun data baris demi baris
+                const rows = articles.map(art => {
+                    const authorStr = art.authors ? art.authors.join('; ') : '';
+                    const keywordStr = art.keywords ? art.keywords.join('; ') : '';
+                    const decision = decisions[art.id] || 'undecided';
+                    const reason = reasons[art.id] || '';
+                    
+                    return [
+                        art.index,
+                        escapeCSV(art.title),
+                        escapeCSV(authorStr),
+                        escapeCSV(art.year),
+                        escapeCSV(art.journal),
+                        escapeCSV(keywordStr),
+                        escapeCSV(art.abstract),
+                        escapeCSV(art.doi),
+                        escapeCSV(art.url),
+                        escapeCSV(decision),
+                        escapeCSV(reason)
+                    ].join(',');
+                });
+
+                // Menambahkan BOM (\uFEFF) agar Microsoft Excel membaca karakter khusus (seperti huruf aksen) dengan benar
+                const csvContent = "\uFEFF" + [headers.join(','), ...rows].join('\n');
+                
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement("a");
+                const url = URL.createObjectURL(blob);
+                
+                const timestamp = new Date().toISOString().replace(/[-:T.]/g, '').slice(0, 14);
+                const safeTitle = projectTitle.trim().replace(/[\s_]/g, '') || 'Untitled';
+                const safeResearcher = researcherName.trim().replace(/[\s_]/g, '') || 'Researcher';
+                
+                link.setAttribute("href", url);
+                link.setAttribute("download", `${timestamp}_${safeResearcher}_${safeTitle}_Export.csv`);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            };
+
             const handleDecision = useCallback((decision) => {
                 if (articles.length === 0) return;
                 // Use filtered list to find current article ID, because index is based on that list
@@ -929,6 +997,7 @@ ER  - `;
                         onLoad={() => loadInputRef.current.click()}
                         onSave={handleSaveProject}
                         onMerge={() => mergeInputRef.current.click()}
+                        onExport={handleExportCSV}
                     />
                     <input type="file" ref={loadInputRef} className="hidden" accept=".json" onChange={handleFileUpload} />
                     <input type="file" ref={mergeInputRef} className="hidden" accept=".json" onChange={handleMergeUpload} />
