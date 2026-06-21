@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Map-first climate-adjusted valuation prototype for Indonesian state-owned assets.">
+  <title>BMN Climate Value Lab — Map</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" onerror="this.onerror=null;this.href='https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css'">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="map-page">
+  <header class="map-header">
+    <a class="brand" href="index.html" aria-label="BMN Climate Value Lab map">
+      <span class="brand-mark">CV</span>
+      <span><strong>BMN Climate</strong><small>Value Lab</small></span>
+    </a>
+    <nav aria-label="Primary navigation">
+      <a class="active" href="index.html">Map</a>
+      <a href="methodology.html">Methodology</a>
+      <a href="about.html">About</a>
+    </nav>
+    <span class="prototype-badge">Research prototype · synthetic data</span>
+  </header>
+
+  <main class="map-canvas">
+    <div id="map" role="application" aria-label="Interactive map of state-owned assets and climate risk"></div>
+    <div class="map-status" id="map-status"><span class="map-spinner"></span><strong>Loading CARTO basemap…</strong></div>
+
+    <section class="scenario-dock" aria-label="Map and scenario controls">
+      <div class="control-group"><span>Basemap</span><button class="base-button active" id="base-map">Map</button><button class="base-button" id="base-satellite">Satellite</button></div>
+      <div class="divider"></div>
+      <div class="control-group"><span>Horizon</span><button class="scenario active" data-year="present">Present</button><button class="scenario" data-year="2030">2030</button><button class="scenario" data-year="2050">2050</button></div>
+      <div class="scenario-context"><i></i><strong id="scenario-label">Observed baseline</strong></div>
+    </section>
+
+    <aside class="floating-panel filters" aria-label="Portfolio and hazard layers">
+      <div class="panel-heading"><div><span>PORTFOLIO MAP</span><strong>Layers & filters</strong></div><button id="reset-filters">Reset</button></div>
+      <label>Study area<select id="city-filter"><option value="all">All focus areas</option><option value="Semarang">Semarang</option><option value="Padang">Padang</option></select></label>
+      <label>Asset class<select id="type-filter"><option value="all">All asset classes</option><option value="Property">Property</option><option value="Infrastructure">Infrastructure</option></select></label>
+      <fieldset>
+        <legend>Hazard layers</legend>
+        <label class="check"><input type="checkbox" value="sea" checked><span class="swatch sea"></span><span>Sea-level rise<small>Indicative · synthetic</small></span></label>
+        <label class="check"><input type="checkbox" value="rob" checked><span class="swatch rob"></span><span>Coastal flooding / rob<small>Indicative · synthetic</small></span></label>
+        <label class="check"><input type="checkbox" value="fire" checked><span class="swatch fire"></span><span>Forest & land fire<small>Indicative · synthetic</small></span></label>
+      </fieldset>
+      <div class="legend"><span>Asset risk</span><div><i class="dot low"></i>Low</div><div><i class="dot medium"></i>Medium</div><div><i class="dot high"></i>High</div><div><i class="dot critical"></i>Critical</div></div>
+      <p class="data-note">Coordinates, values, and hazard surfaces are illustrative. They are not official BMN or hazard records.</p>
+    </aside>
+
+    <aside class="floating-panel asset-panel" id="asset-panel">
+      <div class="empty-state" id="empty-state"><span>⌖</span><h3>Select an asset</h3><p>Click a marker to inspect its climate-adjusted value and decision signals.</p></div>
+      <div class="asset-detail hidden" id="asset-detail">
+        <div class="asset-head"><span id="asset-city">—</span><button id="close-detail" aria-label="Close asset details">×</button></div>
+        <h3 id="asset-name">—</h3><p id="asset-type">—</p><div class="risk-chip" id="risk-chip">—</div>
+        <div class="value-pair"><div><span>Book value</span><strong id="book-value">—</strong></div><div><span>Adjusted value</span><strong id="adjusted-value">—</strong><small id="loss-value">—</small></div></div>
+        <h4>Hazard contribution</h4><div id="hazard-bars" class="hazard-bars"></div>
+        <div class="decision-box"><span>Indicative decision signal</span><strong id="decision-signal">—</strong><p id="insurance-note">—</p></div>
+      </div>
+    </aside>
+
+    <section class="metric-dock" aria-label="Portfolio indicators">
+      <article><span>Portfolio value</span><strong id="portfolio-value">—</strong></article>
+      <article><span>Climate value at risk</span><strong id="value-at-risk">—</strong><small id="var-note">expected loss · present</small></article>
+      <article><span>High-risk assets</span><strong id="high-risk">—</strong></article>
+      <article><span>Insurance candidates</span><strong id="insurance-count">—</strong></article>
+      <article><span>Visible assets</span><strong id="visible-assets">—</strong></article>
+    </section>
+  </main>
+
+  <script>
+    (function(){const status=document.getElementById('map-status');const sources=['https://unpkg.com/leaflet@1.9.4/dist/leaflet.js','https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js'];function load(i){const s=document.createElement('script');s.src=sources[i];s.onload=()=>{const app=document.createElement('script');app.src='app.js?v=4';app.onerror=()=>{status.className='map-status error';status.innerHTML='<strong>Map application could not start.</strong><small>Refresh the page or use a local web server.</small>'};document.body.appendChild(app)};s.onerror=()=>i+1<sources.length?load(i+1):(status.innerHTML='<strong>Leaflet could not be downloaded.</strong>');document.body.appendChild(s)}load(0)})();
+  </script>
+</body>
+</html>
