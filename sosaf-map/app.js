@@ -26,20 +26,37 @@ const osmFallback=L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.pn
 const satellite=L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",{maxZoom:19,attribution:"Imagery &copy; Esri, Maxar, Earthstar Geographics"});
 L.control.layers({"CARTO Light":carto,"Esri Satellite":satellite,"OSM fallback":osmFallback},null,{position:"topright",collapsed:false}).addTo(map);
 const mapStatus=document.querySelector('#map-status');
-const extremeWeatherLayer=L.esri.dynamicMapLayer({
-  url:"https://gis.bnpb.go.id/server/rest/services/inarisk/layer_bahaya_cuaca_ekstrim_30/MapServer",
-  layers:[0],
-  opacity:.58,
-  attribution:"BNPB InaRISK — Extreme Weather Hazard"
-}).addTo(map);
-const extremeWeatherToggle=document.querySelector('#extreme-weather-toggle');
-extremeWeatherToggle.addEventListener('change',()=>{
-  if(extremeWeatherToggle.checked) extremeWeatherLayer.addTo(map);
-  else map.removeLayer(extremeWeatherLayer);
-});
-extremeWeatherLayer.on('requesterror',()=>{
-  mapStatus.className='map-status error';
-  mapStatus.innerHTML='<strong>BNPB Extreme Weather layer is temporarily unavailable.</strong><small>The synthetic layers and basemap remain available.</small>';
+map.createPane('bnpbHazards');
+map.getPane('bnpbHazards').style.zIndex=350;
+map.createPane('bnpbBoundaries');
+map.getPane('bnpbBoundaries').style.zIndex=390;
+
+const liveLayerDefinitions=[
+  {toggle:'flood-toggle',name:'Flood Hazard',url:'layer_bahaya_banjir_30/MapServer',opacity:.58,pane:'bnpbHazards'},
+  {toggle:'forest-fire-toggle',name:'Forest and Land Fire Hazard',url:'layer_bahaya_kebakaran_hutan_dan_lahan_30/MapServer',opacity:.58,pane:'bnpbHazards'},
+  {toggle:'coastal-wave-toggle',name:'Extreme Waves and Coastal Abrasion Hazard',url:'layer_bahaya_gelombang_ekstrim_dan_abrasi_30/MapServer',opacity:.58,pane:'bnpbHazards'},
+  {toggle:'extreme-weather-toggle',name:'Extreme Weather Hazard',url:'layer_bahaya_cuaca_ekstrim_30/MapServer',opacity:.58,pane:'bnpbHazards'},
+  {toggle:'boundaries-toggle',name:'Administrative Boundaries',url:'batas_administrasi/MapServer',layers:[1,2,3,4],opacity:.82,pane:'bnpbBoundaries'}
+];
+
+const liveLayers=liveLayerDefinitions.map(definition=>{
+  const toggle=document.getElementById(definition.toggle);
+  const layer=L.esri.dynamicMapLayer({
+    url:`https://gis.bnpb.go.id/server/rest/services/inarisk/${definition.url}`,
+    layers:definition.layers||[0],
+    opacity:definition.opacity,
+    pane:definition.pane,
+    attribution:`BNPB InaRISK — ${definition.name}`
+  });
+  const syncLayer=()=>toggle.checked?layer.addTo(map):map.removeLayer(layer);
+  toggle.addEventListener('change',syncLayer);
+  layer.on('requesterror',()=>{
+    mapStatus.className='map-status error';
+    mapStatus.innerHTML=`<strong>BNPB ${definition.name} layer is temporarily unavailable.</strong><small>The other layers and basemap remain available.</small>`;
+    setTimeout(()=>mapStatus.classList.add('ready'),5000);
+  });
+  syncLayer();
+  return layer;
 });
 let cartoErrors=0;
 carto.once('load',()=>mapStatus.classList.add('ready'));
