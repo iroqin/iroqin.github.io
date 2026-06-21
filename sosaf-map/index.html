@@ -46,6 +46,11 @@
         <label class="check"><input type="checkbox" value="rob" checked><span class="swatch rob"></span><span>Coastal flooding / rob<small>Indicative · synthetic</small></span></label>
         <label class="check"><input type="checkbox" value="fire" checked><span class="swatch fire"></span><span>Forest & land fire<small>Indicative · synthetic</small></span></label>
       </fieldset>
+      <fieldset class="live-layers">
+        <legend>Live BNPB layer</legend>
+        <label class="live-check"><input id="extreme-weather-toggle" type="checkbox" checked><span class="swatch extreme"></span><span>Extreme Weather Hazard<small>Official live raster · BNPB InaRISK</small></span></label>
+        <p>National hazard index for extreme weather. This is not a coastal inundation layer.</p>
+      </fieldset>
       <div class="legend"><span>Asset risk</span><div><i class="dot low"></i>Low</div><div><i class="dot medium"></i>Medium</div><div><i class="dot high"></i>High</div><div><i class="dot critical"></i>Critical</div></div>
       <p class="data-note">Coordinates, values, and hazard surfaces are illustrative. They are not official BMN or hazard records.</p>
     </aside>
@@ -71,7 +76,7 @@
   </main>
 
   <script>
-    (function(){const status=document.getElementById('map-status');const sources=['https://unpkg.com/leaflet@1.9.4/dist/leaflet.js','https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js'];function load(i){const s=document.createElement('script');s.src=sources[i];s.onload=()=>{const app=document.createElement('script');app.src='app.js?v=4';app.onerror=()=>{status.className='map-status error';status.innerHTML='<strong>Map application could not start.</strong><small>Refresh the page or use a local web server.</small>'};document.body.appendChild(app)};s.onerror=()=>i+1<sources.length?load(i+1):(status.innerHTML='<strong>Leaflet could not be downloaded.</strong>');document.body.appendChild(s)}load(0)})();
+    (function(){const status=document.getElementById('map-status');const sources=['https://unpkg.com/leaflet@1.9.4/dist/leaflet.js','https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js'];function loadApp(){const esri=document.createElement('script');esri.src='https://unpkg.com/esri-leaflet@3.0.15/dist/esri-leaflet.js';esri.onload=()=>{const app=document.createElement('script');app.src='app.js?v=5';app.onerror=()=>{status.className='map-status error';status.innerHTML='<strong>Map application could not start.</strong><small>Refresh the page or use a local web server.</small>'};document.body.appendChild(app)};esri.onerror=()=>{status.className='map-status error';status.innerHTML='<strong>The BNPB map connector could not load.</strong><small>Check the internet connection and refresh.</small>'};document.body.appendChild(esri)}function load(i){const s=document.createElement('script');s.src=sources[i];s.onload=loadApp;s.onerror=()=>i+1<sources.length?load(i+1):(status.innerHTML='<strong>Leaflet could not be downloaded.</strong>');document.body.appendChild(s)}load(0)})();
   </script>
 </body>
 </html>

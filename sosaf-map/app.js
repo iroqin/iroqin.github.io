@@ -26,6 +26,21 @@ const osmFallback=L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.pn
 const satellite=L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",{maxZoom:19,attribution:"Imagery &copy; Esri, Maxar, Earthstar Geographics"});
 L.control.layers({"CARTO Light":carto,"Esri Satellite":satellite,"OSM fallback":osmFallback},null,{position:"topright",collapsed:false}).addTo(map);
 const mapStatus=document.querySelector('#map-status');
+const extremeWeatherLayer=L.esri.dynamicMapLayer({
+  url:"https://gis.bnpb.go.id/server/rest/services/inarisk/layer_bahaya_cuaca_ekstrim_30/MapServer",
+  layers:[0],
+  opacity:.58,
+  attribution:"BNPB InaRISK — Extreme Weather Hazard"
+}).addTo(map);
+const extremeWeatherToggle=document.querySelector('#extreme-weather-toggle');
+extremeWeatherToggle.addEventListener('change',()=>{
+  if(extremeWeatherToggle.checked) extremeWeatherLayer.addTo(map);
+  else map.removeLayer(extremeWeatherLayer);
+});
+extremeWeatherLayer.on('requesterror',()=>{
+  mapStatus.className='map-status error';
+  mapStatus.innerHTML='<strong>BNPB Extreme Weather layer is temporarily unavailable.</strong><small>The synthetic layers and basemap remain available.</small>';
+});
 let cartoErrors=0;
 carto.once('load',()=>mapStatus.classList.add('ready'));
 carto.on('tileerror',()=>{cartoErrors+=1;if(cartoErrors===4&&map.hasLayer(carto)){map.removeLayer(carto);osmFallback.addTo(map);mapStatus.className='map-status error';mapStatus.innerHTML='<strong>CARTO is unavailable.</strong><small>The map has switched to OpenStreetMap. Use the layer control to retry CARTO or Esri.</small>';setTimeout(()=>mapStatus.classList.add('ready'),5000)}});
